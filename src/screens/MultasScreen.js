@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Picker } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import styles from '../styles/MultasScreenStyles';
 
 export default function MultasScreen() {
