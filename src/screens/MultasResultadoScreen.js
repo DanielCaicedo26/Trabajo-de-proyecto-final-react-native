@@ -81,7 +81,7 @@ const MultasResultadoScreen = () => {
           <Text style={styles.tabLabel}>Acuerdos De Pago</Text>
         </View>
         <View style={styles.tabItem}>
-          <Ionicons name="person-outline" size={24} color="#ff5500ff" />
+          <Ionicons name="person-outline" size={24} color="#01763C" />
           <Text style={styles.tabLabel} onPress={() => navigation.navigate('Perfil')}>Perfil</Text>
         </View>
       </View>
