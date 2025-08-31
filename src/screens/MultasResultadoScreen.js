@@ -116,22 +116,18 @@ const MultasResultadoScreen = () => {
         </View>
       </ImageBackground>
       <View style={styles.tabBar}>
-        <View style={styles.tabItem}>
-          <Ionicons name="home-outline" size={24} color="#01763C" />
-          <Text style={styles.tabLabel}>Información</Text>
-        </View>
-        <View style={styles.tabItem}>
+        <TouchableOpacity style={styles.tabItem}>
           <Ionicons name="list-outline" size={24} color="#01763C" />
-          <Text style={styles.tabLabel}>Infraccion</Text>
-        </View>
-        <View style={styles.tabItem}>
-          <Ionicons name="wallet-outline" size={24} color="#01763C" />
-          <Text style={styles.tabLabel}>Acuerdos De Pago</Text>
-        </View>
-        <View style={styles.tabItem}>
+          <Text style={styles.tabLabel}>Infracción</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('CodigoConvivencia')}>
+          <Ionicons name="book-outline" size={24} color="#01763C" />
+          <Text style={styles.tabLabel}>Código de Convivencia</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('Perfil')}>
           <Ionicons name="person-outline" size={24} color="#01763C" />
-          <Text style={styles.tabLabel} onPress={() => navigation.navigate('Perfil')}>Perfil</Text>
-        </View>
+          <Text style={styles.tabLabel}>Perfil</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

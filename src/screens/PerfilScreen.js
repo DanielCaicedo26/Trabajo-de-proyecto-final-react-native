@@ -81,16 +81,12 @@ const PerfilScreen = ({ navigation }) => {
       </ImageBackground>
       <View style={styles.tabBar}>
         <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('MultasResultado')}>
-          <Ionicons name="home-outline" size={24} color="#01763C" />
-          <Text style={styles.tabLabel}>Información</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem}>
           <Ionicons name="list-outline" size={24} color="#01763C" />
-          <Text style={styles.tabLabel}>infraccion</Text>
+          <Text style={styles.tabLabel}>Infracción</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem}>
-          <Ionicons name="wallet-outline" size={24} color="#01763C" />
-          <Text style={styles.tabLabel}>Acuerdos De Pago</Text>
+        <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('CodigoConvivencia')}>
+          <Ionicons name="book-outline" size={24} color="#01763C" />
+          <Text style={styles.tabLabel}>Código de Convivencia</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.tabItem}>
           <Ionicons name="person-outline" size={24} color="#01763C" />
