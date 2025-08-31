@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F6FFF8',
+    backgroundColor: '#38e07888',
   },
   // headerBg eliminado
   infoRowClean: {
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#222',
+    color: '#000000ff',
     marginBottom: 0,
     marginLeft: 0,
   },
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
   linea: {
     fontSize: 15,
-    color: '#B5C9B6',
+    color: '#000000ff',
     marginBottom: 18,
     marginLeft: 2,
   },
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.7)',
   },
   logoutText: {
-    color: '#6B9080',
+    color: '#52946B',
     fontWeight: 'bold',
     fontSize: 20,
     marginRight: 10,
@@ -96,12 +96,12 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   infoLabel: {
-    color: '#B5C9B6',
+    color: '#000000ff',
     fontSize: 15,
     marginTop: 10,
   },
   infoValue: {
-    color: '#6B9080',
+    color: '#52946B',
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 2,

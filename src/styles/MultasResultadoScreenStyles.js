@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F6FFF8',
+    backgroundColor: '#38e07888',
   },
   headerBg: {
     height: 120,
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   searchBar: {
-    backgroundColor: '#fff',
+    backgroundColor: '#fcfcfcff',
     borderRadius: 16,
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -78,14 +78,14 @@ const styles = StyleSheet.create({
   valor: {
     fontWeight: 'bold',
     fontSize: 15,
-    color: '#01763C',
+    color: '#01763cf8',
     marginLeft: 8,
   },
   tabBar: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#f8f8f8ff',
     paddingVertical: 8,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
