@@ -3,11 +3,14 @@ import { View, Text, TextInput, TouchableOpacity, Image, Animated, StatusBar, Im
 import { Picker } from '@react-native-picker/picker';
 import styles from '../styles/MultasScreenStyles';
 
+import { useNavigation } from '@react-navigation/native';
+
 export default function MultasScreen() {
   const [tipoDocumento, setTipoDocumento] = useState('');
   const [numeroDocumento, setNumeroDocumento] = useState('');
   const [isButtonPressed, setIsButtonPressed] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
+  const navigation = useNavigation();
 
   return (
     <ImageBackground
@@ -76,6 +79,7 @@ export default function MultasScreen() {
                 ]}
                 onPressIn={() => setIsButtonPressed(true)}
                 onPressOut={() => setIsButtonPressed(false)}
+                onPress={() => navigation.navigate('MultasResultado')}
                 activeOpacity={0.8}
               >
                 <Text style={styles.buttonText}> Consultar Multas</Text>
