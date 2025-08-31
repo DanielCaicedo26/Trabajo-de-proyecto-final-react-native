@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, SafeAreaView, Alert } from 'react-native';
+import { View, Text, Image, TouchableOpacity, SafeAreaView, Alert, ImageBackground } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/PerfilScreenStyles';
 
@@ -12,6 +12,7 @@ const PerfilScreen = ({ navigation }) => {
     avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
     estado: 'activo'
   });
+
 
 
   const handleLogout = () => {
@@ -39,7 +40,12 @@ const PerfilScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
+      <ImageBackground
+        source={require('../img/curva-perfil.png')}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+      >
+        <View style={styles.container}>
         <View style={styles.profileRow}>
           <View style={styles.avatarContainer}>
             <Image source={{ uri: userInfo.avatar }} style={styles.avatar} />
@@ -71,7 +77,8 @@ const PerfilScreen = ({ navigation }) => {
             <Text style={styles.infoValue}>{userInfo.apellido}</Text>
           </View>
         </View>
-      </View>
+        </View>
+      </ImageBackground>
       <View style={styles.tabBar}>
         <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('MultasResultado')}>
           <Ionicons name="home-outline" size={24} color="#01763C" />

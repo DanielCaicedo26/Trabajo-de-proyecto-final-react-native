@@ -1,9 +1,15 @@
+
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '140%',
+  },
   safeArea: {
     flex: 1,
-    backgroundColor: '#38e07888',
+    backgroundColor: '#ffffffff',
   },
   // headerBg eliminado
   infoRowClean: {
@@ -16,7 +22,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 40,
     paddingHorizontal: 24,
-    zIndex: 1,
   },
   profileRow: {
     flexDirection: 'row',
