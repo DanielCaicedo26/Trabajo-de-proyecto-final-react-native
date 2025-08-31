@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, FlatList, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, FlatList, SafeAreaView, ImageBackground } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/MultasResultadoScreenStyles';
 
@@ -42,8 +42,12 @@ const MultasResultadoScreen = () => {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.headerBg} />
-      <View style={styles.container}>
+      <ImageBackground
+        source={require('../img/curva-perfil.png')}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+      >
+        <View style={styles.container}>
         <TextInput
           style={styles.searchBar}
           placeholder="Consulta tus infracciones"
@@ -66,7 +70,8 @@ const MultasResultadoScreen = () => {
             </View>
           )}
         />
-      </View>
+        </View>
+      </ImageBackground>
       <View style={styles.tabBar}>
         <View style={styles.tabItem}>
           <Ionicons name="home-outline" size={24} color="#01763C" />

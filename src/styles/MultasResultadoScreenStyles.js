@@ -5,16 +5,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#38e07888',
   },
-  headerBg: {
-    height: 120,
-    backgroundColor: '#01763C',
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 0,
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '140%',
   },
   container: {
     flex: 1,
