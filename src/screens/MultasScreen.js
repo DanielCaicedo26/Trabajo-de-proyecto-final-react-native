@@ -4,13 +4,62 @@ import { Picker } from '@react-native-picker/picker';
 import styles from '../styles/MultasScreenStyles';
 
 import { useNavigation } from '@react-navigation/native';
+import { consultarInfracciones } from '../api/infraccionesApi';
+import { buscarUsuarioPorDocumento } from '../api/userApi';
+
 
 export default function MultasScreen() {
   const [tipoDocumento, setTipoDocumento] = useState('');
   const [numeroDocumento, setNumeroDocumento] = useState('');
   const [isButtonPressed, setIsButtonPressed] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigation = useNavigation();
+
+  // Mapeo de tipo de documento a ID
+  const tipoDocumentoIdMap = {
+    cc: 1,
+    ti: 2,
+    ce: 3
+  };
+
+  const handleConsultarMultas = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const documentTypeId = tipoDocumentoIdMap[tipoDocumento];
+      if (!documentTypeId || !numeroDocumento) {
+        setError('Selecciona tipo y número de documento.');
+        setLoading(false);
+        return;
+      }
+      // Validar usuario primero
+      console.log('Consultando usuario:', documentTypeId, numeroDocumento);
+      const usuario = await buscarUsuarioPorDocumento(documentTypeId, numeroDocumento);
+      console.log('Respuesta usuario:', usuario);
+      if (!usuario) {
+        setError('No existe un usuario con ese documento.');
+        setLoading(false);
+        return;
+      }
+      // Si existe, consultar multas
+      console.log('Consultando infracciones:', documentTypeId, numeroDocumento);
+      const multas = await consultarInfracciones(documentTypeId, numeroDocumento);
+      console.log('Respuesta multas:', multas);
+      if (!multas || multas.length === 0) {
+        setError('No se encontraron multas para este documento.');
+        setLoading(false);
+        return;
+      }
+      navigation.navigate('MultasResultado', { multas });
+    } catch (err) {
+      setError('Error: ' + (err?.message || JSON.stringify(err)));
+      console.log('Error en consulta:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <ImageBackground
@@ -72,6 +121,7 @@ export default function MultasScreen() {
                   onBlur={() => setFocusedInput(null)}
                 />
               </View>
+              {error ? <Text style={{ color: 'red', textAlign: 'center', marginBottom: 8 }}>{error}</Text> : null}
               <TouchableOpacity
                 style={[
                   styles.button,
@@ -79,10 +129,11 @@ export default function MultasScreen() {
                 ]}
                 onPressIn={() => setIsButtonPressed(true)}
                 onPressOut={() => setIsButtonPressed(false)}
-                onPress={() => navigation.navigate('MultasResultado')}
+                onPress={handleConsultarMultas}
                 activeOpacity={0.8}
+                disabled={loading}
               >
-                <Text style={styles.buttonText}> Consultar Multas</Text>
+                <Text style={styles.buttonText}>{loading ? 'Consultando...' : 'Consultar Multas'}</Text>
               </TouchableOpacity>
             </View>
           </View>
