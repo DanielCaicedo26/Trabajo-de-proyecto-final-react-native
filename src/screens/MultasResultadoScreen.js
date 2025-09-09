@@ -4,12 +4,13 @@ import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/MultasResultadoScreenStyles';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { getInfracciones } from '../api/infraccionesCache';
 
 
 const MultasResultadoScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const multas = route.params?.multas || [];
+  const multas = route.params?.multas || getInfracciones() || [];
 
   return (
     <SafeAreaView style={styles.safeArea}>

@@ -6,6 +6,8 @@ import styles from '../styles/MultasScreenStyles';
 import { useNavigation } from '@react-navigation/native';
 import { consultarInfracciones } from '../api/infraccionesApi';
 import { buscarUsuarioPorDocumento } from '../api/userApi';
+import { setDocumentInfo, setUser } from '../api/userCache';
+import { setInfracciones } from '../api/infraccionesCache';
 
 
 export default function MultasScreen() {
@@ -34,6 +36,7 @@ export default function MultasScreen() {
         setLoading(false);
         return;
       }
+      setDocumentInfo({ documentTypeId, numeroDocumento });
       // Validar usuario primero
       console.log('Consultando usuario:', documentTypeId, numeroDocumento);
       const usuario = await buscarUsuarioPorDocumento(documentTypeId, numeroDocumento);
@@ -48,10 +51,23 @@ export default function MultasScreen() {
       const multas = await consultarInfracciones(documentTypeId, numeroDocumento);
       console.log('Respuesta multas:', multas);
       if (!multas || multas.length === 0) {
+        // Si no hay multas, al menos guardar la info que tenemos del usuario
+        setUser(usuario);
         setError('No se encontraron multas para este documento.');
         setLoading(false);
         return;
       }
+
+      // Si hay multas, enriquecer la info del usuario con los datos de la primera multa
+      const firstInfraction = multas[0];
+      const enrichedUser = {
+        ...usuario,
+        firstName: firstInfraction.firstName,
+        lastName: firstInfraction.lastName,
+      };
+      setUser(enrichedUser);
+
+      setInfracciones(multas);
       navigation.navigate('MultasResultado', { multas });
     } catch (err) {
       setError('Error: ' + (err?.message || JSON.stringify(err)));

@@ -5,24 +5,23 @@ import { LinearGradient } from 'expo-linear-gradient';
 import styles from '../styles/DetalleInfraccionScreenStyles';
 
 const DetalleInfraccionScreen = ({ navigation, route }) => {
-  // Recibir datos por params o usar datos de ejemplo
-  const infraccionDefault = {
-    tipo: 'Tipo Uno',
-    descripcion: 'Amenazar con dañar físicamente a alguien.',
-    ubicacion: 'Palermo-Huila carrera 10 #15-21',
-    fecha: '2025-02-11 16:45',
-    oficial: 'Johnson Ramirez',
-    consulta: 'SMDLV',
+  const infraccionData = route?.params?.infraccion;
+
+  const infraccion = {
+    tipo: infraccionData?.typeInfractionName || 'No especificado',
+    descripcion: infraccionData?.observations || 'Sin observaciones',
+    ubicacion: 'Palermo-Huila carrera 10 #15-21', // Dato de ejemplo, no viene en el JSON
+    fecha: infraccionData?.dateInfraction ? new Date(infraccionData.dateInfraction).toLocaleDateString() : 'No especificada',
+    oficial: infraccionData?.firstName && infraccionData?.lastName ? `${infraccionData.firstName} ${infraccionData.lastName}` : 'No especificado',
+    consulta: 'SMDLV', // Dato de ejemplo
     infoMulta: [
       { icon: 'time-outline', texto: '11/02/25 al 16/02/25 - 50% de descuento', valor: '$94.500' },
       { icon: 'cash-outline', texto: '11/03/25 valor sin descuento', valor: '$189.800' },
       { icon: 'warning-outline', texto: '01/03/25 Inicia proceso de cobro coactivo', valor: '$189.800' },
-    ],
-    monto: '$189.800',
-    fechaMax: '11/03/25',
+    ], // Datos de ejemplo
+    monto: '$189.800', // Dato de ejemplo
+    fechaMax: '11/03/25', // Dato de ejemplo
   };
-  
-  const infraccion = route?.params?.infraccion || infraccionDefault;
 
   return (
     <View style={{ flex: 1 }}>
