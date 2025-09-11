@@ -1,8 +1,8 @@
 // src/api/userApi.js
 // Lógica para consumir la API de usuarios
+import { API_HOST } from './config';
 
-
-const API_URL = 'http://192.168.1.7:5162/api/Users';
+const API_URL = `${API_HOST}/api/Users`;
 
 
 // Traer todos los usuarios y buscar por tipo y número de documento
@@ -15,7 +15,16 @@ export async function buscarUsuarioPorDocumento(documentTypeId, documentNumber) 
       }
     });
     if (!response.ok) {
-      throw new Error('Error al consultar los usuarios');
+      let message = `Error al consultar los usuarios (HTTP ${response.status})`;
+      try {
+        const err = await response.json();
+        if (err && (err.message || err.error)) {
+          message += `: ${err.message || err.error}`;
+        }
+      } catch (_) {
+        // Ignorar error al parsear
+      }
+      throw new Error(message);
     }
     const users = await response.json();
     console.log('Usuarios recibidos:', users);
@@ -27,6 +36,9 @@ export async function buscarUsuarioPorDocumento(documentTypeId, documentNumber) 
     console.log('Usuario encontrado:', encontrado);
     return encontrado;
   } catch (error) {
+    if (error && error.message === 'Network request failed') {
+      throw new Error('No se pudo conectar con el servidor de usuarios. Verifica que el backend esté activo y accesible desde el dispositivo.');
+    }
     throw error;
   }
 }

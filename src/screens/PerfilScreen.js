@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, Image, TouchableOpacity, SafeAreaView, Alert, ImageBackground } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/PerfilScreenStyles';
 import { getUser } from '../api/userCache';
+import { useFocusEffect } from '@react-navigation/native';
 
 const PerfilScreen = ({ navigation }) => {
   const [usuario, setUsuario] = useState(null);
@@ -11,6 +12,14 @@ const PerfilScreen = ({ navigation }) => {
     const currentUser = getUser();
     setUsuario(currentUser);
   }, []);
+
+  // Asegurar actualización cuando la pantalla toma foco
+  useFocusEffect(
+    useCallback(() => {
+      const currentUser = getUser();
+      setUsuario(currentUser);
+    }, [])
+  );
 
   const handleLogout = () => {
     Alert.alert(
@@ -22,9 +31,10 @@ const PerfilScreen = ({ navigation }) => {
           text: 'Cerrar Sesión',
           style: 'destructive',
           onPress: () => {
+            // Reset a una ruta existente del stack
             navigation.reset({
               index: 0,
-              routes: [{ name: 'Login' }], // Assuming you have a Login screen
+              routes: [{ name: 'Bienvenida' }],
             });
           },
         },
@@ -32,13 +42,27 @@ const PerfilScreen = ({ navigation }) => {
     );
   };
 
-  const userInfo = usuario ? {
-    nombre: usuario.firstName || 'N/A',
-    nombreCompleto: usuario.firstName ? `${usuario.firstName} ${usuario.lastName}` : 'Usuario',
-    documento: usuario.documentNumber,
-    apellido: usuario.lastName || 'N/A',
-    avatar: 'https://randomuser.me/api/portraits/men/1.jpg', // Keep random avatar
-  } : null;
+  const userInfo = usuario ? (() => {
+    // Derivar nombre/apellido desde userName si faltan
+    let { firstName, lastName, userName } = usuario;
+    if ((!firstName || !lastName) && userName) {
+      const parts = String(userName).trim().split(/\s+/);
+      firstName = firstName || (parts[0] || '');
+      lastName = lastName || (parts.slice(1).join(' ') || '');
+    }
+    const nombre = firstName || userName || 'N/A';
+    const apellido = lastName || '';
+    const nombreCompleto = (firstName || lastName)
+      ? `${firstName || ''} ${lastName || ''}`.trim()
+      : (userName || 'Usuario');
+    return {
+      nombre,
+      nombreCompleto,
+      documento: usuario.documentNumber,
+      apellido: apellido || 'N/A',
+      avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
+    };
+  })() : null;
 
   return (
     <SafeAreaView style={styles.safeArea}>

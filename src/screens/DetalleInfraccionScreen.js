@@ -12,7 +12,13 @@ const DetalleInfraccionScreen = ({ navigation, route }) => {
     descripcion: infraccionData?.observations || 'Sin observaciones',
     ubicacion: 'Palermo-Huila carrera 10 #15-21', // Dato de ejemplo, no viene en el JSON
     fecha: infraccionData?.dateInfraction ? new Date(infraccionData.dateInfraction).toLocaleDateString() : 'No especificada',
-    oficial: infraccionData?.firstName && infraccionData?.lastName ? `${infraccionData.firstName} ${infraccionData.lastName}` : 'No especificado',
+    oficial: (() => {
+      const fn = infraccionData?.firstName;
+      const ln = infraccionData?.lastName;
+      if (fn || ln) return `${fn || ''} ${ln || ''}`.trim() || 'No especificado';
+      if (infraccionData?.userName) return String(infraccionData.userName);
+      return 'No especificado';
+    })(),
     consulta: 'SMDLV', // Dato de ejemplo
     infoMulta: [
       { icon: 'time-outline', texto: '11/02/25 al 16/02/25 - 50% de descuento', valor: '$94.500' },
