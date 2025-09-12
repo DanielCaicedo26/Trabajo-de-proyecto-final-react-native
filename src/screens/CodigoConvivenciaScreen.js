@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { View, Text, TextInput, FlatList, ImageBackground, TouchableOpacity } from 'react-native';
+import { Alert, TouchableWithoutFeedback } from 'react-native';
 import styles from '../styles/CodigoConvivenciaScreenStyles';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -48,44 +49,87 @@ const leyes = [
 ];
 
 const CodigoConvivenciaScreen = ({ navigation }) => {
+  const timerRef = useRef(null);
+
+  const showInactivityAlert = () => {
+    Alert.alert(
+      'Inactividad',
+      '¿Deseas continuar en la sesión o cerrar sesión por inactividad?',
+      [
+        {
+          text: 'Cerrar sesión',
+          style: 'destructive',
+          onPress: () => {
+            navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
+          },
+        },
+        {
+          text: 'Seguir en la sesión',
+          style: 'cancel',
+          onPress: () => {
+            resetTimer();
+          },
+        },
+      ]
+    );
+  };
+
+  const resetTimer = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    timerRef.current = setTimeout(showInactivityAlert, 300000);
+  };
+
+  useEffect(() => {
+    resetTimer();
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <View style={{ flex: 1 }}>
-      <ImageBackground
-        source={require('../img/curva-perfil.png')}
-        style={styles.background}
-        resizeMode="cover"
-      >
-        <View style={styles.overlay} />
-        <View style={styles.container}>
-          <TouchableOpacity style={{ alignSelf: 'flex-start', marginBottom: 10, backgroundColor: 'transparent', borderRadius: 20, padding: 4 }} onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={24} color="#222" />
-          </TouchableOpacity>
-          <TextInput
-            style={styles.searchBar}
-            placeholder="Consulta tu ley"
-            placeholderTextColor="#6B9080"
-          />
-          <Text style={styles.titulo}>codigo de Convivencia {'  '}
-            <Ionicons name="people-outline" size={20} color="#01763C" />
-          </Text>
-          <FlatList
-            data={leyes}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) => (
-              <View style={styles.card}>
-                <View style={styles.iconContainer}>
-                  <Ionicons name="document-text-outline" size={28} color="#01763C" />
+    <TouchableWithoutFeedback onPress={resetTimer}>
+      <View style={{ flex: 1 }}>
+        <ImageBackground
+          source={require('../img/curva-perfil.png')}
+          style={styles.background}
+          resizeMode="cover"
+        >
+          <View style={styles.overlay} />
+          <View style={styles.container}>
+            <TouchableOpacity style={{ alignSelf: 'flex-start', marginBottom: 10, backgroundColor: 'transparent', borderRadius: 20, padding: 4 }} onPress={() => navigation.goBack()}>
+              <Ionicons name="arrow-back" size={24} color="#222" />
+            </TouchableOpacity>
+            <TextInput
+              style={styles.searchBar}
+              placeholder="Consulta tu ley"
+              placeholderTextColor="#6B9080"
+            />
+            <Text style={styles.titulo}>codigo de Convivencia {'  '}
+              <Ionicons name="people-outline" size={20} color="#01763C" />
+            </Text>
+            <FlatList
+              data={leyes}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => (
+                <View style={styles.card}>
+                  <View style={styles.iconContainer}>
+                    <Ionicons name="document-text-outline" size={28} color="#01763C" />
+                  </View>
+                  <View style={styles.infoContainer}>
+                    <Text style={styles.leyTitulo}>{item.titulo}</Text>
+                    <Text style={styles.leyDesc}>{item.descripcion}</Text>
+                  </View>
                 </View>
-                <View style={styles.infoContainer}>
-                  <Text style={styles.leyTitulo}>{item.titulo}</Text>
-                  <Text style={styles.leyDesc}>{item.descripcion}</Text>
-                </View>
-              </View>
-            )}
-          />
-        </View>
-      </ImageBackground>
-    </View>
+              )}
+            />
+          </View>
+        </ImageBackground>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
