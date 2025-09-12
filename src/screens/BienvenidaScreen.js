@@ -16,28 +16,34 @@ export default function BienvenidaScreen({ navigation }) {
   const timerRef = useRef(null);
 
   // Función para mostrar la alerta de inactividad
-  const showInactivityAlert = () => {
-    Alert.alert(
-      'Inactividad',
-      '¿Deseas continuar en la sesión o cerrar sesión por inactividad?',
-      [
-        {
-          text: 'Cerrar sesión',
-          style: 'destructive',
-          onPress: () => {
-            navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
+    const showInactivityAlert = () => {
+      Alert.alert(
+        'Inactividad',
+        '¿Deseas continuar en la sesión o cerrar la aplicación por inactividad?',
+        [
+          {
+            text: 'Cerrar aplicación',
+            style: 'destructive',
+            onPress: () => {
+              // Cierra la app (funciona en Android)
+              if (Platform.OS === 'android') {
+                BackHandler.exitApp();
+              } else {
+                // En iOS no se puede cerrar la app programáticamente
+                navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
+              }
+            },
           },
-        },
-        {
-          text: 'Seguir en la sesión',
-          style: 'cancel',
-          onPress: () => {
-            resetTimer();
+          {
+            text: 'Seguir en la sesión',
+            style: 'cancel',
+            onPress: () => {
+              resetTimer();
+            },
           },
-        },
-      ]
-    );
-  };
+        ]
+      );
+    };
 
   // Reinicia el temporizador de inactividad
   const resetTimer = () => {
@@ -94,3 +100,4 @@ export default function BienvenidaScreen({ navigation }) {
     </TouchableWithoutFeedback>
   );
 }
+import { Platform, BackHandler } from 'react-native';
