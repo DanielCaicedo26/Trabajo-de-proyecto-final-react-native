@@ -10,6 +10,7 @@ import PerfilScreen from './src/screens/PerfilScreen';
 import DetalleInfraccionScreen from './src/screens/DetalleInfraccionScreen';
 import DetalleSmlvScreen from './src/screens/DetalleSmlvScreen';
 import CodigoConvivenciaScreen from './src/screens/CodigoConvivenciaScreen';
+import DetalleLeyScreen from './src/screens/DetalleLeyScreen';
 import ConsultaSmlvScreen from './src/screens/ConsultaSmlvScreen';
 
 const Stack = createStackNavigator();
@@ -26,6 +27,7 @@ export default function App() {
   <Stack.Screen name="ConsultaSmlv" component={ConsultaSmlvScreen} />
   <Stack.Screen name="DetalleSmlv" component={DetalleSmlvScreen} />
   <Stack.Screen name="CodigoConvivencia" component={CodigoConvivenciaScreen} />
+  <Stack.Screen name="DetalleLey" component={DetalleLeyScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
