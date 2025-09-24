@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { View, Text, TextInput, FlatList, ImageBackground, TouchableOpacity } from 'react-native';
 import { Alert, TouchableWithoutFeedback } from 'react-native';
 import styles from '../styles/CodigoConvivenciaScreenStyles';
@@ -50,6 +50,19 @@ const leyes = [
 
 const CodigoConvivenciaScreen = ({ navigation }) => {
   const timerRef = useRef(null);
+  const [query, setQuery] = useState('');
+
+  // Filtrar leyes según la consulta (título o descripción)
+  const filteredLeyes = useMemo(() => {
+    const q = String(query || '').trim().toLowerCase();
+    if (!q) return leyes;
+    return leyes.filter(l => {
+      return (
+        String(l.titulo || '').toLowerCase().includes(q) ||
+        String(l.descripcion || '').toLowerCase().includes(q)
+      );
+    });
+  }, [query]);
 
   const showInactivityAlert = () => {
     Alert.alert(
@@ -107,12 +120,15 @@ const CodigoConvivenciaScreen = ({ navigation }) => {
               style={styles.searchBar}
               placeholder="Consulta tu ley"
               placeholderTextColor="#6B9080"
+              value={query}
+              onChangeText={text => setQuery(text)}
+              onFocus={resetTimer}
             />
             <Text style={styles.titulo}>codigo de Convivencia {'  '}
               <Ionicons name="people-outline" size={20} color="#01763C" />
             </Text>
             <FlatList
-              data={leyes}
+              data={filteredLeyes}
               keyExtractor={item => item.id}
               renderItem={({ item }) => (
                 <View style={styles.card}>
