@@ -8,7 +8,9 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Alert,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Platform,
+  BackHandler,
 } from 'react-native';
 import styles from '../styles/AppStyles';
 
@@ -25,13 +27,9 @@ export default function BienvenidaScreen({ navigation }) {
             text: 'Cerrar aplicación',
             style: 'destructive',
             onPress: () => {
-              // Cierra la app (funciona en Android)
-              if (Platform.OS === 'android') {
-                BackHandler.exitApp();
-              } else {
-                // En iOS no se puede cerrar la app programáticamente
-                navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
-              }
+              // En lugar de cerrar la app directamente, reiniciamos la navegación
+              // para evitar que el usuario salga de la app inesperadamente.
+              navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
             },
           },
           {
@@ -100,4 +98,4 @@ export default function BienvenidaScreen({ navigation }) {
     </TouchableWithoutFeedback>
   );
 }
-import { Platform, BackHandler } from 'react-native';
+

@@ -61,6 +61,24 @@ const PerfilScreen = ({ navigation }) => {
     timerRef.current = setTimeout(showInactivityAlert, 300000); // 5 minutos
   };
 
+  // Manejar cierre de sesión (ahora dentro del componente para usar `navigation`)
+  const handleLogout = () => {
+    Alert.alert(
+      'Cerrar Sesión',
+      '¿Estás seguro de que deseas cerrar sesión?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Cerrar Sesión',
+          style: 'destructive',
+          onPress: () => {
+            navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
+          },
+        },
+      ]
+    );
+  };
+
   const userInfo = usuario ? (() => {
     // Derivar nombre/apellido desde userName si faltan
     let { firstName, lastName, userName } = usuario;
@@ -151,23 +169,5 @@ const PerfilScreen = ({ navigation }) => {
     </TouchableWithoutFeedback>
   );
 };
-
-// Botón de logout reutilizado
-function handleLogout() {
-  Alert.alert(
-    'Cerrar Sesión',
-    '¿Estás seguro de que deseas cerrar sesión?',
-    [
-      { text: 'Cancelar', style: 'cancel' },
-      {
-        text: 'Cerrar Sesión',
-        style: 'destructive',
-        onPress: () => {
-          navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
-        },
-      },
-    ]
-  );
-}
 
 export default PerfilScreen;
