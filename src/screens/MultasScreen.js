@@ -24,8 +24,8 @@ export default function MultasScreen() {
   // Mapeo de tipo de documento a ID
   const tipoDocumentoIdMap = {
     cc: 1,
-    ti: 2,
-    ce: 3
+    ce: 2,
+    ti: 3
   };
 
   // Muestra la alerta de inactividad
