@@ -22,6 +22,11 @@ export default function MultasScreen() {
   const navigation = useNavigation();
   // Referencia para el temporizador de inactividad
   const timerRef = useRef(null);
+  // Animated values
+  const logoAnim = useRef(new Animated.Value(0)).current; // 0 -> hidden, 1 -> visible
+  const cardAnim = useRef(new Animated.Value(0)).current;
+  const buttonScale = useRef(new Animated.Value(1)).current;
+  const checkboxScale = useRef(new Animated.Value(1)).current;
 
   // Mapeo de tipo de documento a ID
   const tipoDocumentoIdMap = {
@@ -64,6 +69,11 @@ export default function MultasScreen() {
 
   useEffect(() => {
     resetTimer();
+    // Animaciones de entrada
+    Animated.sequence([
+      Animated.timing(logoAnim, { toValue: 1, duration: 600, useNativeDriver: true }),
+      Animated.timing(cardAnim, { toValue: 1, duration: 500, useNativeDriver: true })
+    ]).start();
     return () => {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
@@ -148,7 +158,18 @@ export default function MultasScreen() {
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
               <View style={styles.container}>
                 <StatusBar barStyle="light-content" backgroundColor="#2E8B57" translucent />
-                <View style={styles.logoContainer}>
+                {/* Barra de búsqueda superior similar a Código de Convivencia */}
+                <TextInput
+                  style={styles.searchBar}
+                  placeholder="Consulta tus infracciones"
+                  placeholderTextColor="#01763C"
+                  onFocus={resetTimer}
+                />
+                <Animated.View style={[styles.logoContainer, {
+                  opacity: logoAnim,
+                  transform: [{ translateY: logoAnim.interpolate({ inputRange: [0, 1], outputRange: [20, 0] }) }]
+                }]}
+                >
                   <View style={styles.logoWrapper}>
                     <Image
                       source={require('../img/image 6.png')}
@@ -157,15 +178,19 @@ export default function MultasScreen() {
                     />
                   </View>
                   <Text style={styles.title}>Revisión de Multas</Text>
-                </View>
-                <View style={styles.card}>
+                </Animated.View>
+                <Animated.View style={[styles.card, {
+                  opacity: cardAnim,
+                  transform: [{ translateY: cardAnim.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }) }]
+                }]}
+                >
                   <Text style={styles.subtitle}>Mira Infraccion</Text>
                   <View style={styles.inputGroup}>
                     <Text style={styles.inputLabel}>Tipo de Documento</Text>
                     <Picker
                       selectedValue={tipoDocumento}
                       style={[
-                        styles.input,
+                        styles.searchBar,
                         focusedInput === 'picker' && styles.inputFocused
                       ]}
                       onValueChange={(itemValue) => setTipoDocumento(itemValue)}
@@ -182,7 +207,7 @@ export default function MultasScreen() {
                     <Text style={styles.inputLabel}>Número de Documento</Text>
                     <TextInput
                       style={[
-                        styles.input,
+                        styles.searchBar,
                         focusedInput === 'document' && styles.inputFocused
                       ]}
                       placeholder="Digita Tu Número De Documento"
@@ -194,17 +219,24 @@ export default function MultasScreen() {
                       onBlur={() => setFocusedInput(null)}
                     />
                   </View>
-                  <TouchableOpacity
-                    style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}
-                    onPress={() => setAcceptedTerms(prev => !prev)}
-                  >
-                    <View style={[styles.checkbox, acceptedTerms ? styles.checkboxChecked : null]}>
-                      {acceptedTerms ? <Text style={{ color: '#fff', fontWeight: '700' }}>✓</Text> : null}
+                  <TouchableWithoutFeedback onPress={() => {
+                    // animación checkbox
+                    Animated.sequence([
+                      Animated.timing(checkboxScale, { toValue: 0.85, duration: 100, useNativeDriver: true }),
+                      Animated.timing(checkboxScale, { toValue: 1.05, duration: 120, useNativeDriver: true }),
+                      Animated.timing(checkboxScale, { toValue: 1, duration: 100, useNativeDriver: true })
+                    ]).start();
+                    setAcceptedTerms(prev => !prev);
+                  }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+                      <Animated.View style={[styles.checkbox, acceptedTerms ? styles.checkboxChecked : null, { transform: [{ scale: checkboxScale }] }]}>
+                        {acceptedTerms ? <Text style={{ color: '#fff', fontWeight: '700' }}>✓</Text> : null}
+                      </Animated.View>
+                      <TouchableOpacity onPress={() => setShowTermsModal(true)} style={{ marginLeft: 10 }}>
+                        <Text style={{ color: '#34495e', textDecorationLine: 'underline' }}>Acepto términos y condiciones</Text>
+                      </TouchableOpacity>
                     </View>
-                    <TouchableOpacity onPress={() => setShowTermsModal(true)} style={{ marginLeft: 10 }}>
-                      <Text style={{ color: '#34495e', textDecorationLine: 'underline' }}>Acepto términos y condiciones</Text>
-                    </TouchableOpacity>
-                  </TouchableOpacity>
+                  </TouchableWithoutFeedback>
 
                   <Modal
                     animationType="slide"
@@ -241,21 +273,29 @@ export default function MultasScreen() {
                     </View>
                   </Modal>
                   {error ? <Text style={{ color: 'red', textAlign: 'center', marginBottom: 8 }}>{error}</Text> : null}
-                  <TouchableOpacity
-                    style={[
-                      styles.button,
-                      isButtonPressed && styles.buttonPressed,
-                      !acceptedTerms && styles.buttonDisabled
-                    ]}
-                    onPressIn={() => setIsButtonPressed(true)}
-                    onPressOut={() => setIsButtonPressed(false)}
-                    onPress={handleConsultarMultas}
-                    activeOpacity={0.8}
-                    disabled={loading || !acceptedTerms}
-                  >
-                    <Text style={styles.buttonText}>{loading ? 'Consultando...' : 'Consultar Multas'}</Text>
-                  </TouchableOpacity>
-                </View>
+                  <Animated.View style={{ width: '100%', transform: [{ scale: buttonScale }] }}>
+                    <TouchableOpacity
+                      style={[
+                        styles.button,
+                        isButtonPressed && styles.buttonPressed,
+                        !acceptedTerms && styles.buttonDisabled
+                      ]}
+                      onPressIn={() => {
+                        setIsButtonPressed(true);
+                        Animated.spring(buttonScale, { toValue: 0.97, useNativeDriver: true }).start();
+                      }}
+                      onPressOut={() => {
+                        setIsButtonPressed(false);
+                        Animated.spring(buttonScale, { toValue: 1, useNativeDriver: true }).start();
+                      }}
+                      onPress={handleConsultarMultas}
+                      activeOpacity={0.8}
+                      disabled={loading || !acceptedTerms}
+                    >
+                      <Text style={styles.buttonText}>{loading ? 'Consultando...' : 'Consultar Multas'}</Text>
+                    </TouchableOpacity>
+                  </Animated.View>
+                </Animated.View>
               </View>
             </ScrollView>
           </KeyboardAvoidingView>
