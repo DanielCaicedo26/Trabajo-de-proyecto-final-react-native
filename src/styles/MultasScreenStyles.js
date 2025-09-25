@@ -127,11 +127,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#5a6fd8',
     transform: [{ scale: 0.98 }],
   },
+  buttonDisabled: {
+    opacity: 0.5,
+    backgroundColor: '#a5d6a7',
+  },
   buttonText: {
     color: '#000000ff',
     fontSize: 18,
     fontWeight: '700',
     letterSpacing: 0.5,
+  },
+  checkbox: {
+    width: 22,
+    height: 22,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: '#01763C',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff'
+  },
+  checkboxChecked: {
+    backgroundColor: '#01763C',
+    borderColor: '#01763C',
   },
 decorativeCircle: {
     position: 'absolute',
