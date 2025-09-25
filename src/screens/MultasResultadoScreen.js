@@ -167,7 +167,12 @@ const MultasResultadoScreen = () => {
                       <View style={styles.detailBox}>
                         <View style={styles.detailRow}><Text style={styles.detailLabel}>Fecha</Text><Text style={styles.detailValue}>{item.dateInfraction || item.date || ''}</Text></View>
                         <View style={styles.detailRow}><Text style={styles.detailLabel}>Tipo</Text><Text style={styles.detailValue}>{item.typeInfractionName || ''}</Text></View>
-                        <View style={styles.detailRow}><Text style={styles.detailLabel}>Descripción</Text><Text style={styles.detailValue}>{item.observations || ''}</Text></View>
+                        <View style={styles.detailRow}><Text style={styles.detailLabel}>Descripcion</Text><Text style={styles.detailValue}>{item.observations || ''}</Text></View>
+                        <View style={{ marginTop: 8, alignItems: 'flex-end' }}>
+                          <TouchableOpacity style={styles.verMasButton} onPress={() => navigation.navigate('DetalleInfraccion', { infraccion: item })}>
+                            <Text style={styles.verMasText}>Ver más</Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : null}
                   </View>

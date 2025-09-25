@@ -28,14 +28,22 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 4,
-    elevation: 2,
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 20,
+    tabLabel: {
+      fontSize: 12,
+      color: '#01763C',
+    },
+    verMasButton: {
+      paddingVertical: 6,
+      paddingHorizontal: 12,
+      borderRadius: 6,
+      borderWidth: 1,
+      borderColor: '#01763C',
+      backgroundColor: 'transparent'
+    },
+    verMasText: {
+      color: '#01763C',
+      fontWeight: '600',
+    },
     fontWeight: 'bold',
     color: '#222',
     marginBottom: 8,
