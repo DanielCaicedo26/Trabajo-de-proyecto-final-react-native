@@ -6,20 +6,21 @@ import { API_HOST } from './config';
 const API_URL = `${API_HOST}/api/UserInfraction`;
 
 /**
- * Consulta las infracciones de un usuario por tipo y número de documento.
- * @param {string} documentTypeId - ID del tipo de documento
- * @param {string} documentNumber - Número de documento
+ * Obtiene la lista de infracciones desde el backend.
+ * El backend expone `/api/UserInfraction` y admite el query `getAllType=GetAll` para devolver todos los registros.
+ * La función no asume que el servidor acepte filtros por documento; la pantalla cliente realiza el filtrado por usuario.
  * @returns {Promise<Array>} - Lista de infracciones encontradas
  */
-export async function consultarInfracciones(documentTypeId, documentNumber) {
+export async function consultarInfracciones(/* documentTypeId, documentNumber */) {
   try {
-    // Construir la URL con los parámetros necesarios
-    const url = `${API_URL}?documentTypeId=${encodeURIComponent(documentTypeId)}&documentNumber=${encodeURIComponent(documentNumber)}`;
+    // Pedir todas las infracciones; el filtrado por documento/usuario se hace en el cliente.
+    const url = `${API_URL}?getAllType=GetAll`;
     const response = await fetch(url, {
       headers: {
         'accept': 'application/json'
       }
     });
+
     // Validar respuesta HTTP
     if (!response.ok) {
       let message = `Error al consultar las infracciones (HTTP ${response.status})`;
@@ -33,9 +34,10 @@ export async function consultarInfracciones(documentTypeId, documentNumber) {
       }
       throw new Error(message);
     }
+
     // Procesar la respuesta: puede ser un array directo o un objeto con { data }
     const result = await response.json();
-    return Array.isArray(result) ? result : (result?.data ?? []);
+    return Array.isArray(result) ? result : result?.data ?? [];
   } catch (error) {
     // Manejo de error de red
     if (error && error.message === 'Network request failed') {

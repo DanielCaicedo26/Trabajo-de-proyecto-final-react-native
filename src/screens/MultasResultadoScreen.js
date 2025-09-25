@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { View, Text, TextInput, FlatList, SafeAreaView, ImageBackground, TouchableOpacity, Alert, TouchableWithoutFeedback } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/MultasResultadoScreenStyles';
@@ -11,6 +11,9 @@ const MultasResultadoScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const multas = route.params?.multas || getInfracciones() || [];
+  const [query, setQuery] = useState('');
+  const [filteredMultas, setFilteredMultas] = useState(multas || []);
+  const debounceRef = useRef(null);
   // Referencia para el temporizador de inactividad
   const timerRef = useRef(null);
 
@@ -68,10 +71,19 @@ const MultasResultadoScreen = () => {
               style={styles.searchBar}
               placeholder="Consulta tus infracciones"
               placeholderTextColor="#6B9080"
+              value={query}
+              onChangeText={text => {
+                setQuery(text);
+                if (debounceRef.current) clearTimeout(debounceRef.current);
+                debounceRef.current = setTimeout(() => {
+                  setFilteredMultas(filterMultas(multas, text));
+                }, 150);
+              }}
+              onFocus={resetTimer}
             />
             <Text style={styles.title}>Infracciones</Text>
             <FlatList
-              data={multas}
+              data={filteredMultas}
               keyExtractor={(item, idx) => item.id?.toString() || idx.toString()}
               renderItem={({ item }) => (
                 <TouchableOpacity
@@ -113,3 +125,15 @@ const MultasResultadoScreen = () => {
 };
 
 export default MultasResultadoScreen;
+
+// Función auxiliar para filtrar infracciones por texto en varios campos
+function filterMultas(multas = [], text = '') {
+  const q = String(text || '').trim().toLowerCase();
+  if (!q) return multas || [];
+  return (multas || []).filter(m => {
+    const tipo = String(m?.typeInfractionName || '').toLowerCase();
+    const obs = String(m?.observations || '').toLowerCase();
+    const uname = String(m?.userName || m?.user?.userName || '').toLowerCase();
+    return tipo.includes(q) || obs.includes(q) || uname.includes(q);
+  });
+}
