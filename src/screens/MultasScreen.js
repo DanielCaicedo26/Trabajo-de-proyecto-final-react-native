@@ -158,13 +158,7 @@ export default function MultasScreen() {
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
               <View style={styles.container}>
                 <StatusBar barStyle="light-content" backgroundColor="#2E8B57" translucent />
-                {/* Barra de búsqueda superior similar a Código de Convivencia */}
-                <TextInput
-                  style={styles.searchBar}
-                  placeholder="Consulta tus infracciones"
-                  placeholderTextColor="#01763C"
-                  onFocus={resetTimer}
-                />
+                {/* Barra de búsqueda eliminada por solicitud */}
                 <Animated.View style={[styles.logoContainer, {
                   opacity: logoAnim,
                   transform: [{ translateY: logoAnim.interpolate({ inputRange: [0, 1], outputRange: [20, 0] }) }]
