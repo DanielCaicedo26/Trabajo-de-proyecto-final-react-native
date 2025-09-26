@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { View, Text, TextInput, FlatList, SafeAreaView, ImageBackground, TouchableOpacity, Alert, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import { View, Text, TextInput, FlatList, ImageBackground, TouchableOpacity, Alert, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/MultasResultadoScreenStyles';
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text, Image, TouchableOpacity, SafeAreaView, Alert, ImageBackground, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Alert, ImageBackground, TouchableWithoutFeedback } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/PerfilScreenStyles';
 import { getUser } from '../api/userCache';

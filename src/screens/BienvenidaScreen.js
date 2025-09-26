@@ -6,12 +6,12 @@ import {
   View,
   ImageBackground,
   TouchableOpacity,
-  SafeAreaView,
   Alert,
   TouchableWithoutFeedback,
   Platform,
   BackHandler,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/AppStyles';
 
 export default function BienvenidaScreen({ navigation }) {
