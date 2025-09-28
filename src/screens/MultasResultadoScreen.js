@@ -27,12 +27,12 @@ const MultasResultadoScreen = () => {
 
   return (
     <TouchableWithoutFeedback onPress={resetTimer}>
-      <SafeAreaView style={styles.safeArea}>
-        <ImageBackground
-          source={require('../img/curva-perfil.png')}
-          style={styles.backgroundImage}
-          resizeMode="cover"
-        >
+      <ImageBackground
+        source={require('../img/curva-perfil.png')}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+      >
+        <SafeAreaView style={styles.safeArea}>
           <View style={styles.container}>
             <TextInput
               style={styles.searchBar}
@@ -109,7 +109,7 @@ const MultasResultadoScreen = () => {
               ListEmptyComponent={<Text style={{ textAlign: 'center', marginTop: 20 }}>No se encontraron multas.</Text>}
             />
           </View>
-        </ImageBackground>
+        </SafeAreaView>
         {/* Botón VER RESUMEN eliminado por requerimiento */}
 
         <View style={styles.tabBar}>
@@ -126,7 +126,7 @@ const MultasResultadoScreen = () => {
             <Text style={styles.tabLabel}>Acuerdo de Pago</Text>
           </TouchableOpacity>
         </View>
-      </SafeAreaView>
+      </ImageBackground>
     </TouchableWithoutFeedback>
   );
 };
