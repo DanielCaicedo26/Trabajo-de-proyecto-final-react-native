@@ -163,13 +163,13 @@ const AcuerdoPagoScreen = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={resetTimer}>
-      <SafeAreaView style={styles.safeArea}>
-        <ImageBackground
-          source={require('../img/curva-perfil.png')}
-          style={styles.backgroundImage}
-          resizeMode="cover"
-        >
-          <View style={styles.container}>
+      <ImageBackground
+        source={require('../img/curva-perfil.png')}
+        style={[styles.backgroundImage, { flex: 1, height: '100%' }]}
+        resizeMode="cover"
+      >
+        <SafeAreaView style={styles.safeArea}>
+          <View style={[styles.container, { flex: 1 }] }>
             <View style={styles.header}>
               <TouchableOpacity
                 style={styles.backButton}
@@ -192,23 +192,22 @@ const AcuerdoPagoScreen = ({ navigation }) => {
                   setQuery(text);
                   resetTimer();
                 }}
-                  returnKeyType="search"
-                  clearButtonMode="while-editing"
-                />
-                {query.length > 0 && (
-                  <TouchableOpacity
-                    style={styles.clearButton}
-                    onPress={() => {
-                      setQuery('');
-                      // reset filtered data to all agreements
-                      fetchPaymentAgreements();
-                      resetTimer();
-                    }}
-                  >
-                    <Text style={styles.clearButtonText}>Limpiar</Text>
-                  </TouchableOpacity>
-                )}
-              </View>
+                returnKeyType="search"
+                clearButtonMode="while-editing"
+              />
+              {query.length > 0 && (
+                <TouchableOpacity
+                  style={styles.clearButton}
+                  onPress={() => {
+                    setQuery('');
+                    fetchPaymentAgreements();
+                    resetTimer();
+                  }}
+                >
+                  <Text style={styles.clearButtonText}>Limpiar</Text>
+                </TouchableOpacity>
+              )}
+            </View>
 
             {loading ? (
               <View style={styles.loadingContainer}>
@@ -247,9 +246,9 @@ const AcuerdoPagoScreen = ({ navigation }) => {
                 </TouchableOpacity>
               </View>
             )}
-            </View>
-          </ImageBackground>
-        
+          </View>
+
+          {/* tabBar dentro del SafeAreaView para que el fondo lo cubra */}
           <View style={styles.tabBar}>
             <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('MultasResultado')}>
               <Ionicons name="list-outline" size={24} color="#01763C" />
@@ -265,6 +264,7 @@ const AcuerdoPagoScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </SafeAreaView>
+      </ImageBackground>
     </TouchableWithoutFeedback>
   );
 };

@@ -5,7 +5,7 @@ const { width, height } = Dimensions.get('window');
 export default StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
+    backgroundColor: 'transparent',
   },
   backgroundImage: {
     flex: 1,
@@ -14,6 +14,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingBottom: 100,
   },
   header: {
     flexDirection: 'row',
@@ -252,8 +253,12 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#ffffffff',
-    paddingVertical: 8,
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    paddingVertical: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -3 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     elevation: 10,
