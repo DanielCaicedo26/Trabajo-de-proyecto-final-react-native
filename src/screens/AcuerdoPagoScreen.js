@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator, Alert, ScrollView, TouchableWithoutFeedback, FlatList, ImageBackground } from 'react-native';
+import { TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/AcuerdoPagoScreenStyles';
@@ -10,7 +11,10 @@ import { useFocusEffect } from '@react-navigation/native';
 const AcuerdoPagoScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [agreementsData, setAgreementsData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [expandedItems, setExpandedItems] = useState({});
+  const [query, setQuery] = useState('');
+  const debounceRef = useRef(null);
   const timerRef = useRef(null);
 
   const fetchPaymentAgreements = async () => {
@@ -43,6 +47,8 @@ const AcuerdoPagoScreen = ({ navigation }) => {
       });
 
       setAgreementsData(userAgreements);
+  // Inicializar datos filtrados
+  setFilteredData(userAgreements);
 
       if (userAgreements.length === 0) {
         console.log('No se encontraron acuerdos para el usuario:', userDocumentNumber);
@@ -70,6 +76,45 @@ const AcuerdoPagoScreen = ({ navigation }) => {
       }
     };
   }, []);
+
+  // Filtrado con debounce para evitar filtrados por cada tecla
+  useEffect(() => {
+    // Si hay un debounce previo, limpiarlo
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    // Aplicar debounce
+    debounceRef.current = setTimeout(() => {
+      const q = String(query || '').trim().toLowerCase();
+      if (!q) {
+        setFilteredData(agreementsData);
+        return;
+      }
+
+      const filtered = agreementsData.filter(item => {
+        const personName = String(item.personName || '').toLowerCase();
+        const documentNumber = String(item.documentNumber || item.document || '').toLowerCase();
+        const typeFine = String(item.typeFine || '').toLowerCase();
+        const infringement = String(item.infringement || '').toLowerCase();
+        const agreementId = String(item.id || '').toLowerCase();
+
+        return (
+          personName.includes(q) ||
+          documentNumber.includes(q) ||
+          typeFine.includes(q) ||
+          infringement.includes(q) ||
+          agreementId.includes(q)
+        );
+      });
+
+      setFilteredData(filtered);
+    }, 300);
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [query, agreementsData]);
 
   useFocusEffect(
     useCallback(() => {
@@ -284,22 +329,50 @@ const AcuerdoPagoScreen = ({ navigation }) => {
               <View style={styles.spacer} />
             </View>
 
+            {/* Barra de búsqueda */}
+            <View style={styles.searchContainer}>
+              <TextInput
+                placeholder="Buscar por nombre, documento, tipo o descripción"
+                placeholderTextColor="#888"
+                style={styles.searchInput}
+                value={query}
+                onChangeText={(text) => {
+                  setQuery(text);
+                  resetTimer();
+                }}
+                returnKeyType="search"
+                clearButtonMode="while-editing"
+              />
+              {query.length > 0 && (
+                <TouchableOpacity
+                  style={styles.clearButton}
+                  onPress={() => {
+                    setQuery('');
+                    setFilteredData(agreementsData);
+                    resetTimer();
+                  }}
+                >
+                  <Text style={styles.clearButtonText}>Limpiar</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
           {loading ? (
             <View style={styles.loadingContainer}>
               <ActivityIndicator size="large" color="#01763C" />
               <Text style={styles.loadingText}>Cargando acuerdos de pago...</Text>
             </View>
-          ) : agreementsData.length > 0 ? (
+          ) : filteredData.length > 0 ? (
             <View style={styles.listContainer}>
               <View style={styles.summaryHeader}>
                 <Text style={styles.summaryTitle}>Mis Acuerdos de Pago</Text>
                 <Text style={styles.summarySubtitle}>
-                  {agreementsData.length} acuerdo{agreementsData.length !== 1 ? 's' : ''} encontrado{agreementsData.length !== 1 ? 's' : ''}
+                  {filteredData.length} acuerdo{filteredData.length !== 1 ? 's' : ''} encontrado{filteredData.length !== 1 ? 's' : ''}
                 </Text>
               </View>
 
               <FlatList
-                data={agreementsData}
+                data={filteredData}
                 keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
                 renderItem={renderAgreementItem}
                 showsVerticalScrollIndicator={false}
