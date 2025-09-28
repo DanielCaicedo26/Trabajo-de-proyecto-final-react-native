@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, ImageBackground, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, ScrollView, ImageBackground, TouchableOpacity, Pressable } from 'react-native';
 import styles from '../styles/DetalleLeyScreenStyles';
 import { Ionicons } from '@expo/vector-icons';
 import useDetalleLey from '../hooks/useDetalleLey';
@@ -10,7 +10,7 @@ const DetalleLeyScreen = ({ navigation, route }) => {
   const ley = leyFormatted || { titulo: '', descripcion: '', textoCompleto: '', multa: null, articulos: null };
 
   return (
-    <TouchableWithoutFeedback onPress={resetTimer}>
+    <Pressable onPress={resetTimer} style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
         <ImageBackground
           source={require('../img/curva-perfil.png')}
@@ -62,7 +62,7 @@ const DetalleLeyScreen = ({ navigation, route }) => {
           </View>
         </ImageBackground>
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };
 
