@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, Alert, ScrollView, TouchableWithoutFeedback, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert, ScrollView, TouchableWithoutFeedback, FlatList, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/AcuerdoPagoScreenStyles';
@@ -138,7 +138,7 @@ const AcuerdoPagoScreen = ({ navigation }) => {
           activeOpacity={0.7}
         >
           <View style={styles.accordionHeaderLeft}>
-            <View style={[styles.accordionIcon, { backgroundColor: item.isPaid ? '#4CAF50' : '#FF9800' }]}>
+            <View style={[styles.accordionIcon, { backgroundColor: item.isPaid ? '#4CAF50' : '#01763C' }]}>
               <Ionicons
                 name={item.isPaid ? "checkmark-circle" : "time"}
                 size={24}
@@ -267,17 +267,22 @@ const AcuerdoPagoScreen = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={resetTimer}>
       <SafeAreaView style={styles.safeArea}>
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <TouchableOpacity
-              style={styles.backButton}
-              onPress={() => navigation.goBack()}
-            >
-              <Ionicons name="arrow-back" size={24} color="#01763C" />
-            </TouchableOpacity>
-            <Text style={styles.title}>Acuerdo de Pago</Text>
-            <View style={styles.spacer} />
-          </View>
+        <ImageBackground
+          source={require('../img/curva-perfil.png')}
+          style={styles.backgroundImage}
+          resizeMode="cover"
+        >
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <TouchableOpacity
+                style={styles.backButton}
+                onPress={() => navigation.goBack()}
+              >
+                <Ionicons name="arrow-back" size={24} color="#01763C" />
+              </TouchableOpacity>
+              <Text style={styles.title}>Acuerdo de Pago</Text>
+              <View style={styles.spacer} />
+            </View>
 
           {loading ? (
             <View style={styles.loadingContainer}>
@@ -300,15 +305,6 @@ const AcuerdoPagoScreen = ({ navigation }) => {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.listContent}
               />
-
-              <TouchableOpacity
-                style={styles.refreshButton}
-                onPress={fetchPaymentAgreements}
-                disabled={loading}
-              >
-                <Ionicons name="refresh-outline" size={20} color="#fff" />
-                <Text style={styles.refreshButtonText}>Actualizar</Text>
-              </TouchableOpacity>
             </View>
           ) : (
             <View style={styles.emptyContainer}>
@@ -325,7 +321,8 @@ const AcuerdoPagoScreen = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           )}
-        </View>
+          </View>
+        </ImageBackground>
 
         <View style={styles.tabBar}>
           <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('MultasResultado')}>
