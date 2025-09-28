@@ -194,9 +194,9 @@ const MultasResultadoScreen = () => {
             <Ionicons name="book-outline" size={24} color="#01763C" />
             <Text style={styles.tabLabel}>Código de Convivencia</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('Perfil')}>
-            <Ionicons name="person-outline" size={24} color="#01763C" />
-            <Text style={styles.tabLabel}>Perfil</Text>
+          <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('AcuerdoPago')}>
+            <Ionicons name="card-outline" size={24} color="#01763C" />
+            <Text style={styles.tabLabel}>Acuerdo de Pago</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>

@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import BienvenidaScreen from './src/screens/BienvenidaScreen';
 import MultasScreen from './src/screens/MultasScreen';
 import MultasResultadoScreen from './src/screens/MultasResultadoScreen';
-import PerfilScreen from './src/screens/PerfilScreen';
+import AcuerdoPagoScreen from './src/screens/AcuerdoPagoScreen';
 import DetalleInfraccionScreen from './src/screens/DetalleInfraccionScreen';
 import DetalleSmlvScreen from './src/screens/DetalleSmlvScreen';
 import CodigoConvivenciaScreen from './src/screens/CodigoConvivenciaScreen';
@@ -22,7 +22,7 @@ export default function App() {
         <Stack.Screen name="Bienvenida" component={BienvenidaScreen} />
         <Stack.Screen name="Multas" component={MultasScreen} />
   <Stack.Screen name="MultasResultado" component={MultasResultadoScreen} />
-  <Stack.Screen name="Perfil" component={PerfilScreen} />
+  <Stack.Screen name="AcuerdoPago" component={AcuerdoPagoScreen} />
   <Stack.Screen name="DetalleInfraccion" component={DetalleInfraccionScreen} />
   <Stack.Screen name="ConsultaSmlv" component={ConsultaSmlvScreen} />
   <Stack.Screen name="DetalleSmlv" component={DetalleSmlvScreen} />
