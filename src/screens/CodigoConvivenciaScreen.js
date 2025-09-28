@@ -84,20 +84,20 @@ const CodigoConvivenciaScreen = ({ navigation }) => {
         >
           <View style={styles.overlay} />
           <View style={styles.container}>
-            <TouchableOpacity style={[styles.backButton, { alignSelf: 'flex-start', marginBottom: 10 }]} onPress={() => navigation.goBack()}>
-              <Ionicons name="arrow-back" size={24} color="#222" />
+                <TouchableOpacity style={[styles.backButton, { alignSelf: 'flex-start', marginBottom: 10 }]} onPress={() => navigation.goBack()}>
+                  <Ionicons name="arrow-back" size={24} color="#01763C" />
             </TouchableOpacity>
+            <Text style={styles.titulo}>codigo de Convivencia {'  '}
+              <Ionicons name="people-outline" size={20} color="#01763C" />
+            </Text>
             <TextInput
-              style={styles.searchBar}
+              style={[styles.searchBar, { marginTop: 12 }]}
               placeholder="Consulta tu ley"
               placeholderTextColor="#6B9080"
               value={query}
               onChangeText={text => setQuery(text)}
               onFocus={resetTimer}
             />
-            <Text style={styles.titulo}>codigo de Convivencia {'  '}
-              <Ionicons name="people-outline" size={20} color="#01763C" />
-            </Text>
             <FlatList
               data={filteredLeyes}
               keyExtractor={item => item.id}
@@ -113,7 +113,7 @@ const CodigoConvivenciaScreen = ({ navigation }) => {
                     <Text style={styles.leyTitulo}>{item.titulo}</Text>
                     <Text style={styles.leyDesc}>{item.descripcion}</Text>
                   </View>
-                  <Ionicons name="chevron-forward" size={20} color="#6B9080" />
+                      <Ionicons name="chevron-forward" size={20} color="#01763C" />
                 </TouchableOpacity>
               )}
             />

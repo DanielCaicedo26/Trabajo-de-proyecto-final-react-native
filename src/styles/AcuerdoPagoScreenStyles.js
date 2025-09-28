@@ -54,7 +54,7 @@ export default StyleSheet.create({
   loadingText: {
     marginTop: 15,
     fontSize: 16,
-    color: '#6B9080',
+    color: '#01763C',
     textAlign: 'center',
   },
   scrollView: {
@@ -73,12 +73,12 @@ export default StyleSheet.create({
   summaryTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#2D3436',
+    color: '#01763C',
     marginBottom: 5,
   },
   summarySubtitle: {
     fontSize: 14,
-    color: '#636E72',
+    color: '#01763C',
     fontWeight: '500',
   },
   searchContainer: {
@@ -95,7 +95,7 @@ export default StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 15,
-    color: '#2D3436',
+    color: '#01763C',
     paddingVertical: 6,
     paddingHorizontal: 8,
   },
@@ -138,7 +138,7 @@ export default StyleSheet.create({
   cardTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#2D3436',
+    color: '#01763C',
     marginLeft: 12,
     flex: 1,
   },
@@ -157,20 +157,20 @@ export default StyleSheet.create({
   infoLabel: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#636E72',
+    color: '#01763C',
     flex: 1,
   },
   infoValue: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#2D3436',
+    color: '#01763C',
     flex: 2,
     textAlign: 'right',
   },
   infoValueDescription: {
     fontSize: 15,
     fontWeight: '400',
-    color: '#2D3436',
+    color: '#01763C',
     marginTop: 8,
     lineHeight: 22,
     textAlign: 'justify',
@@ -178,7 +178,7 @@ export default StyleSheet.create({
   infoValueAmount: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#4CAF50',
+    color: '#01763C',
     flex: 2,
     textAlign: 'right',
   },
@@ -217,7 +217,7 @@ export default StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
-    color: '#636E72',
+    color: '#01763C',
     textAlign: 'center',
     marginTop: 20,
     lineHeight: 24,
@@ -225,7 +225,7 @@ export default StyleSheet.create({
   },
   emptySubtext: {
     fontSize: 14,
-    color: '#95A5A6',
+    color: '#01763C',
     textAlign: 'center',
     marginTop: 10,
     lineHeight: 20,
@@ -265,7 +265,7 @@ export default StyleSheet.create({
   },
   tabLabel: {
     fontSize: 11,
-    color: '#6B9080',
+    color: '#01763C',
     textAlign: 'center',
     marginTop: 4,
     fontWeight: '500',
@@ -318,12 +318,12 @@ export default StyleSheet.create({
   accordionTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#2D3436',
+    color: '#01763C',
     marginBottom: 4,
   },
   accordionSubtitle: {
     fontSize: 14,
-    color: '#636E72',
+    color: '#01763C',
     marginBottom: 4,
   },
   accordionStatus: {
@@ -350,7 +350,7 @@ export default StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#2D3436',
+    color: '#01763C',
     marginLeft: 8,
   },
   sectionContent: {

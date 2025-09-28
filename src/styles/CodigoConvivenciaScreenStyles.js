@@ -46,7 +46,7 @@ const CodigoConvivenciaScreenStyles = StyleSheet.create({
   titulo: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#222',
+    color: '#01763C',
     marginBottom: 18,
     textAlign: 'center',
     textTransform: 'capitalize',
