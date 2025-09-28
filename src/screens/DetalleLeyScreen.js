@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, ImageBackground, TouchableOpacity, Pressable } from 'react-native';
 import styles from '../styles/DetalleLeyScreenStyles';
 import { Ionicons } from '@expo/vector-icons';
+import BackButton from '../components/BackButton';
 import useDetalleLey from '../hooks/useDetalleLey';
 
 const DetalleLeyScreen = ({ navigation, route }) => {
@@ -19,12 +20,7 @@ const DetalleLeyScreen = ({ navigation, route }) => {
         >
           <View style={styles.overlay} />
           <View style={styles.container}>
-            <TouchableOpacity
-              style={styles.backButton}
-              onPress={() => navigation.goBack()}
-            >
-              <Ionicons name="arrow-back" size={24} color="#01763C" />
-            </TouchableOpacity>
+            <BackButton style={styles.backButton} onPress={() => navigation.goBack()} />
 
             <View style={styles.headerContainer}>
               <View style={styles.iconContainer}>

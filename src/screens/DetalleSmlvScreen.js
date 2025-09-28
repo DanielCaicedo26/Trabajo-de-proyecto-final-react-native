@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ImageBackground, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import BackButton from '../components/BackButton';
 import styles from '../styles/DetalleSmlvScreenStyles';
 import useDetalleSmlv from '../hooks/useDetalleSmlv';
 
@@ -17,9 +18,7 @@ const DetalleSmlvScreen = ({ navigation, route }) => {
           resizeMode="cover"
         >
           <ScrollView contentContainerStyle={styles.scrollContent}>
-            <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-              <Ionicons name="arrow-back" size={24} color="#01763C" />
-            </TouchableOpacity>
+            <BackButton style={styles.backBtn} onPress={() => navigation.goBack()} />
             <Text style={styles.titulo}>Detalle de Infraccion</Text>
             <Text style={styles.seccion}>Infraccion</Text>
             <View style={styles.divider} />

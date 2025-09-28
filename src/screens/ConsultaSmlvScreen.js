@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import BackButton from '../components/BackButton';
 import styles from '../styles/ConsultaSmlvScreenStyles';
 import useConsultaSmlv from '../hooks/useConsultaSmlv';
 
@@ -16,9 +17,7 @@ const ConsultaSmlvScreen = ({ navigation }) => {
           resizeMode="cover"
         >
           <ScrollView contentContainerStyle={styles.scrollContent}>
-            <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-              <Ionicons name="arrow-back" size={24} color="#01763C" />
-            </TouchableOpacity>
+            <BackButton style={styles.backBtn} onPress={() => navigation.goBack()} />
             <Text style={styles.titulo}>Consulta Smlv</Text>
             {Array.isArray(multas) && multas.length > 0 ? (
               multas.map((multa) => (

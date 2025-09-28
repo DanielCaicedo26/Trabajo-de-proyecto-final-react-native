@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ImageBackground, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import BackButton from '../components/BackButton';
 import { LinearGradient } from 'expo-linear-gradient';
 import styles from '../styles/DetalleInfraccionScreenStyles';
 import useDetalleInfraccion from '../hooks/useDetalleInfraccion';
@@ -39,9 +40,7 @@ const DetalleInfraccionScreen = ({ navigation, route }) => {
           </ImageBackground>
         </View>
         <ScrollView contentContainerStyle={styles.scrollContent}>
-          <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={24} color="#01763C" />
-          </TouchableOpacity>
+          <BackButton style={styles.backBtn} onPress={() => navigation.goBack()} />
           <Text style={styles.titulo}>Detalle de Infracción</Text>
           <Text style={styles.seccion}>Infracción</Text>
           <TouchableOpacity onPress={() => navigation.navigate('ConsultaSmlv')} activeOpacity={0.7}>

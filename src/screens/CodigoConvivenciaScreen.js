@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, FlatList, ImageBackground, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import styles from '../styles/CodigoConvivenciaScreenStyles';
 import { Ionicons } from '@expo/vector-icons';
+import BackButton from '../components/BackButton';
 import useCodigoConvivencia from '../hooks/useCodigoConvivencia';
 
 const leyes = [
@@ -84,9 +85,7 @@ const CodigoConvivenciaScreen = ({ navigation }) => {
         >
           <View style={styles.overlay} />
           <View style={styles.container}>
-                <TouchableOpacity style={[styles.backButton, { alignSelf: 'flex-start', marginBottom: 10 }]} onPress={() => navigation.goBack()}>
-                  <Ionicons name="arrow-back" size={24} color="#01763C" />
-            </TouchableOpacity>
+                <BackButton style={{ alignSelf: 'flex-start', marginBottom: 10 }} onPress={() => navigation.goBack()} />
             <Text style={styles.titulo}>codigo de Convivencia {'  '}
               <Ionicons name="people-outline" size={20} color="#01763C" />
             </Text>

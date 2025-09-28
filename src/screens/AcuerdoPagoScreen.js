@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, TouchableW
 import { TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import BackButton from '../components/BackButton';
 import styles from '../styles/AcuerdoPagoScreenStyles';
 import { useFocusEffect } from '@react-navigation/native';
 import usePaymentAgreements from '../hooks/usePaymentAgreements';
@@ -171,12 +172,7 @@ const AcuerdoPagoScreen = ({ navigation }) => {
         <SafeAreaView style={styles.safeArea}>
           <View style={[styles.container, { flex: 1 }] }>
             <View style={styles.header}>
-              <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => navigation.goBack()}
-              >
-                <Ionicons name="arrow-back" size={24} color="#01763C" />
-              </TouchableOpacity>
+              <BackButton style={styles.backButton} onPress={() => navigation.goBack()} />
               <Text style={styles.title}>Acuerdo de Pago</Text>
               <View style={styles.spacer} />
             </View>
