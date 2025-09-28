@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#f8f8f8ff',
+    backgroundColor: '#ffffffff',
     paddingVertical: 8,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
   tabLabel: {
     fontSize: 11,
     color: '#01763C',
-    marginTop: 2,
+    marginTop: 16,
     textAlign: 'center',
     width: '100%',
     alignSelf: 'center',

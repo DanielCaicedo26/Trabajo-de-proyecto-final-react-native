@@ -249,22 +249,22 @@ const AcuerdoPagoScreen = ({ navigation }) => {
             )}
             </View>
           </ImageBackground>
-
+        
           <View style={styles.tabBar}>
-          <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('MultasResultado')}>
-            <Ionicons name="list-outline" size={24} color="#01763C" />
-            <Text style={styles.tabLabel}>Infracción</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('CodigoConvivencia')}>
-            <Ionicons name="book-outline" size={24} color="#01763C" />
-            <Text style={styles.tabLabel}>Código de Convivencia</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItem}>
-            <Ionicons name="card-outline" size={24} color="#01763C" />
-            <Text style={[styles.tabLabel, styles.activeTab]}>Acuerdo de Pago</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+            <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('MultasResultado')}>
+              <Ionicons name="list-outline" size={24} color="#01763C" />
+              <Text style={styles.tabLabel}>Infracción</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('CodigoConvivencia')}>
+              <Ionicons name="book-outline" size={24} color="#01763C" />
+              <Text style={styles.tabLabel}>Código de Convivencia</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.tabItem}>
+              <Ionicons name="card-outline" size={24} color="#01763C" />
+              <Text style={[styles.tabLabel, styles.activeTab]}>Acuerdo de Pago</Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 };
