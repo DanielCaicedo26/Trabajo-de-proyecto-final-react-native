@@ -1,57 +1,11 @@
-import React, { useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, ScrollView, Alert, TouchableWithoutFeedback } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/ConsultaSmlvScreenStyles';
-
-const multas = [
-  { id: 1, nombre: 'Multa Tipo 1', smdlv: 2 },
-  { id: 2, nombre: 'Multa Tipo 2', smdlv: 4 },
-  { id: 3, nombre: 'Multa Tipo 3', smdlv: 3 },
-  { id: 4, nombre: 'Multa Tipo 4', smdlv: 16 },
-];
-
+import useConsultaSmlv from '../hooks/useConsultaSmlv';
 
 const ConsultaSmlvScreen = ({ navigation }) => {
-  const timerRef = useRef(null);
-
-  const showInactivityAlert = () => {
-    Alert.alert(
-      'Inactividad',
-      '¿Deseas continuar en la sesión o cerrar sesión por inactividad?',
-      [
-        {
-          text: 'Cerrar sesión',
-          style: 'destructive',
-          onPress: () => {
-            navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
-          },
-        },
-        {
-          text: 'Seguir en la sesión',
-          style: 'cancel',
-          onPress: () => {
-            resetTimer();
-          },
-        },
-      ]
-    );
-  };
-
-  const resetTimer = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    timerRef.current = setTimeout(showInactivityAlert, 300000);
-  };
-
-  useEffect(() => {
-    resetTimer();
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, []);
+  const { multas, resetTimer } = useConsultaSmlv(navigation);
 
   return (
     <TouchableWithoutFeedback onPress={resetTimer}>

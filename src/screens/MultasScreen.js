@@ -1,71 +1,38 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Animated, StatusBar, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, Alert, TouchableWithoutFeedback, Modal, Pressable } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Image, Animated, StatusBar, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Modal, Pressable } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import styles from '../styles/MultasScreenStyles';
 
 import { useNavigation } from '@react-navigation/native';
-import { consultarInfracciones } from '../api/infraccionesApi';
-import { buscarUsuarioPorDocumento } from '../api/userApi';
-import { setDocumentInfo, setUser } from '../api/userCache';
-import { setInfracciones } from '../api/infraccionesCache';
+import useMultas from '../hooks/useMultas';
 
 
 export default function MultasScreen() {
-  const [tipoDocumento, setTipoDocumento] = useState('');
-  const [numeroDocumento, setNumeroDocumento] = useState('');
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [showTermsModal, setShowTermsModal] = useState(false);
-  const [isButtonPressed, setIsButtonPressed] = useState(false);
-  const [focusedInput, setFocusedInput] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const navigation = useNavigation();
-  // Referencia para el temporizador de inactividad
-  const timerRef = useRef(null);
+  const {
+    tipoDocumento,
+    setTipoDocumento,
+    numeroDocumento,
+    setNumeroDocumento,
+    acceptedTerms,
+    setAcceptedTerms,
+    showTermsModal,
+    setShowTermsModal,
+    loading,
+    error,
+    setError,
+    handleConsultarMultas,
+    resetTimer,
+    timerRef,
+    tipoDocumentoIdMap,
+  } = useMultas(navigation);
+  const [isButtonPressed, setIsButtonPressed] = React.useState(false);
+  const [focusedInput, setFocusedInput] = React.useState(null);
   // Animated values
   const logoAnim = useRef(new Animated.Value(0)).current; // 0 -> hidden, 1 -> visible
   const cardAnim = useRef(new Animated.Value(0)).current;
   const buttonScale = useRef(new Animated.Value(1)).current;
   const checkboxScale = useRef(new Animated.Value(1)).current;
-
-  // Mapeo de tipo de documento a ID
-  const tipoDocumentoIdMap = {
-    cc: 1,
-    ce: 2,
-    ti: 3
-  };
-
-  // Muestra la alerta de inactividad
-  const showInactivityAlert = () => {
-    Alert.alert(
-      'Inactividad',
-      '¿Deseas continuar en la sesión o cerrar sesión por inactividad?',
-      [
-        {
-          text: 'Cerrar sesión',
-          style: 'destructive',
-          onPress: () => {
-            navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
-          },
-        },
-        {
-          text: 'Seguir en la sesión',
-          style: 'cancel',
-          onPress: () => {
-            resetTimer();
-          },
-        },
-      ]
-    );
-  };
-
-  // Reinicia el temporizador de inactividad
-  const resetTimer = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    timerRef.current = setTimeout(showInactivityAlert, 300000); // 5 minutos
-  };
 
   useEffect(() => {
     resetTimer();
@@ -81,66 +48,7 @@ export default function MultasScreen() {
     };
   }, []);
 
-  const handleConsultarMultas = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const documentTypeId = tipoDocumentoIdMap[tipoDocumento];
-      if (!documentTypeId || !numeroDocumento) {
-        setError('Selecciona tipo y número de documento.');
-        setLoading(false);
-        return;
-      }
-      setDocumentInfo({ documentTypeId, numeroDocumento });
-      // Validar usuario primero
-      const usuario = await buscarUsuarioPorDocumento(documentTypeId, numeroDocumento);
-      if (!usuario) {
-        setError('No existe un usuario con ese documento.');
-        setLoading(false);
-        return;
-      }
-      // Si existe, consultar multas
-      const multas = await consultarInfracciones(documentTypeId, numeroDocumento);
-      // Filtrar solo las infracciones del usuario encontrado
-      const multasUsuario = (Array.isArray(multas) ? multas : []).filter(m => {
-        if (usuario?.id != null && m?.userId != null) {
-          return String(m.userId) === String(usuario.id);
-        }
-        if (usuario?.userName && m?.userName) {
-          return String(m.userName).trim().toLowerCase() === String(usuario.userName).trim().toLowerCase();
-        }
-        return false;
-      });
-      if (!multasUsuario || multasUsuario.length === 0) {
-        setUser(usuario);
-        setError('No se encontraron multas para este documento.');
-        setLoading(false);
-        return;
-      }
-      // Si hay multas, enriquecer la info del usuario con los datos de la primera multa
-      const firstInfraction = multasUsuario[0];
-      let firstName = firstInfraction?.firstName;
-      let lastName = firstInfraction?.lastName;
-      if ((!firstName || !lastName) && firstInfraction?.userName) {
-        const parts = String(firstInfraction.userName).trim().split(/\s+/);
-        firstName = firstName || (parts[0] || '');
-        lastName = lastName || (parts.slice(1).join(' ') || '');
-      }
-      const enrichedUser = {
-        ...usuario,
-        userName: firstInfraction?.userName || usuario?.userName,
-        firstName: firstName || usuario?.firstName || '',
-        lastName: lastName || usuario?.lastName || '',
-      };
-      setUser(enrichedUser);
-      setInfracciones(multasUsuario);
-      navigation.navigate('MultasResultado', { multas: multasUsuario });
-    } catch (err) {
-      setError('Error: ' + (err?.message || JSON.stringify(err)));
-    } finally {
-      setLoading(false);
-    }
-  };
+  // La lógica de consulta ahora está en el hook useMultas: use handleConsultarMultas() desde el hook
 
   return (
     <TouchableWithoutFeedback onPress={resetTimer}>

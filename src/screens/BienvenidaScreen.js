@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   StatusBar,
   Text,
@@ -14,51 +14,10 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/AppStyles';
 
+import useInactivity from '../hooks/useInactivity';
+
 export default function BienvenidaScreen({ navigation }) {
-  const timerRef = useRef(null);
-
-  // Función para mostrar la alerta de inactividad
-    const showInactivityAlert = () => {
-      Alert.alert(
-        'Inactividad',
-        '¿Deseas continuar en la sesión o cerrar la aplicación por inactividad?',
-        [
-          {
-            text: 'Cerrar aplicación',
-            style: 'destructive',
-            onPress: () => {
-              // En lugar de cerrar la app directamente, reiniciamos la navegación
-              // para evitar que el usuario salga de la app inesperadamente.
-              navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
-            },
-          },
-          {
-            text: 'Seguir en la sesión',
-            style: 'cancel',
-            onPress: () => {
-              resetTimer();
-            },
-          },
-        ]
-      );
-    };
-
-  // Reinicia el temporizador de inactividad
-  const resetTimer = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    timerRef.current = setTimeout(showInactivityAlert, 300000); // 5 minutos
-  };
-
-  useEffect(() => {
-    resetTimer();
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, []);
+  const { resetTimer, stopTimer } = useInactivity(navigation, 'Bienvenida');
 
   const handleLoginPress = () => {
     navigation.navigate('Multas');

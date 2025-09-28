@@ -1,10 +1,7 @@
-import React from 'react';
-import { View, Text, TextInput, FlatList, ImageBackground, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import styles from '../styles/CodigoConvivenciaScreenStyles';
-import { Ionicons } from '@expo/vector-icons';
-import useCodigoConvivencia from '../hooks/useCodigoConvivencia';
+import { useState, useMemo } from 'react';
+import useInactivity from './useInactivity';
 
-const leyes = [
+const defaultLeyes = [
   {
     id: '1',
     titulo: 'LEY 1801 DE 2016',
@@ -71,57 +68,21 @@ const leyes = [
   },
 ];
 
-const CodigoConvivenciaScreen = ({ navigation }) => {
-  const { query, setQuery, filteredLeyes, resetTimer } = useCodigoConvivencia(navigation);
+export default function useCodigoConvivencia(navigation) {
+  const [query, setQuery] = useState('');
 
-  return (
-    <TouchableWithoutFeedback onPress={resetTimer}>
-      <View style={{ flex: 1 }}>
-        <ImageBackground
-          source={require('../img/curva-perfil.png')}
-          style={styles.background}
-          resizeMode="cover"
-        >
-          <View style={styles.overlay} />
-          <View style={styles.container}>
-            <TouchableOpacity style={{ alignSelf: 'flex-start', marginBottom: 10, backgroundColor: 'transparent', borderRadius: 20, padding: 4 }} onPress={() => navigation.goBack()}>
-              <Ionicons name="arrow-back" size={24} color="#222" />
-            </TouchableOpacity>
-            <TextInput
-              style={styles.searchBar}
-              placeholder="Consulta tu ley"
-              placeholderTextColor="#6B9080"
-              value={query}
-              onChangeText={text => setQuery(text)}
-              onFocus={resetTimer}
-            />
-            <Text style={styles.titulo}>codigo de Convivencia {'  '}
-              <Ionicons name="people-outline" size={20} color="#01763C" />
-            </Text>
-            <FlatList
-              data={filteredLeyes}
-              keyExtractor={item => item.id}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={styles.card}
-                  onPress={() => navigation.navigate('DetalleLey', { ley: item })}
-                >
-                  <View style={styles.iconContainer}>
-                    <Ionicons name="document-text-outline" size={28} color="#01763C" />
-                  </View>
-                  <View style={styles.infoContainer}>
-                    <Text style={styles.leyTitulo}>{item.titulo}</Text>
-                    <Text style={styles.leyDesc}>{item.descripcion}</Text>
-                  </View>
-                  <Ionicons name="chevron-forward" size={20} color="#6B9080" />
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        </ImageBackground>
-      </View>
-    </TouchableWithoutFeedback>
-  );
-};
+  const { resetTimer } = useInactivity(navigation, 'Bienvenida');
 
-export default CodigoConvivenciaScreen;
+  const filteredLeyes = useMemo(() => {
+    const q = String(query || '').trim().toLowerCase();
+    if (!q) return defaultLeyes;
+    return defaultLeyes.filter(l => {
+      return (
+        String(l.titulo || '').toLowerCase().includes(q) ||
+        String(l.descripcion || '').toLowerCase().includes(q)
+      );
+    });
+  }, [query]);
+
+  return { query, setQuery, filteredLeyes, resetTimer };
+}

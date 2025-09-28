@@ -1,164 +1,26 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, Alert, ScrollView, TouchableWithoutFeedback, FlatList, ImageBackground } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, TouchableWithoutFeedback, FlatList, ImageBackground } from 'react-native';
 import { TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/AcuerdoPagoScreenStyles';
-import { getUser, getDocumentInfo } from '../api/userCache';
-import { fetchPaymentAgreementsByDocument } from '../api/paymentAgreementApi';
 import { useFocusEffect } from '@react-navigation/native';
+import usePaymentAgreements from '../hooks/usePaymentAgreements';
 
 const AcuerdoPagoScreen = ({ navigation }) => {
-  const [loading, setLoading] = useState(false);
-  const [agreementsData, setAgreementsData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-  const [expandedItems, setExpandedItems] = useState({});
-  const [query, setQuery] = useState('');
-  const debounceRef = useRef(null);
-  const timerRef = useRef(null);
-
-  const fetchPaymentAgreements = async () => {
-    setLoading(true);
-    try {
-      // Obtener información del usuario logueado
-      const user = getUser();
-      const docInfo = getDocumentInfo();
-
-      // Obtener el número de documento del usuario logueado
-      const userDocumentNumber = docInfo?.numeroDocumento || docInfo?.documentNumber || user?.documentNumber;
-
-      if (!userDocumentNumber) {
-        Alert.alert('Error', 'No se encontró información del usuario. Por favor, realice una consulta de multas primero.');
-        setLoading(false);
-        return;
-      }
-
-      // Usar el módulo API para obtener acuerdos filtrados por documento
-      const userAgreements = await fetchPaymentAgreementsByDocument(userDocumentNumber);
-
-      setAgreementsData(userAgreements);
-      // Inicializar datos filtrados
-      setFilteredData(userAgreements);
-
-      if (userAgreements.length === 0) {
-        console.log('No se encontraron acuerdos para el usuario:', userDocumentNumber);
-      }
-    } catch (err) {
-      Alert.alert('Error', `No se pudieron cargar los acuerdos de pago: ${err.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const toggleExpanded = (agreementId) => {
-    setExpandedItems(prev => ({
-      ...prev,
-      [agreementId]: !prev[agreementId]
-    }));
-  };
-
-  useEffect(() => {
-    fetchPaymentAgreements();
-    resetTimer();
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, []);
-
-  // Filtrado con debounce para evitar filtrados por cada tecla
-  useEffect(() => {
-    // Si hay un debounce previo, limpiarlo
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-
-    // Aplicar debounce
-    debounceRef.current = setTimeout(() => {
-      const q = String(query || '').trim().toLowerCase();
-      if (!q) {
-        setFilteredData(agreementsData);
-        return;
-      }
-
-      const filtered = agreementsData.filter(item => {
-        const personName = String(item.personName || '').toLowerCase();
-        const documentNumber = String(item.documentNumber || item.document || '').toLowerCase();
-        const typeFine = String(item.typeFine || '').toLowerCase();
-        const infringement = String(item.infringement || '').toLowerCase();
-        const agreementId = String(item.id || '').toLowerCase();
-
-        return (
-          personName.includes(q) ||
-          documentNumber.includes(q) ||
-          typeFine.includes(q) ||
-          infringement.includes(q) ||
-          agreementId.includes(q)
-        );
-      });
-
-      setFilteredData(filtered);
-    }, 300);
-
-    return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current);
-    };
-  }, [query, agreementsData]);
-
-  useFocusEffect(
-    useCallback(() => {
-      resetTimer();
-    }, [])
-  );
-
-  const showInactivityAlert = () => {
-    Alert.alert(
-      'Inactividad',
-      '¿Deseas continuar en la sesión o cerrar sesión por inactividad?',
-      [
-        {
-          text: 'Cerrar sesión',
-          style: 'destructive',
-          onPress: () => {
-            navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
-          },
-        },
-        {
-          text: 'Seguir en la sesión',
-          style: 'cancel',
-          onPress: () => {
-            resetTimer();
-          },
-        },
-      ]
-    );
-  };
-
-  const resetTimer = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    timerRef.current = setTimeout(showInactivityAlert, 300000); // 5 minutos
-  };
-
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
-      minimumFractionDigits: 0,
-    }).format(amount);
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return 'No especificada';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('es-CO', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
+  const {
+    loading,
+    agreementsData,
+    filteredData,
+    query,
+    setQuery,
+    expandedItems,
+    toggleExpanded,
+    fetchPaymentAgreements,
+    resetTimer,
+    formatCurrency,
+    formatDate,
+  } = usePaymentAgreements(navigation);
 
   const renderAgreementItem = ({ item, index }) => {
     const isExpanded = expandedItems[item.id] || false;
@@ -330,64 +192,65 @@ const AcuerdoPagoScreen = ({ navigation }) => {
                   setQuery(text);
                   resetTimer();
                 }}
-                returnKeyType="search"
-                clearButtonMode="while-editing"
-              />
-              {query.length > 0 && (
-                <TouchableOpacity
-                  style={styles.clearButton}
-                  onPress={() => {
-                    setQuery('');
-                    setFilteredData(agreementsData);
-                    resetTimer();
-                  }}
-                >
-                  <Text style={styles.clearButtonText}>Limpiar</Text>
-                </TouchableOpacity>
-              )}
-            </View>
-
-          {loading ? (
-            <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#01763C" />
-              <Text style={styles.loadingText}>Cargando acuerdos de pago...</Text>
-            </View>
-          ) : filteredData.length > 0 ? (
-            <View style={styles.listContainer}>
-              <View style={styles.summaryHeader}>
-                <Text style={styles.summaryTitle}>Mis Acuerdos de Pago</Text>
-                <Text style={styles.summarySubtitle}>
-                  {filteredData.length} acuerdo{filteredData.length !== 1 ? 's' : ''} encontrado{filteredData.length !== 1 ? 's' : ''}
-                </Text>
+                  returnKeyType="search"
+                  clearButtonMode="while-editing"
+                />
+                {query.length > 0 && (
+                  <TouchableOpacity
+                    style={styles.clearButton}
+                    onPress={() => {
+                      setQuery('');
+                      // reset filtered data to all agreements
+                      fetchPaymentAgreements();
+                      resetTimer();
+                    }}
+                  >
+                    <Text style={styles.clearButtonText}>Limpiar</Text>
+                  </TouchableOpacity>
+                )}
               </View>
 
-              <FlatList
-                data={filteredData}
-                keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
-                renderItem={renderAgreementItem}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.listContent}
-              />
-            </View>
-          ) : (
-            <View style={styles.emptyContainer}>
-              <Ionicons name="document-outline" size={64} color="#ccc" />
-              <Text style={styles.emptyText}>No tienes acuerdos de pago registrados</Text>
-              <Text style={styles.emptySubtext}>
-                Los acuerdos de pago aparecerán aquí cuando tengas infracciones con acuerdos activos.
-              </Text>
-              <TouchableOpacity
-                style={styles.retryButton}
-                onPress={fetchPaymentAgreements}
-              >
-                <Text style={styles.retryButtonText}>Reintentar</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-          </View>
-        </ImageBackground>
+            {loading ? (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#01763C" />
+                <Text style={styles.loadingText}>Cargando acuerdos de pago...</Text>
+              </View>
+            ) : filteredData.length > 0 ? (
+              <View style={styles.listContainer}>
+                <View style={styles.summaryHeader}>
+                  <Text style={styles.summaryTitle}>Mis Acuerdos de Pago</Text>
+                  <Text style={styles.summarySubtitle}>
+                    {filteredData.length} acuerdo{filteredData.length !== 1 ? 's' : ''} encontrado{filteredData.length !== 1 ? 's' : ''}
+                  </Text>
+                </View>
 
-        <View style={styles.tabBar}>
+                <FlatList
+                  data={filteredData}
+                  keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
+                  renderItem={renderAgreementItem}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={styles.listContent}
+                />
+              </View>
+            ) : (
+              <View style={styles.emptyContainer}>
+                <Ionicons name="document-outline" size={64} color="#ccc" />
+                <Text style={styles.emptyText}>No tienes acuerdos de pago registrados</Text>
+                <Text style={styles.emptySubtext}>
+                  Los acuerdos de pago aparecerán aquí cuando tengas infracciones con acuerdos activos.
+                </Text>
+                <TouchableOpacity
+                  style={styles.retryButton}
+                  onPress={fetchPaymentAgreements}
+                >
+                  <Text style={styles.retryButtonText}>Reintentar</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            </View>
+          </ImageBackground>
+
+          <View style={styles.tabBar}>
           <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('MultasResultado')}>
             <Ionicons name="list-outline" size={24} color="#01763C" />
             <Text style={styles.tabLabel}>Infracción</Text>

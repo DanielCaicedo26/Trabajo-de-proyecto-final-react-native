@@ -1,50 +1,13 @@
-import React, { useRef, useEffect } from 'react';
-import { View, Text, ScrollView, ImageBackground, TouchableOpacity, Alert, TouchableWithoutFeedback } from 'react-native';
+import React from 'react';
+import { View, Text, ScrollView, ImageBackground, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import styles from '../styles/DetalleLeyScreenStyles';
 import { Ionicons } from '@expo/vector-icons';
+import useDetalleLey from '../hooks/useDetalleLey';
 
 const DetalleLeyScreen = ({ navigation, route }) => {
-  const { ley } = route.params;
-  const timerRef = useRef(null);
-
-  const showInactivityAlert = () => {
-    Alert.alert(
-      'Inactividad',
-      '¿Deseas continuar en la sesión o cerrar sesión por inactividad?',
-      [
-        {
-          text: 'Cerrar sesión',
-          style: 'destructive',
-          onPress: () => {
-            navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
-          },
-        },
-        {
-          text: 'Seguir en la sesión',
-          style: 'cancel',
-          onPress: () => {
-            resetTimer();
-          },
-        },
-      ]
-    );
-  };
-
-  const resetTimer = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    timerRef.current = setTimeout(showInactivityAlert, 300000);
-  };
-
-  useEffect(() => {
-    resetTimer();
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, []);
+  const leyFromRoute = route?.params?.ley;
+  const { ley: leyFormatted, resetTimer } = useDetalleLey(navigation, leyFromRoute);
+  const ley = leyFormatted || { titulo: '', descripcion: '', textoCompleto: '', multa: null, articulos: null };
 
   return (
     <TouchableWithoutFeedback onPress={resetTimer}>

@@ -1,96 +1,29 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { View, Text, TextInput, FlatList, ImageBackground, TouchableOpacity, Alert, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import React from 'react';
+import { View, Text, TextInput, FlatList, ImageBackground, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/MultasResultadoScreenStyles';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { getInfracciones } from '../api/infraccionesCache';
-import { getUser, getDocumentInfo } from '../api/userCache';
+import useMultasResultado from '../hooks/useMultasResultado';
 
 
 const MultasResultadoScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const multas = route.params?.multas || getInfracciones() || [];
-  const cachedUser = getUser();
-  const cachedDoc = getDocumentInfo();
-  const displayName = route.params?.userName || cachedUser?.userName || `${cachedUser?.firstName || ''} ${cachedUser?.lastName || ''}`.trim();
-  
-  const docNumber = route.params?.numeroDocumento || route.params?.documentNumber || cachedDoc?.numeroDocumento || cachedDoc?.documentNumber || '';
-  const [query, setQuery] = useState('');
-  const [filteredMultas, setFilteredMultas] = useState(multas || []);
-  const [selectedIds, setSelectedIds] = useState([]);
-  const debounceRef = useRef(null);
-  // Referencia para el temporizador de inactividad
-  const timerRef = useRef(null);
-
-  // Muestra la alerta de inactividad
-  const showInactivityAlert = () => {
-    Alert.alert(
-      'Inactividad',
-      '¿Deseas continuar en la sesión o cerrar sesión por inactividad?',
-      [
-        {
-          text: 'Cerrar sesión',
-          style: 'destructive',
-          onPress: () => {
-            navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
-          },
-        },
-        {
-          text: 'Seguir en la sesión',
-          style: 'cancel',
-          onPress: () => {
-            resetTimer();
-          },
-        },
-      ]
-    );
-  };
-
-  // Reinicia el temporizador de inactividad
-  const resetTimer = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    timerRef.current = setTimeout(showInactivityAlert, 300000); // 5 minutos
-  };
-
-  useEffect(() => {
-    resetTimer();
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    setFilteredMultas(multas || []);
-  }, [multas]);
-
-  const toggleSelect = (id) => {
-    setSelectedIds(prev => {
-      if (prev.includes(id)) return prev.filter(x => x !== id);
-      return [...prev, id];
-    });
-  };
-
-  const formatCurrency = (value) => {
-    const n = Number(value || 0);
-    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(n);
-  };
-
-  const resumen = (items = []) => {
-    const lista = items || [];
-    const total = lista.reduce((acc, it) => {
-      const price = Number(it.value ?? it.amount ?? it.total ?? 0);
-      acc += isNaN(price) ? 0 : price;
-      return acc;
-    }, 0);
-    return { count: lista.length, total };
-  };
+  const {
+    displayName,
+    docNumber,
+    query,
+    setQuery,
+    onQueryChange,
+    filteredMultas,
+    selectedIds,
+    toggleSelect,
+    resetTimer,
+    formatCurrency,
+    resumen,
+  } = useMultasResultado(navigation, route);
 
   return (
     <TouchableWithoutFeedback onPress={resetTimer}>
@@ -106,13 +39,7 @@ const MultasResultadoScreen = () => {
               placeholder="Consulta tus infracciones"
               placeholderTextColor="#6B9080"
               value={query}
-              onChangeText={text => {
-                setQuery(text);
-                if (debounceRef.current) clearTimeout(debounceRef.current);
-                debounceRef.current = setTimeout(() => {
-                  setFilteredMultas(filterMultas(multas, text));
-                }, 150);
-              }}
+              onChangeText={onQueryChange}
               onFocus={resetTimer}
             />
             <Text style={styles.title}>Infracciones</Text>
@@ -205,18 +132,6 @@ const MultasResultadoScreen = () => {
 };
 
 export default MultasResultadoScreen;
-
-// Función auxiliar para filtrar infracciones por texto en varios campos
-function filterMultas(multas = [], text = '') {
-  const q = String(text || '').trim().toLowerCase();
-  if (!q) return multas || [];
-  return (multas || []).filter(m => {
-    const tipo = String(m?.typeInfractionName || '').toLowerCase();
-    const obs = String(m?.observations || '').toLowerCase();
-    const uname = String(m?.userName || m?.user?.userName || '').toLowerCase();
-    return tipo.includes(q) || obs.includes(q) || uname.includes(q);
-  });
-}
 
 // Extra: calcular total de seleccionadas
 export function calcularTotalSeleccionadas(multas = [], selectedIds = []) {

@@ -1,59 +1,12 @@
-import React, { useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ImageBackground, ScrollView, Alert, TouchableWithoutFeedback } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, ImageBackground, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/DetalleSmlvScreenStyles';
-
-const SALARIO_MINIMO = 1423500;
-const SMLDV = Math.round(SALARIO_MINIMO / 30);
+import useDetalleSmlv from '../hooks/useDetalleSmlv';
 
 const DetalleSmlvScreen = ({ navigation, route }) => {
-  // Referencia para el temporizador de inactividad
-  const timerRef = useRef(null);
-  const smdlv = route?.params?.smdlv || 2;
-  const valorSmdlv = SMLDV;
-  const valorTotal = valorSmdlv * smdlv;
-
-  // Muestra la alerta de inactividad
-  const showInactivityAlert = () => {
-    Alert.alert(
-      'Inactividad',
-      '¿Deseas continuar en la sesión o cerrar sesión por inactividad?',
-      [
-        {
-          text: 'Cerrar sesión',
-          style: 'destructive',
-          onPress: () => {
-            navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
-          },
-        },
-        {
-          text: 'Seguir en la sesión',
-          style: 'cancel',
-          onPress: () => {
-            resetTimer();
-          },
-        },
-      ]
-    );
-  };
-
-  // Reinicia el temporizador de inactividad
-  const resetTimer = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    timerRef.current = setTimeout(showInactivityAlert, 300000); // 5 minutos
-  };
-
-  // Inicia el temporizador al montar y lo limpia al desmontar
-  useEffect(() => {
-    resetTimer();
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, []);
+  const smdlvFromRoute = route?.params?.smdlv;
+  const { SALARIO_MINIMO, SMLDV, smdlv, valorSmdlv, valorTotal, formatos, resetTimer } = useDetalleSmlv(navigation, smdlvFromRoute);
 
   return (
     <TouchableWithoutFeedback onPress={resetTimer}>
@@ -81,35 +34,35 @@ const DetalleSmlvScreen = ({ navigation, route }) => {
               <View style={styles.iconBox}><Ionicons name="cash-outline" size={32} color="#fff" /></View>
               <View style={styles.infoBox}>
                 <Text style={styles.label}>Salario minimo vigente</Text>
-                <Text style={styles.valueBlue}>${SALARIO_MINIMO.toLocaleString('es-CO')}</Text>
+                <Text style={styles.valueBlue}>{formatos.salarioTexto}</Text>
               </View>
             </View>
             <View style={styles.card}>
               <View style={styles.iconBox}><Ionicons name="calculator-outline" size={32} color="#fff" /></View>
               <View style={styles.infoBox}>
                 <Text style={styles.label}>Calculo del SMDLV</Text>
-                <Text style={styles.valueBlue}>${SALARIO_MINIMO.toLocaleString('es-CO')}/30</Text>
+                <Text style={styles.valueBlue}>{formatos.calculoSmdlvTexto}</Text>
               </View>
             </View>
             <View style={styles.card}>
               <View style={styles.iconBox}><Ionicons name="pricetag-outline" size={32} color="#fff" /></View>
               <View style={styles.infoBox}>
                 <Text style={styles.label}>Valor de un SMDLV</Text>
-                <Text style={styles.valueGreen}>{valorSmdlv.toLocaleString('es-CO')}</Text>
+                <Text style={styles.valueGreen}>{formatos.valorSmdlvTexto}</Text>
               </View>
             </View>
             <View style={styles.card}>
               <View style={styles.iconBox}><Ionicons name="calculator-outline" size={32} color="#fff" /></View>
               <View style={styles.infoBox}>
                 <Text style={styles.label}>Calcular Valor De Multa</Text>
-                <Text style={styles.valueBlue}>${valorSmdlv.toLocaleString('es-CO')} x {smdlv}</Text>
+                <Text style={styles.valueBlue}>${formatos.valorSmdlvTexto} x {smdlv}</Text>
               </View>
             </View>
             <View style={styles.card}>
               <View style={styles.iconBox}><Ionicons name="cash-outline" size={32} color="#fff" /></View>
               <View style={styles.infoBox}>
                 <Text style={styles.label}>Valor Total de Multa</Text>
-                <Text style={styles.valueGreen}>${valorTotal.toLocaleString('es-CO')}</Text>
+                <Text style={styles.valueGreen}>{formatos.valorTotalTexto}</Text>
               </View>
             </View>
           </ScrollView>
