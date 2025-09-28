@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   titulo: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#222',
+    color: '#01763C',
     marginBottom: 20,
     textAlign: 'center',
   },
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   cardText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#222',
+    color: '#01763C',
   },
   emptyState: {
     marginTop: 40,

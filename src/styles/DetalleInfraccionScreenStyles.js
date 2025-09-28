@@ -32,14 +32,14 @@ const styles = StyleSheet.create({
   titulo: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#222',
+    color: '#01763C',
     marginBottom: 15,
     textAlign: 'left',
   },
   seccion: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#222',
+    color: '#01763C',
     marginTop: 18,
     marginBottom: 8,
     textAlign: 'left',
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
   cardDesc: {
     fontSize: 13,
-    color: '#555',
+    color: '#01763C',
     marginTop: 2,
   },
 });

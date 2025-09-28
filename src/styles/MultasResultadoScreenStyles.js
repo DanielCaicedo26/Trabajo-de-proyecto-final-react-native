@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   },
   summaryLabel: {
     fontSize: 13,
-    color: '#333',
+    color: '#01763C',
     marginRight: 8,
   },
   summaryTotal: {
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   },
   descripcion: {
     fontSize: 13,
-    color: '#555',
+    color: '#01763C',
     marginTop: 2,
   },
   valor: {
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   },
    descripcion: {
      fontSize: 13,
-     color: '#555',
+    color: '#01763C',
      marginTop: 6,
      lineHeight: 18,
      flexShrink: 1,
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
       paddingRight: 12,
     },
   detailValue: {
-      color: '#333',
+      color: '#01763C',
       fontWeight: '600',
       flex: 0.70,
       paddingLeft: 12,

@@ -81,9 +81,9 @@ const CodigoConvivenciaScreenStyles = StyleSheet.create({
     color: '#01763C',
   },
   leyDesc: {
-    fontSize: 13,
-    color: '#555',
-    marginTop: 2,
+     fontSize: 13,
+     color: '#01763C',
+     marginTop: 2,
   },
 });
 

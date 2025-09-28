@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#a5d6a7',
   },
   buttonText: {
-    color: '#000000ff',
+    color: '#01763C',
     fontSize: 18,
     fontWeight: '700',
     letterSpacing: 0.5,

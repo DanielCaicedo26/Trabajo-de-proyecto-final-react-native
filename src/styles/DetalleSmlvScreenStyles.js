@@ -21,14 +21,14 @@ const DetalleSmlvScreenStyles = StyleSheet.create({
   titulo: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#222',
+    color: '#01763C',
     marginBottom: 10,
     textAlign: 'center',
   },
   seccion: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#222',
+    color: '#01763C',
     marginTop: 10,
     marginBottom: 8,
     textAlign: 'left',
@@ -66,7 +66,7 @@ const DetalleSmlvScreenStyles = StyleSheet.create({
   label: {
     fontWeight: 'bold',
     fontSize: 15,
-    color: '#222',
+    color: '#01763C',
   },
   valueGreen: {
     fontSize: 15,

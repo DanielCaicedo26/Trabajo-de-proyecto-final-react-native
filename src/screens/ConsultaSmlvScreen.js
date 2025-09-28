@@ -17,7 +17,7 @@ const ConsultaSmlvScreen = ({ navigation }) => {
         >
           <ScrollView contentContainerStyle={styles.scrollContent}>
             <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-              <Ionicons name="arrow-back" size={24} color="#222" />
+              <Ionicons name="arrow-back" size={24} color="#01763C" />
             </TouchableOpacity>
             <Text style={styles.titulo}>Consulta Smlv</Text>
             {Array.isArray(multas) && multas.length > 0 ? (

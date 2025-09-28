@@ -23,7 +23,7 @@ const DetalleLeyScreen = ({ navigation, route }) => {
               style={styles.backButton}
               onPress={() => navigation.goBack()}
             >
-              <Ionicons name="arrow-back" size={24} color="#222" />
+              <Ionicons name="arrow-back" size={24} color="#01763C" />
             </TouchableOpacity>
 
             <View style={styles.headerContainer}>

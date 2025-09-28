@@ -61,13 +61,13 @@ const DetalleLeyScreenStyles = StyleSheet.create({
   },
   descripcion: {
     fontSize: 16,
-    color: '#333',
+    color: '#01763C',
     lineHeight: 24,
     marginBottom: 8,
   },
   textoCompleto: {
     fontSize: 15,
-    color: '#444',
+    color: '#01763C',
     lineHeight: 22,
     textAlign: 'justify',
     marginBottom: 8,
@@ -80,7 +80,7 @@ const DetalleLeyScreenStyles = StyleSheet.create({
   },
   articulos: {
     fontSize: 15,
-    color: '#555',
+    color: '#01763C',
     lineHeight: 20,
     fontStyle: 'italic',
   },
