@@ -4,8 +4,8 @@ import { TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/AcuerdoPagoScreenStyles';
-import { API_HOST } from '../api/config';
 import { getUser, getDocumentInfo } from '../api/userCache';
+import { fetchPaymentAgreementsByDocument } from '../api/paymentAgreementApi';
 import { useFocusEffect } from '@react-navigation/native';
 
 const AcuerdoPagoScreen = ({ navigation }) => {
@@ -33,22 +33,12 @@ const AcuerdoPagoScreen = ({ navigation }) => {
         return;
       }
 
-      // Usar la nueva URL de la API
-      const res = await fetch(`${API_HOST}/api/PaymentAgreement`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
-
-      // Si es un array, usarlo directamente, si no, convertir a array
-      const allAgreements = Array.isArray(json) ? json : [json];
-
-      // Filtrar solo los acuerdos del usuario logueado
-      const userAgreements = allAgreements.filter(agreement => {
-        return String(agreement.documentNumber || '').trim() === String(userDocumentNumber).trim();
-      });
+      // Usar el módulo API para obtener acuerdos filtrados por documento
+      const userAgreements = await fetchPaymentAgreementsByDocument(userDocumentNumber);
 
       setAgreementsData(userAgreements);
-  // Inicializar datos filtrados
-  setFilteredData(userAgreements);
+      // Inicializar datos filtrados
+      setFilteredData(userAgreements);
 
       if (userAgreements.length === 0) {
         console.log('No se encontraron acuerdos para el usuario:', userDocumentNumber);
