@@ -62,15 +62,25 @@ const DetalleInfraccionScreen = ({ navigation, route }) => {
             </View>
           </View>
           <Text style={styles.seccion}>Información de la multa</Text>
-          {data.infoMulta.map((item, idx) => (
-            <View style={styles.card} key={idx}>
-              <View style={styles.cardIcon}><Ionicons name={item.icon} size={28} color="#01763C" /></View>
+          {Array.isArray(data.infoMulta) && data.infoMulta.length > 0 ? (
+            data.infoMulta.map((item, idx) => (
+              <View style={styles.card} key={idx}>
+                <View style={styles.cardIcon}><Ionicons name={item.icon} size={28} color="#01763C" /></View>
+                <View style={styles.cardInfo}>
+                  <Text style={styles.cardTitle}>{item.texto}</Text>
+                  <Text style={styles.cardDesc}>{item.valor}</Text>
+                </View>
+              </View>
+            ))
+          ) : (
+            <View style={styles.card}>
+              <View style={styles.cardIcon}><Ionicons name="information-circle-outline" size={28} color="#01763C" /></View>
               <View style={styles.cardInfo}>
-                <Text style={styles.cardTitle}>{item.texto}</Text>
-                <Text style={styles.cardDesc}>{item.valor}</Text>
+                <Text style={styles.cardTitle}>Sin información</Text>
+                <Text style={styles.cardDesc}>No hay datos adicionales sobre la multa.</Text>
               </View>
             </View>
-          ))}
+          )}
           <Text style={styles.seccion}>Monto y fecha máxima</Text>
           <View style={styles.card}>
             <View style={styles.cardIcon}><Ionicons name="cash-outline" size={28} color="#01763C" /></View>

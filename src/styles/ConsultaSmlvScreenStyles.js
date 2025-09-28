@@ -49,6 +49,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#222',
   },
+  emptyState: {
+    marginTop: 40,
+    alignItems: 'center',
+  },
+  emptyText: {
+    marginTop: 12,
+    fontSize: 16,
+    color: '#666',
+  },
 });
 
 export default styles;

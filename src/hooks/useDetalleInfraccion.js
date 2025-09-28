@@ -25,10 +25,29 @@ export default function useDetalleInfraccion(navigation, infraccionFromRoute) {
       }
     };
 
+    // Normalizar los campos para la pantalla
+    const tipo = infraccionFromRoute.typeInfractionName || infraccionFromRoute.tipo || infraccionFromRoute.type || 'No especificado';
+    const descripcion = infraccionFromRoute.observations || infraccionFromRoute.description || infraccionFromRoute.descripcion || '';
+    const monto = formatCurrency(infraccionFromRoute.valor ?? infraccionFromRoute.amount ?? infraccionFromRoute.monto);
+    const fechaMax = formatDate(infraccionFromRoute.fechaMax || infraccionFromRoute.dueDate || infraccionFromRoute.fecha_max);
+
+    // Construir infoMulta si no existe
+    const infoMulta = Array.isArray(infraccionFromRoute.infoMulta)
+      ? infraccionFromRoute.infoMulta
+      : [
+          { icon: 'information-circle-outline', texto: 'Número de comparendo', valor: infraccionFromRoute.number || infraccionFromRoute.id || '-' },
+        ];
+
     return {
       ...infraccionFromRoute,
-      fechaTexto: formatDate(infraccionFromRoute.fecha),
-      valorTexto: formatCurrency(infraccionFromRoute.valor),
+      tipo,
+      descripcion,
+      fechaTexto: formatDate(infraccionFromRoute.fecha || infraccionFromRoute.date || infraccionFromRoute.dateInfraction),
+      consulta: 'SMDLV',
+      infoMulta,
+      monto,
+      fechaMax,
+      valorTexto: monto,
     };
   }, [infraccionFromRoute]);
 

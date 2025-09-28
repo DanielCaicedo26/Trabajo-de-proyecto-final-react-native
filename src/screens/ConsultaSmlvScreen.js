@@ -20,24 +20,31 @@ const ConsultaSmlvScreen = ({ navigation }) => {
               <Ionicons name="arrow-back" size={24} color="#222" />
             </TouchableOpacity>
             <Text style={styles.titulo}>Consulta Smlv</Text>
-            {multas.map((multa) => (
-              <TouchableOpacity
-                key={multa.id}
-                style={styles.card}
-                activeOpacity={0.8}
-                onPress={() => {
-                  navigation.navigate('DetalleSmlv', { smdlv: multa.smdlv });
-                }}
-              >
-                <Ionicons
-                  name="document-text-outline"
-                  size={48}
-                  color="#4A90E2"
-                  style={{ marginRight: 18 }}
-                />
-                <Text style={styles.cardText}>{multa.nombre}</Text>
-              </TouchableOpacity>
-            ))}
+            {Array.isArray(multas) && multas.length > 0 ? (
+              multas.map((multa) => (
+                <TouchableOpacity
+                  key={multa.id}
+                  style={styles.card}
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    navigation.navigate('DetalleSmlv', { smdlv: multa.smdlv });
+                  }}
+                >
+                  <Ionicons
+                    name="document-text-outline"
+                    size={48}
+                    color="#4A90E2"
+                    style={{ marginRight: 18 }}
+                  />
+                  <Text style={styles.cardText}>{multa.nombre}</Text>
+                </TouchableOpacity>
+              ))
+            ) : (
+              <View style={styles.emptyState}>
+                <Ionicons name="document-outline" size={48} color="#ccc" />
+                <Text style={styles.emptyText}>No se encontraron multas</Text>
+              </View>
+            )}
           </ScrollView>
         </ImageBackground>
       </View>
