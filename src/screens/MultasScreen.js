@@ -113,7 +113,7 @@ export default function MultasScreen() {
                         focusedInput === 'document' && styles.inputFocused
                       ]}
                       placeholder="Digita Tu Número De Documento"
-                      placeholderTextColor="#95a5a6"
+                      placeholderTextColor="#000000ff"
                       value={numeroDocumento}
                       onChangeText={setNumeroDocumento}
                       keyboardType="numeric"

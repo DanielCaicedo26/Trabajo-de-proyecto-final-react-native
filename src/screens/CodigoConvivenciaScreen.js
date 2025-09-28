@@ -84,7 +84,7 @@ const CodigoConvivenciaScreen = ({ navigation }) => {
         >
           <View style={styles.overlay} />
           <View style={styles.container}>
-            <TouchableOpacity style={{ alignSelf: 'flex-start', marginBottom: 10, backgroundColor: 'transparent', borderRadius: 20, padding: 4 }} onPress={() => navigation.goBack()}>
+            <TouchableOpacity style={[styles.backButton, { alignSelf: 'flex-start', marginBottom: 10 }]} onPress={() => navigation.goBack()}>
               <Ionicons name="arrow-back" size={24} color="#222" />
             </TouchableOpacity>
             <TextInput

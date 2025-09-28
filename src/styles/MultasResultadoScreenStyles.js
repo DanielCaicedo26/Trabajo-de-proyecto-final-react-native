@@ -12,9 +12,17 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: 40,
+    paddingTop: 20,
     paddingHorizontal: 16,
+    paddingBottom: 100, // leave space for fixed tabBar
     zIndex: 1,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#01763C',
+    marginBottom: 12,
+    textAlign: 'left',
   },
   searchBar: {
     backgroundColor: '#fcfcfcff',
@@ -28,26 +36,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 4,
-    tabLabel: {
-      fontSize: 12,
-      color: '#01763C',
-    },
-    verMasButton: {
-      paddingVertical: 6,
-      paddingHorizontal: 12,
-      borderRadius: 6,
-      borderWidth: 1,
-      borderColor: '#01763C',
-      backgroundColor: 'transparent'
-    },
-    verMasText: {
-      color: '#01763C',
-      fontWeight: '600',
-    },
-    fontWeight: 'bold',
-    color: '#222',
-    marginBottom: 8,
-    alignSelf: 'flex-start',
+    elevation: 2,
   },
   summaryCard: {
     backgroundColor: '#fff',
@@ -183,6 +172,10 @@ const styles = StyleSheet.create({
       flexWrap: 'wrap',
     },
   tabBar: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -191,6 +184,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     elevation: 10,
+    zIndex: 5,
   },
   tabItem: {
     alignItems: 'center',
