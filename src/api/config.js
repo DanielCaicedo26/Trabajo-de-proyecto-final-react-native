@@ -1,4 +1,21 @@
 
 // Archivo de configuración centralizada para las URLs base de la API
-// Modifica aquí la URL del backend según el entorno (desarrollo, producción, etc.)
-export const API_HOST = 'http://192.168.1.5:7286';
+// Lee la configuración desde variables de entorno cuando estén disponibles.
+// Para Expo se puede inyectar en `app.config.js`/`app.json` (extra) o usar un .env en desarrollo.
+let envHost = null;
+try {
+	// Intentar leer de `process.env` (útil en builds o cuando se use react-native-dotenv)
+	envHost = process.env.API_HOST || null;
+} catch (e) {
+	// ignore
+}
+
+// Valor por defecto (mantener el comportamiento anterior si no hay env configurada)
+const DEFAULT_API_HOST = 'http://192.168.1.5:7286';
+
+export const API_HOST = envHost || DEFAULT_API_HOST;
+
+// También exportamos una función por si se necesita resolución dinámica desde otras fuentes.
+export function getApiHost() {
+	return API_HOST;
+}
