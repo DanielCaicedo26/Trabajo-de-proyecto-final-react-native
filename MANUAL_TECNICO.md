@@ -212,7 +212,7 @@ Trabajo-de-proyecto-final-react-native/
 
 #### 1. Clonar el repositorio
 ```bash
-git clone <repository-url>
+git clone <https://github.com/DanielCaicedo26/Trabajo-de-proyecto-final-react-native.git>
 cd Trabajo-de-proyecto-final-react-native
 ```
 
@@ -888,8 +888,8 @@ GET /api/payment-agreements
     "phoneNumber": "3001234567",
     "address": "Calle 123 #45-67",
     "neighborhood": "Centro",
-    "typeFine": "Exceso de velocidad",
-    "infringement": "Conducir a 120km/h",
+    "typeFine": "tipo uno ",
+    "infringement": "ruido a altas horas de la noche ",
     "agreementStart": "2025-01-01",
     "agreementEnd": "2025-12-31",
     "paymentMethod": "Mensual",
@@ -1182,9 +1182,9 @@ Editar `app.json`:
 
 ### Distribución de la Aplicación
 
-**⚠️ Importante:** Esta aplicación solo se distribuye para Android.
+** Importante:** Esta aplicación solo se distribuye para Android.
 
-#### Opción 1: Distribución Directa mediante APK (Recomendado)
+#### Opción 1: Distribución Directa mediante APK (se esta implementando todavia )
 
 Esta es la forma más común para aplicaciones institucionales o internas.
 
@@ -1197,13 +1197,11 @@ Esta es la forma más común para aplicaciones institucionales o internas.
 **Pasos:**
 1. Generar APK firmado (ver sección anterior)
 2. Distribuir el archivo APK mediante:
-   - Sitio web institucional
    - Correo electrónico
-   - Plataformas de almacenamiento en la nube
    - Código QR
 3. Los usuarios deben:
-   - Habilitar instalación desde fuentes desconocidas
-   - Descargar e instalar el APK
+   - Descargan expo go 
+   - Escanear el coidgo QR o entrar al link
 
 **Consideraciones de seguridad:**
 - Firmar el APK con un certificado válido
