@@ -43,47 +43,34 @@ La aplicación te facilita el acceso a información sobre tus obligaciones como 
 ### Dispositivos Compatibles
 - **Android**: Versión 8.0 (Oreo) o superior
 
-**⚠️ Nota Importante:** Esta aplicación está disponible **únicamente para dispositivos Android**. No hay versión para iOS (iPhone/iPad) ni para Web.
+**⚠️ Nota Importante:** Esta aplicación está disponible **únicamente para dispositivos Android**. No hay versión para iOS (iPhone/iPad) 
 
 ### Requisitos Adicionales
 - Conexión a Internet (WiFi o datos móviles)
-- Espacio de almacenamiento: Mínimo 50 MB disponibles
+- Espacio de almacenamiento: Todavia no establecido
 - Permisos de instalación desde fuentes desconocidas
 
 ---
 
 ## Instalación
 
-### Instalación en Android
+### Instalación con Expo Go (Android)
 
-#### Paso 1: Descarga del APK
-1. Descarga el archivo APK desde el enlace proporcionado por la institución
-2. Guarda el archivo en tu dispositivo
+#### Paso 1: Instalar Expo Go
+1. Abre la **Google Play Store** en tu dispositivo Android.
+2. Busca **Expo Go** e instálala.
 
-#### Paso 2: Habilitar Instalación desde Fuentes Desconocidas
+#### Paso 2: Obtener el enlace del proyecto
+1. Solicita el enlace QR o el link de tu proyecto Expo al desarrollador o institución.
 
-**Para Android 8.0 o superior:**
-1. Ve a **Configuración** → **Aplicaciones y notificaciones**
-2. Selecciona **Acceso especial** → **Instalar aplicaciones desconocidas**
-3. Selecciona el navegador o gestor de archivos que usaste para descargar el APK
-4. Activa **Permitir de esta fuente**
+#### Paso 3: Abrir la aplicación en Expo Go
+1. Abre la app **Expo Go** en tu dispositivo.
+2. Escanea el código QR proporcionado o ingresa el enlace del proyecto.
+3. Espera a que cargue la aplicación.
 
-**Para Android 7.0 o anterior:**
-1. Ve a **Configuración** → **Seguridad**
-2. Activa **Orígenes desconocidos** o **Fuentes desconocidas**
+**Nota:** No es necesario instalar un APK ni habilitar fuentes desconocidas. Solo necesitas Expo Go y conexión a Internet.
 
-#### Paso 3: Instalar la Aplicación
-1. Abre el archivo APK descargado desde tu gestor de archivos
-2. Toca **Instalar**
-3. Espera a que se complete la instalación
-4. Toca **Abrir** para iniciar la aplicación
-
-#### Paso 4: Configuración Inicial
-1. Al abrir por primera vez, la aplicación puede solicitar permisos
-2. Acepta los permisos necesarios para el correcto funcionamiento
-3. La aplicación está lista para usar
-
-**💡 Consejo:** Después de instalar la aplicación, puedes desactivar la opción de "Fuentes desconocidas" por seguridad.
+---
 
 ---
 
