@@ -1,9 +1,57 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, MutableRefObject } from 'react';
 import { getInfracciones } from '../api/infraccionesCache';
 import { getUser, getDocumentInfo } from '../api/userCache';
 
+interface Multa {
+  id?: string | number;
+  value?: number;
+  amount?: number;
+  total?: number;
+  typeInfractionName?: string;
+  observations?: string;
+  userName?: string;
+  user?: {
+    userName?: string;
+  };
+  [key: string]: any;
+}
+
+interface RouteParams {
+  multas?: Multa[];
+  userName?: string;
+  numeroDocumento?: string;
+  documentNumber?: string;
+}
+
+interface Route {
+  params?: RouteParams;
+}
+
+interface Resumen {
+  count: number;
+  total: number;
+}
+
+interface UseMultasResultadoReturn {
+  displayName: string;
+  docNumber: string;
+  query: string;
+  setQuery: (query: string) => void;
+  onQueryChange: (text: string) => void;
+  filteredMultas: Multa[];
+  setFilteredMultas: (multas: Multa[]) => void;
+  selectedIds: (string | number)[];
+  toggleSelect: (id: string | number) => void;
+  resetTimer: () => void;
+  formatCurrency: (value: number | string | null | undefined) => string;
+  resumen: (items?: Multa[]) => Resumen;
+}
+
 // Hook para encapsular lógica de MultasResultadoScreen
-export default function useMultasResultado(navigation, route) {
+export default function useMultasResultado(
+  navigation: any,
+  route: Route
+): UseMultasResultadoReturn {
   const multasInitial = route?.params?.multas || getInfracciones() || [];
   const cachedUser = getUser();
   const cachedDoc = getDocumentInfo();
@@ -11,12 +59,12 @@ export default function useMultasResultado(navigation, route) {
   const displayName = route?.params?.userName || cachedUser?.userName || `${cachedUser?.firstName || ''} ${cachedUser?.lastName || ''}`.trim();
   const docNumber = route?.params?.numeroDocumento || route?.params?.documentNumber || cachedDoc?.numeroDocumento || cachedDoc?.documentNumber || '';
 
-  const [query, setQuery] = useState('');
-  const [filteredMultas, setFilteredMultas] = useState(multasInitial || []);
-  const [selectedIds, setSelectedIds] = useState([]);
+  const [query, setQuery] = useState<string>('');
+  const [filteredMultas, setFilteredMultas] = useState<Multa[]>(multasInitial || []);
+  const [selectedIds, setSelectedIds] = useState<(string | number)[]>([]);
 
-  const debounceRef = useRef(null);
-  const timerRef = useRef(null);
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setFilteredMultas(multasInitial || []);
@@ -45,16 +93,16 @@ export default function useMultasResultado(navigation, route) {
     };
   }, []);
 
-  const toggleSelect = (id) => {
+  const toggleSelect = (id: string | number) => {
     setSelectedIds(prev => (prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]));
   };
 
-  const formatCurrency = (value) => {
+  const formatCurrency = (value: number | string | null | undefined): string => {
     const n = Number(value || 0);
     return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(n);
   };
 
-  const resumen = (items = []) => {
+  const resumen = (items: Multa[] = []): Resumen => {
     const lista = items || [];
     const total = lista.reduce((acc, it) => {
       const price = Number(it.value ?? it.amount ?? it.total ?? 0);
@@ -64,13 +112,13 @@ export default function useMultasResultado(navigation, route) {
     return { count: lista.length, total };
   };
 
-  const onQueryChange = (text) => {
+  const onQueryChange = (text: string) => {
     setQuery(text);
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       const q = String(text || '').trim().toLowerCase();
       if (!q) return setFilteredMultas(multasInitial || []);
-      const filtered = (multasInitial || []).filter(m => {
+      const filtered = (multasInitial || []).filter((m: Multa) => {
         const tipo = String(m?.typeInfractionName || '').toLowerCase();
         const obs = String(m?.observations || '').toLowerCase();
         const uname = String(m?.userName || m?.user?.userName || '').toLowerCase();

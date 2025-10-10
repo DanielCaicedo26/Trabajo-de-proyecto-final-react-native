@@ -1,8 +1,18 @@
-import { useRef, useCallback, useEffect } from 'react';
+import { useRef, useCallback, useEffect, MutableRefObject } from 'react';
 import { Alert } from 'react-native';
 
-export default function useInactivity(navigation, routeName = 'Bienvenida', timeoutMs = 300000) {
-  const timerRef = useRef(null);
+interface UseInactivityReturn {
+  resetTimer: () => void;
+  stopTimer: () => void;
+  timerRef: MutableRefObject<NodeJS.Timeout | null>;
+}
+
+export default function useInactivity(
+  navigation: any,
+  routeName: string = 'Bienvenida',
+  timeoutMs: number = 300000
+): UseInactivityReturn {
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const showInactivityAlert = useCallback(() => {
     Alert.alert(

@@ -1,17 +1,46 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, MutableRefObject } from 'react';
 import { Alert } from 'react-native';
 import { getUser, getDocumentInfo } from '../api/userCache';
 import { fetchPaymentAgreementsByDocument } from '../api/paymentAgreementApi';
 
-export default function usePaymentAgreements(navigation) {
-  const [loading, setLoading] = useState(false);
-  const [agreementsData, setAgreementsData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-  const [query, setQuery] = useState('');
-  const [expandedItems, setExpandedItems] = useState({});
+interface PaymentAgreement {
+  id: string | number;
+  personName?: string;
+  documentNumber?: string;
+  document?: string;
+  typeFine?: string;
+  infringement?: string;
+  [key: string]: any;
+}
 
-  const debounceRef = useRef(null);
-  const timerRef = useRef(null);
+interface ExpandedItems {
+  [key: string]: boolean;
+  [key: number]: boolean;
+}
+
+interface UsePaymentAgreementsReturn {
+  loading: boolean;
+  agreementsData: PaymentAgreement[];
+  filteredData: PaymentAgreement[];
+  query: string;
+  setQuery: (query: string) => void;
+  expandedItems: ExpandedItems;
+  toggleExpanded: (agreementId: string | number) => void;
+  fetchPaymentAgreements: () => Promise<void>;
+  resetTimer: () => void;
+  formatCurrency: (amount: number) => string;
+  formatDate: (dateString: string | null | undefined) => string;
+}
+
+export default function usePaymentAgreements(navigation: any): UsePaymentAgreementsReturn {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [agreementsData, setAgreementsData] = useState<PaymentAgreement[]>([]);
+  const [filteredData, setFilteredData] = useState<PaymentAgreement[]>([]);
+  const [query, setQuery] = useState<string>('');
+  const [expandedItems, setExpandedItems] = useState<ExpandedItems>({});
+
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const fetchPaymentAgreements = useCallback(async () => {
     setLoading(true);
@@ -29,14 +58,14 @@ export default function usePaymentAgreements(navigation) {
       const userAgreements = await fetchPaymentAgreementsByDocument(userDocumentNumber);
       setAgreementsData(userAgreements);
       setFilteredData(userAgreements);
-    } catch (err) {
+    } catch (err: any) {
       Alert.alert('Error', `No se pudieron cargar los acuerdos de pago: ${err.message}`);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const toggleExpanded = useCallback((agreementId) => {
+  const toggleExpanded = useCallback((agreementId: string | number) => {
     setExpandedItems(prev => ({ ...prev, [agreementId]: !prev[agreementId] }));
   }, []);
 
@@ -58,7 +87,7 @@ export default function usePaymentAgreements(navigation) {
         return;
       }
 
-      const filtered = agreementsData.filter(item => {
+      const filtered = agreementsData.filter((item: PaymentAgreement) => {
         const personName = String(item.personName || '').toLowerCase();
         const documentNumber = String(item.documentNumber || item.document || '').toLowerCase();
         const typeFine = String(item.typeFine || '').toLowerCase();
@@ -118,7 +147,7 @@ export default function usePaymentAgreements(navigation) {
     timerRef.current = setTimeout(showInactivityAlert, 300000); // 5 minutos
   }, [showInactivityAlert]);
 
-  const formatCurrency = useCallback((amount) => {
+  const formatCurrency = useCallback((amount: number): string => {
     return new Intl.NumberFormat('es-CO', {
       style: 'currency',
       currency: 'COP',
@@ -126,7 +155,7 @@ export default function usePaymentAgreements(navigation) {
     }).format(amount);
   }, []);
 
-  const formatDate = useCallback((dateString) => {
+  const formatDate = useCallback((dateString: string | null | undefined): string => {
     if (!dateString) return 'No especificada';
     const date = new Date(dateString);
     return date.toLocaleDateString('es-CO', {

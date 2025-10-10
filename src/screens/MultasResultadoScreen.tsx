@@ -3,14 +3,30 @@ import { View, Text, TextInput, FlatList, ImageBackground, TouchableOpacity, Tou
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/MultasResultadoScreenStyles';
-
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import useMultasResultado from '../hooks/useMultasResultado';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+interface Multa {
+  id: number;
+  typeInfractionName?: string;
+  observations?: string;
+  firstName?: string;
+  lastName?: string;
+  dateInfraction?: string;
+  date?: string;
+  value?: number;
+  amount?: number;
+  total?: number;
+}
 
-const MultasResultadoScreen = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
+interface RouteParams {
+  [key: string]: any;
+}
+
+const MultasResultadoScreen: React.FC = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
   const {
     displayName,
     docNumber,
@@ -79,7 +95,7 @@ const MultasResultadoScreen = () => {
                       onPress={() => toggleSelect(item.id)}
                     >
                       <TouchableOpacity onPress={() => toggleSelect(item.id)} style={styles.checkboxContainer}>
-                        <Ionicons name={selected ? 'checkbox' : 'square-outline'} size={22} color={selected ? '#fff' : '#01763C'} style={selected ? styles.checkboxSelected : null} />
+                        <Ionicons name={selected ? 'checkbox' : 'square-outline'} size={22} color={selected ? '#fff' : '#01763C'} style={selected ? styles.checkboxSelected : undefined} />
                       </TouchableOpacity>
                       <View style={styles.iconContainer}>
                         <Ionicons name="document-text-outline" size={28} color="#01763C" />
@@ -134,7 +150,7 @@ const MultasResultadoScreen = () => {
 export default MultasResultadoScreen;
 
 // Extra: calcular total de seleccionadas
-export function calcularTotalSeleccionadas(multas = [], selectedIds = []) {
+export function calcularTotalSeleccionadas(multas: Multa[] = [], selectedIds: number[] = []): number {
   return (multas || []).reduce((acc, it) => {
     if (selectedIds.includes(it.id)) {
       const price = Number(it.value ?? it.amount ?? it.total ?? 0);

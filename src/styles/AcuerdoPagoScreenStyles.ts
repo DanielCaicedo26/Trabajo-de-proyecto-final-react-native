@@ -1,8 +1,66 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-export default StyleSheet.create({
+interface Styles {
+  safeArea: ViewStyle;
+  backgroundImage: ImageStyle;
+  container: ViewStyle;
+  header: ViewStyle;
+  backButton: ViewStyle;
+  title: TextStyle;
+  spacer: ViewStyle;
+  loadingContainer: ViewStyle;
+  loadingText: TextStyle;
+  scrollView: ViewStyle;
+  listContainer: ViewStyle;
+  summaryHeader: ViewStyle;
+  summaryTitle: TextStyle;
+  summarySubtitle: TextStyle;
+  searchContainer: ViewStyle;
+  searchInput: TextStyle;
+  clearButton: ViewStyle;
+  clearButtonText: TextStyle;
+  listContent: ViewStyle;
+  agreementCard: ViewStyle;
+  cardHeader: ViewStyle;
+  cardTitle: TextStyle;
+  infoSection: ViewStyle;
+  infoRow: ViewStyle;
+  infoRowColumn: ViewStyle;
+  infoLabel: TextStyle;
+  infoValue: TextStyle;
+  infoValueDescription: TextStyle;
+  infoValueAmount: TextStyle;
+  divider: ViewStyle;
+  refreshButton: ViewStyle;
+  refreshButtonText: TextStyle;
+  emptyContainer: ViewStyle;
+  emptyText: TextStyle;
+  emptySubtext: TextStyle;
+  retryButton: ViewStyle;
+  retryButtonText: TextStyle;
+  tabBar: ViewStyle;
+  tabItem: ViewStyle;
+  tabLabel: TextStyle;
+  activeTab: TextStyle;
+  accordionContainer: ViewStyle;
+  accordionHeader: ViewStyle;
+  accordionHeaderExpanded: ViewStyle;
+  accordionHeaderLeft: ViewStyle;
+  accordionIcon: ViewStyle;
+  accordionHeaderText: ViewStyle;
+  accordionTitle: TextStyle;
+  accordionSubtitle: TextStyle;
+  accordionStatus: TextStyle;
+  accordionContent: ViewStyle;
+  agreementSection: ViewStyle;
+  sectionHeader: ViewStyle;
+  sectionTitle: TextStyle;
+  sectionContent: ViewStyle;
+}
+
+export default StyleSheet.create<Styles>({
   safeArea: {
     flex: 1,
     backgroundColor: 'transparent',

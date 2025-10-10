@@ -1,23 +1,23 @@
-
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   StatusBar,
   Text,
   View,
   ImageBackground,
   TouchableOpacity,
-  Alert,
   TouchableWithoutFeedback,
-  Platform,
-  BackHandler,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/AppStyles';
-
 import useInactivity from '../hooks/useInactivity';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-export default function BienvenidaScreen({ navigation }) {
-  const { resetTimer, stopTimer } = useInactivity(navigation, 'Bienvenida');
+interface BienvenidaScreenProps {
+  navigation: NativeStackNavigationProp<any>;
+}
+
+const BienvenidaScreen: React.FC<BienvenidaScreenProps> = ({ navigation }) => {
+  const { resetTimer } = useInactivity(navigation, 'Bienvenida');
 
   const handleLoginPress = () => {
     navigation.navigate('Multas');
@@ -56,5 +56,6 @@ export default function BienvenidaScreen({ navigation }) {
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
-}
+};
 
+export default BienvenidaScreen;

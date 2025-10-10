@@ -1,14 +1,43 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, TouchableWithoutFeedback, FlatList, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, FlatList, ImageBackground, ViewStyle, TextStyle } from 'react-native';
 import { TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import BackButton from '../components/BackButton';
 import styles from '../styles/AcuerdoPagoScreenStyles';
-import { useFocusEffect } from '@react-navigation/native';
 import usePaymentAgreements from '../hooks/usePaymentAgreements';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-const AcuerdoPagoScreen = ({ navigation }) => {
+interface PaymentAgreement {
+  id: number;
+  personName: string;
+  documentNumber: string;
+  phoneNumber: string;
+  address: string;
+  neighborhood: string;
+  typeFine: string;
+  infringement: string;
+  agreementStart: string;
+  agreementEnd: string;
+  paymentMethod: string;
+  installments: number;
+  baseAmount: number;
+  monthlyFee: number;
+  outstandingAmount: number;
+  isCoactive: boolean;
+  isPaid: boolean;
+}
+
+interface AcuerdoPagoScreenProps {
+  navigation: NativeStackNavigationProp<any>;
+}
+
+interface RenderAgreementItemProps {
+  item: PaymentAgreement;
+  index: number;
+}
+
+const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => {
   const {
     loading,
     agreementsData,
@@ -23,7 +52,7 @@ const AcuerdoPagoScreen = ({ navigation }) => {
     formatDate,
   } = usePaymentAgreements(navigation);
 
-  const renderAgreementItem = ({ item, index }) => {
+  const renderAgreementItem = ({ item, index }: RenderAgreementItemProps) => {
     const isExpanded = expandedItems[item.id] || false;
     const agreementNumber = index + 1;
 
@@ -36,7 +65,7 @@ const AcuerdoPagoScreen = ({ navigation }) => {
           activeOpacity={0.7}
         >
           <View style={styles.accordionHeaderLeft}>
-            <View style={[styles.accordionIcon, { backgroundColor: item.isPaid ? '#4CAF50' : '#01763C' }]}>
+            <View style={[styles.accordionIcon, { backgroundColor: item.isPaid ? '#4CAF50' : '#01763C' } as ViewStyle]}>
               <Ionicons
                 name={item.isPaid ? "checkmark-circle" : "time"}
                 size={24}
@@ -150,7 +179,7 @@ const AcuerdoPagoScreen = ({ navigation }) => {
                 </View>
                 <View style={styles.infoRow}>
                   <Text style={styles.infoLabel}>Proceso Coactivo:</Text>
-                  <Text style={[styles.infoValue, { color: item.isCoactive ? '#F44336' : '#4CAF50' }]}>
+                  <Text style={[styles.infoValue, { color: item.isCoactive ? '#F44336' : '#4CAF50' } as TextStyle]}>
                     {item.isCoactive ? 'Activo' : 'No Activo'}
                   </Text>
                 </View>
@@ -163,14 +192,14 @@ const AcuerdoPagoScreen = ({ navigation }) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={resetTimer}>
+    <TouchableOpacity activeOpacity={1} onPress={resetTimer}>
       <ImageBackground
         source={require('../img/curva-perfil.png')}
-        style={[styles.backgroundImage, { flex: 1, height: '100%' }]}
+        style={[styles.backgroundImage, { flex: 1, height: '100%' } as ViewStyle]}
         resizeMode="cover"
       >
         <SafeAreaView style={styles.safeArea}>
-          <View style={[styles.container, { flex: 1 }] }>
+          <View style={[styles.container, { flex: 1 } as ViewStyle]}>
             <View style={styles.header}>
               <BackButton style={styles.backButton} onPress={() => navigation.goBack()} />
               <Text style={styles.title}>Acuerdo de Pago</Text>
@@ -261,7 +290,7 @@ const AcuerdoPagoScreen = ({ navigation }) => {
           </View>
         </SafeAreaView>
       </ImageBackground>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   );
 };
 

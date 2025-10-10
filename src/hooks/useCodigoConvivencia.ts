@@ -1,7 +1,16 @@
 import { useState, useMemo } from 'react';
 import useInactivity from './useInactivity';
 
-const defaultLeyes = [
+interface Ley {
+  id: string;
+  titulo: string;
+  descripcion: string;
+  textoCompleto: string;
+  multa: string;
+  articulos: string;
+}
+
+const defaultLeyes: Ley[] = [
   {
     id: '1',
     titulo: 'LEY 1801 DE 2016',
@@ -68,8 +77,15 @@ const defaultLeyes = [
   },
 ];
 
-export default function useCodigoConvivencia(navigation) {
-  const [query, setQuery] = useState('');
+interface UseCodigoConvivenciaReturn {
+  query: string;
+  setQuery: (query: string) => void;
+  filteredLeyes: Ley[];
+  resetTimer: () => void;
+}
+
+export default function useCodigoConvivencia(navigation: any): UseCodigoConvivenciaReturn {
+  const [query, setQuery] = useState<string>('');
 
   const { resetTimer } = useInactivity(navigation, 'Bienvenida');
 

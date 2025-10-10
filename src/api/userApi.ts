@@ -10,7 +10,7 @@ const API_PATH = '/api/Users';
  * @param {string|number} documentTypeId
  * @param {string|number} documentNumber
  */
-export async function buscarUsuarioPorDocumento(documentTypeId, documentNumber) {
+export async function buscarUsuarioPorDocumento(documentTypeId: string | number, documentNumber: string | number): Promise<any | null> {
   if (!documentTypeId || !documentNumber) return null;
   try {
     // Intentar pedir al servidor filtrado por documento
@@ -21,7 +21,7 @@ export async function buscarUsuarioPorDocumento(documentTypeId, documentNumber) 
     // Si la API devolvió una lista, buscar coincidencia exacta
     const encontrado = users.find(u => String(u.documentTypeId) === String(documentTypeId) && String(u.documentNumber) === String(documentNumber)) || null;
     return encontrado;
-  } catch (error) {
+  } catch (error: any) {
     if (error && error.message && error.message.includes('No se pudo conectar')) {
       throw new Error('No se pudo conectar con el servidor de usuarios. Verifica que el backend esté activo y accesible desde el dispositivo.');
     }

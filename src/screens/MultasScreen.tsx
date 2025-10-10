@@ -2,13 +2,12 @@ import React, { useRef, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, Animated, StatusBar, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Modal, Pressable } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import styles from '../styles/MultasScreenStyles';
-
 import { useNavigation } from '@react-navigation/native';
 import useMultas from '../hooks/useMultas';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-
-export default function MultasScreen() {
-  const navigation = useNavigation();
+const MultasScreen: React.FC = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const {
     tipoDocumento,
     setTipoDocumento,
@@ -27,7 +26,7 @@ export default function MultasScreen() {
     tipoDocumentoIdMap,
   } = useMultas(navigation);
   const [isButtonPressed, setIsButtonPressed] = React.useState(false);
-  const [focusedInput, setFocusedInput] = React.useState(null);
+  const [focusedInput, setFocusedInput] = React.useState<string | null>(null);
   // Animated values
   const logoAnim = useRef(new Animated.Value(0)).current; // 0 -> hidden, 1 -> visible
   const cardAnim = useRef(new Animated.Value(0)).current;
@@ -205,4 +204,6 @@ export default function MultasScreen() {
       </View>
     </TouchableWithoutFeedback>
   );
-}
+};
+
+export default MultasScreen;

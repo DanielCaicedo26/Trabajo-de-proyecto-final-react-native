@@ -4,8 +4,22 @@ import styles from '../styles/CodigoConvivenciaScreenStyles';
 import { Ionicons } from '@expo/vector-icons';
 import BackButton from '../components/BackButton';
 import useCodigoConvivencia from '../hooks/useCodigoConvivencia';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-const leyes = [
+interface Ley {
+  id: string;
+  titulo: string;
+  descripcion: string;
+  textoCompleto: string;
+  multa: string;
+  articulos: string;
+}
+
+interface CodigoConvivenciaScreenProps {
+  navigation: NativeStackNavigationProp<any>;
+}
+
+const leyes: Ley[] = [
   {
     id: '1',
     titulo: 'LEY 1801 DE 2016',
@@ -72,7 +86,7 @@ const leyes = [
   },
 ];
 
-const CodigoConvivenciaScreen = ({ navigation }) => {
+const CodigoConvivenciaScreen: React.FC<CodigoConvivenciaScreenProps> = ({ navigation }) => {
   const { query, setQuery, filteredLeyes, resetTimer } = useCodigoConvivencia(navigation);
 
   return (

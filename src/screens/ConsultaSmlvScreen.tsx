@@ -1,11 +1,22 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TouchableOpacity, ImageBackground, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import BackButton from '../components/BackButton';
 import styles from '../styles/ConsultaSmlvScreenStyles';
 import useConsultaSmlv from '../hooks/useConsultaSmlv';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-const ConsultaSmlvScreen = ({ navigation }) => {
+interface Multa {
+  id: string;
+  nombre: string;
+  smdlv: number;
+}
+
+interface ConsultaSmlvScreenProps {
+  navigation: NativeStackNavigationProp<any>;
+}
+
+const ConsultaSmlvScreen: React.FC<ConsultaSmlvScreenProps> = ({ navigation }) => {
   const { multas, resetTimer } = useConsultaSmlv(navigation);
 
   return (

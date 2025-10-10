@@ -1,11 +1,30 @@
 import React from 'react';
-import { View, Text, ScrollView, ImageBackground, TouchableOpacity, Pressable } from 'react-native';
+import { View, Text, ScrollView, ImageBackground, Pressable } from 'react-native';
 import styles from '../styles/DetalleLeyScreenStyles';
 import { Ionicons } from '@expo/vector-icons';
 import BackButton from '../components/BackButton';
 import useDetalleLey from '../hooks/useDetalleLey';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RouteProp } from '@react-navigation/native';
 
-const DetalleLeyScreen = ({ navigation, route }) => {
+interface Ley {
+  titulo: string;
+  descripcion: string;
+  textoCompleto: string;
+  multa: string | null;
+  articulos: string | null;
+}
+
+interface RouteParams {
+  ley?: Ley;
+}
+
+interface DetalleLeyScreenProps {
+  navigation: NativeStackNavigationProp<any>;
+  route: RouteProp<{ params: RouteParams }, 'params'>;
+}
+
+const DetalleLeyScreen: React.FC<DetalleLeyScreenProps> = ({ navigation, route }) => {
   const leyFromRoute = route?.params?.ley;
   const { ley: leyFormatted, resetTimer } = useDetalleLey(navigation, leyFromRoute);
   const ley = leyFormatted || { titulo: '', descripcion: '', textoCompleto: '', multa: null, articulos: null };

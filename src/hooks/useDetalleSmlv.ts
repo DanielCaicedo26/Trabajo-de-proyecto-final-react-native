@@ -3,7 +3,28 @@ import useInactivity from './useInactivity';
 
 const SALARIO_MINIMO = 143500;
 
-export default function useDetalleSmlv(navigation, smdlvFromRoute) {
+interface Formatos {
+  salarioTexto: string;
+  calculoSmdlvTexto: string;
+  valorSmdlvTexto: string;
+  valorTotalTexto: string;
+}
+
+interface UseDetalleSmlvReturn {
+  SALARIO_MINIMO: number;
+  SMLDV: number;
+  smdlv: number;
+  valorSmdlv: number;
+  valorTotal: number;
+  formatos: Formatos;
+  resetTimer: () => void;
+  stopTimer: () => void;
+}
+
+export default function useDetalleSmlv(
+  navigation: any,
+  smdlvFromRoute?: number | null
+): UseDetalleSmlvReturn {
   const { resetTimer, stopTimer } = useInactivity(navigation, 'Bienvenida', 10000);
 
   const SMLDV = Math.round(SALARIO_MINIMO / 30);
@@ -27,7 +48,7 @@ export default function useDetalleSmlv(navigation, smdlvFromRoute) {
         valorTotalTexto: `$${valorTotal.toLocaleString('es-CO')}`,
       },
     };
-  }, [smdlv]);
+  }, [smdlv, SMLDV]);
 
   return { ...valores, resetTimer, stopTimer };
 }

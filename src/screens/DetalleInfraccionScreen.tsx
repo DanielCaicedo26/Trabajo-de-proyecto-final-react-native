@@ -5,13 +5,40 @@ import BackButton from '../components/BackButton';
 import { LinearGradient } from 'expo-linear-gradient';
 import styles from '../styles/DetalleInfraccionScreenStyles';
 import useDetalleInfraccion from '../hooks/useDetalleInfraccion';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RouteProp } from '@react-navigation/native';
 
+interface InfoMultaItem {
+  icon: string;
+  texto: string;
+  valor: string;
+}
 
-const DetalleInfraccionScreen = ({ navigation, route }) => {
+interface Infraccion {
+  tipo: string;
+  descripcion: string;
+  fechaTexto: string;
+  consulta: string;
+  infoMulta: InfoMultaItem[];
+  monto: string;
+  fechaMax: string;
+}
+
+interface RouteParams {
+  infraccion?: Infraccion;
+}
+
+interface DetalleInfraccionScreenProps {
+  navigation: NativeStackNavigationProp<any>;
+  route: RouteProp<{ params: RouteParams }, 'params'>;
+}
+
+const DetalleInfraccionScreen: React.FC<DetalleInfraccionScreenProps> = ({ navigation, route }) => {
   const infraccionFromRoute = route?.params?.infraccion;
   const { infraccion, resetTimer } = useDetalleInfraccion(navigation, infraccionFromRoute);
+
   // `infraccion` can be null when no data provided - provide a fallback shape
-  const fallback = {
+  const fallback: Infraccion = {
     tipo: 'No especificado',
     descripcion: 'Sin observaciones',
     fechaTexto: 'No especificada',
@@ -64,7 +91,7 @@ const DetalleInfraccionScreen = ({ navigation, route }) => {
           {Array.isArray(data.infoMulta) && data.infoMulta.length > 0 ? (
             data.infoMulta.map((item, idx) => (
               <View style={styles.card} key={idx}>
-                <View style={styles.cardIcon}><Ionicons name={item.icon} size={28} color="#01763C" /></View>
+                <View style={styles.cardIcon}><Ionicons name={item.icon as any} size={28} color="#01763C" /></View>
                 <View style={styles.cardInfo}>
                   <Text style={styles.cardTitle}>{item.texto}</Text>
                   <Text style={styles.cardDesc}>{item.valor}</Text>
@@ -100,6 +127,5 @@ const DetalleInfraccionScreen = ({ navigation, route }) => {
     </TouchableWithoutFeedback>
   );
 };
-
 
 export default DetalleInfraccionScreen;

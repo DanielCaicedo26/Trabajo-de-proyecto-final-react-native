@@ -1,8 +1,56 @@
 import { useMemo } from 'react';
 import useInactivity from './useInactivity';
 
+interface InfoMulta {
+  icon: string;
+  texto: string;
+  valor: string;
+}
+
+interface InfraccionInput {
+  typeInfractionName?: string;
+  tipo?: string;
+  type?: string;
+  observations?: string;
+  description?: string;
+  descripcion?: string;
+  valor?: number;
+  amount?: number;
+  monto?: number;
+  fechaMax?: string;
+  dueDate?: string;
+  fecha_max?: string;
+  number?: string;
+  id?: string;
+  fecha?: string;
+  date?: string;
+  dateInfraction?: string;
+  infoMulta?: InfoMulta[];
+  [key: string]: any;
+}
+
+interface InfraccionProcessed extends InfraccionInput {
+  tipo: string;
+  descripcion: string;
+  fechaTexto: string;
+  consulta: string;
+  infoMulta: InfoMulta[];
+  monto: string;
+  fechaMax: string;
+  valorTexto: string;
+}
+
+interface UseDetalleInfraccionReturn {
+  infraccion: InfraccionProcessed | null;
+  resetTimer: () => void;
+  stopTimer: () => void;
+}
+
 // Hook para encapsular lógica mínima de DetalleInfraccion
-export default function useDetalleInfraccion(navigation, infraccionFromRoute) {
+export default function useDetalleInfraccion(
+  navigation: any,
+  infraccionFromRoute: InfraccionInput | null | undefined
+): UseDetalleInfraccionReturn {
   // Reuse the common inactivity hook (default timeout 10s like used elsewhere)
   const { resetTimer, stopTimer } = useInactivity(navigation, 'Bienvenida', 10000);
 
@@ -10,12 +58,12 @@ export default function useDetalleInfraccion(navigation, infraccionFromRoute) {
     if (!infraccionFromRoute) return null;
 
     // Formateos simples que estaban inline en la pantalla
-    const formatCurrency = (value) => {
+    const formatCurrency = (value: number | null | undefined): string => {
       if (value == null) return '-';
       return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(value);
     };
 
-    const formatDate = (iso) => {
+    const formatDate = (iso: string | undefined): string => {
       if (!iso) return '-';
       try {
         const d = new Date(iso);

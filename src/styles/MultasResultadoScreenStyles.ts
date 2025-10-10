@@ -118,14 +118,6 @@ const styles = StyleSheet.create({
     color: '#01763cf8',
     marginLeft: 8,
   },
-   descripcion: {
-     fontSize: 13,
-    color: '#01763C',
-     marginTop: 6,
-     lineHeight: 18,
-     flexShrink: 1,
-     marginRight: 12,
-   },
   priceContainer: {
     minWidth: 90,
     alignItems: 'flex-end',
@@ -153,11 +145,6 @@ const styles = StyleSheet.create({
      paddingVertical: 6,
      alignItems: 'flex-start',
   },
-   metaText: {
-     fontSize: 12,
-     color: '#666',
-     flexShrink: 1,
-   },
   detailLabel: {
       color: '#666',
       flex: 0.30,

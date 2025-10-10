@@ -1,7 +1,31 @@
 import { useMemo } from 'react';
 import useInactivity from './useInactivity';
 
-export default function useDetalleLey(navigation, leyFromRoute) {
+interface LeyInput {
+  descripcion?: string;
+  textoCompleto?: string;
+  multa?: string | null;
+  articulos?: string | null;
+  [key: string]: any;
+}
+
+interface LeyProcessed extends LeyInput {
+  descripcion: string;
+  textoCompleto: string;
+  multa: string | null;
+  articulos: string | null;
+}
+
+interface UseDetalleLeyReturn {
+  ley: LeyProcessed | null;
+  resetTimer: () => void;
+  stopTimer: () => void;
+}
+
+export default function useDetalleLey(
+  navigation: any,
+  leyFromRoute: LeyInput | null | undefined
+): UseDetalleLeyReturn {
   const { resetTimer, stopTimer } = useInactivity(navigation, 'Bienvenida', 10000);
 
   const ley = useMemo(() => {

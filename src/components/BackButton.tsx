@@ -1,13 +1,21 @@
 import React from 'react';
-import { TouchableOpacity, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, StyleSheet, ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const BackButton = ({ onPress, size = 24, color = '#01763C', style }) => {
+interface BackButtonProps {
+  onPress: () => void;
+  size?: number;
+  color?: string;
+  style?: ViewStyle;
+}
+
+const BackButton: React.FC<BackButtonProps> = ({ onPress, size = 24, color = '#01763C', style }) => {
   // Evitar que el style pasado sobrescriba las propiedades visuales del botón
   // Extraemos sólo propiedades de layout/posición comunes que el usuario podría pasar
-  const { margin, marginTop, marginBottom, marginLeft, marginRight, alignSelf, position, top, left, right, bottom } = (StyleSheet.flatten(style) || {});
+  const flattenedStyle = StyleSheet.flatten(style) || {};
+  const { margin, marginTop, marginBottom, marginLeft, marginRight, alignSelf, position, top, left, right, bottom } = flattenedStyle;
 
-  const positioning = { margin, marginTop, marginBottom, marginLeft, marginRight, alignSelf, position, top, left, right, bottom };
+  const positioning: ViewStyle = { margin, marginTop, marginBottom, marginLeft, marginRight, alignSelf, position, top, left, right, bottom };
 
   return (
     <TouchableOpacity onPress={onPress} style={[styles.button, positioning]}>

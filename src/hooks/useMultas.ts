@@ -1,21 +1,48 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, MutableRefObject } from 'react';
 import { Alert } from 'react-native';
 import { consultarInfracciones } from '../api/infraccionesApi';
 import { buscarUsuarioPorDocumento } from '../api/userApi';
 import { setDocumentInfo, setUser } from '../api/userCache';
 import { setInfracciones } from '../api/infraccionesCache';
 
-export default function useMultas(navigation) {
-  const [tipoDocumento, setTipoDocumento] = useState('');
-  const [numeroDocumento, setNumeroDocumento] = useState('');
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [showTermsModal, setShowTermsModal] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+type TipoDocumento = 'cc' | 'ce' | 'ti' | '';
 
-  const timerRef = useRef(null);
+interface TipoDocumentoIdMap {
+  [key: string]: number;
+  cc: 1;
+  ce: 2;
+  ti: 3;
+}
 
-  const tipoDocumentoIdMap = {
+interface UseMultasReturn {
+  tipoDocumento: TipoDocumento;
+  setTipoDocumento: (tipo: TipoDocumento) => void;
+  numeroDocumento: string;
+  setNumeroDocumento: (numero: string) => void;
+  acceptedTerms: boolean;
+  setAcceptedTerms: (accepted: boolean) => void;
+  showTermsModal: boolean;
+  setShowTermsModal: (show: boolean) => void;
+  loading: boolean;
+  error: string;
+  setError: (error: string) => void;
+  handleConsultarMultas: () => Promise<void>;
+  resetTimer: () => void;
+  timerRef: MutableRefObject<NodeJS.Timeout | null>;
+  tipoDocumentoIdMap: TipoDocumentoIdMap;
+}
+
+export default function useMultas(navigation: any): UseMultasReturn {
+  const [tipoDocumento, setTipoDocumento] = useState<TipoDocumento>('');
+  const [numeroDocumento, setNumeroDocumento] = useState<string>('');
+  const [acceptedTerms, setAcceptedTerms] = useState<boolean>(false);
+  const [showTermsModal, setShowTermsModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
+
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const tipoDocumentoIdMap: TipoDocumentoIdMap = {
     cc: 1,
     ce: 2,
     ti: 3
@@ -62,8 +89,8 @@ export default function useMultas(navigation) {
         setLoading(false);
         return;
       }
-      const multas = await consultarInfracciones(documentTypeId, numeroDocumento);
-      const multasUsuario = (Array.isArray(multas) ? multas : []).filter(m => {
+      const multas = await consultarInfracciones({ documentTypeId, documentNumber: numeroDocumento });
+      const multasUsuario = (Array.isArray(multas) ? multas : []).filter((m: any) => {
         if (usuario?.id != null && m?.userId != null) {
           return String(m.userId) === String(usuario.id);
         }
@@ -95,12 +122,12 @@ export default function useMultas(navigation) {
       setUser(enrichedUser);
       setInfracciones(multasUsuario);
       navigation.navigate('MultasResultado', { multas: multasUsuario });
-    } catch (err) {
+    } catch (err: any) {
       setError('Error: ' + (err?.message || JSON.stringify(err)));
     } finally {
       setLoading(false);
     }
-  }, [tipoDocumento, numeroDocumento, navigation]);
+  }, [tipoDocumento, numeroDocumento, navigation, tipoDocumentoIdMap]);
 
   return {
     tipoDocumento,

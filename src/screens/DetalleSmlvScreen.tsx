@@ -4,8 +4,19 @@ import { Ionicons } from '@expo/vector-icons';
 import BackButton from '../components/BackButton';
 import styles from '../styles/DetalleSmlvScreenStyles';
 import useDetalleSmlv from '../hooks/useDetalleSmlv';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RouteProp } from '@react-navigation/native';
 
-const DetalleSmlvScreen = ({ navigation, route }) => {
+interface RouteParams {
+  smdlv?: number;
+}
+
+interface DetalleSmlvScreenProps {
+  navigation: NativeStackNavigationProp<any>;
+  route: RouteProp<{ params: RouteParams }, 'params'>;
+}
+
+const DetalleSmlvScreen: React.FC<DetalleSmlvScreenProps> = ({ navigation, route }) => {
   const smdlvFromRoute = route?.params?.smdlv;
   const { SALARIO_MINIMO, SMLDV, smdlv, valorSmdlv, valorTotal, formatos, resetTimer } = useDetalleSmlv(navigation, smdlvFromRoute);
 
