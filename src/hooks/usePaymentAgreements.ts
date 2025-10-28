@@ -69,13 +69,41 @@ export default function usePaymentAgreements(navigation: any): UsePaymentAgreeme
     setExpandedItems(prev => ({ ...prev, [agreementId]: !prev[agreementId] }));
   }, []);
 
+  const showInactivityAlert = useCallback(() => {
+    Alert.alert(
+      'Inactividad',
+      '¿Deseas continuar en la sesión o cerrar sesión por inactividad?',
+      [
+        {
+          text: 'Cerrar sesión',
+          style: 'destructive',
+          onPress: () => {
+            navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
+          },
+        },
+        {
+          text: 'Seguir en la sesión',
+          style: 'cancel',
+          onPress: () => {
+            resetTimer();
+          },
+        },
+      ]
+    );
+  }, [navigation]);
+
+  const resetTimer = useCallback(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(showInactivityAlert, 300000); // 5 minutos
+  }, [showInactivityAlert]);
+
   useEffect(() => {
     fetchPaymentAgreements();
     resetTimer();
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [fetchPaymentAgreements]);
+  }, [fetchPaymentAgreements, resetTimer]);
 
   // Debounce search
   useEffect(() => {
@@ -117,35 +145,7 @@ export default function usePaymentAgreements(navigation: any): UsePaymentAgreeme
       resetTimer();
     });
     return () => unsubscribe && unsubscribe();
-  }, [navigation]);
-
-  const showInactivityAlert = useCallback(() => {
-    Alert.alert(
-      'Inactividad',
-      '¿Deseas continuar en la sesión o cerrar sesión por inactividad?',
-      [
-        {
-          text: 'Cerrar sesión',
-          style: 'destructive',
-          onPress: () => {
-            navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
-          },
-        },
-        {
-          text: 'Seguir en la sesión',
-          style: 'cancel',
-          onPress: () => {
-            resetTimer();
-          },
-        },
-      ]
-    );
-  }, [navigation]);
-
-  const resetTimer = useCallback(() => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(showInactivityAlert, 300000); // 5 minutos
-  }, [showInactivityAlert]);
+  }, [navigation, resetTimer]);
 
   const formatCurrency = useCallback((amount: number): string => {
     return new Intl.NumberFormat('es-CO', {

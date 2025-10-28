@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, FlatList, ImageBackground, ViewStyle, TextStyle } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView, ImageBackground, ViewStyle, TextStyle } from 'react-native';
 import { TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,32 +9,27 @@ import usePaymentAgreements from '../hooks/usePaymentAgreements';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 interface PaymentAgreement {
-  id: number;
-  personName: string;
-  documentNumber: string;
-  phoneNumber: string;
-  address: string;
-  neighborhood: string;
-  typeFine: string;
-  infringement: string;
-  agreementStart: string;
-  agreementEnd: string;
-  paymentMethod: string;
-  installments: number;
-  baseAmount: number;
-  monthlyFee: number;
-  outstandingAmount: number;
-  isCoactive: boolean;
-  isPaid: boolean;
+  id: number | string;
+  personName?: string;
+  documentNumber?: string;
+  phoneNumber?: string;
+  address?: string;
+  neighborhood?: string;
+  typeFine?: string;
+  infringement?: string;
+  agreementStart?: string;
+  agreementEnd?: string;
+  paymentMethod?: string;
+  installments?: number;
+  baseAmount?: number;
+  monthlyFee?: number;
+  outstandingAmount?: number;
+  isCoactive?: boolean;
+  isPaid?: boolean;
 }
 
 interface AcuerdoPagoScreenProps {
   navigation: NativeStackNavigationProp<any>;
-}
-
-interface RenderAgreementItemProps {
-  item: PaymentAgreement;
-  index: number;
 }
 
 const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => {
@@ -52,12 +47,12 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
     formatDate,
   } = usePaymentAgreements(navigation);
 
-  const renderAgreementItem = ({ item, index }: RenderAgreementItemProps) => {
+  const renderAgreementItem = (item: PaymentAgreement, index: number) => {
     const isExpanded = expandedItems[item.id] || false;
     const agreementNumber = index + 1;
 
     return (
-      <View style={styles.accordionContainer}>
+      <View key={`agreement-${item.id}-${index}`} style={styles.accordionContainer}>
         {/* Header del acordeón */}
         <TouchableOpacity
           style={[styles.accordionHeader, isExpanded && styles.accordionHeaderExpanded]}
@@ -75,7 +70,7 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
             <View style={styles.accordionHeaderText}>
               <Text style={styles.accordionTitle}>Acuerdo #{agreementNumber}</Text>
               <Text style={styles.accordionSubtitle}>
-                {item.typeFine} • {formatCurrency(item.outstandingAmount)}
+                {item.typeFine || 'Sin tipo'} • {formatCurrency(item.outstandingAmount ?? 0)}
               </Text>
               <Text style={styles.accordionStatus}>
                 {item.isPaid ? 'Pagado' : 'Pendiente'}
@@ -101,19 +96,21 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
               <View style={styles.sectionContent}>
                 <View style={styles.infoRow}>
                   <Text style={styles.infoLabel}>Nombre:</Text>
-                  <Text style={styles.infoValue}>{item.personName}</Text>
+                  <Text style={styles.infoValue}>{item.personName || 'No disponible'}</Text>
                 </View>
                 <View style={styles.infoRow}>
                   <Text style={styles.infoLabel}>Documento:</Text>
-                  <Text style={styles.infoValue}>{item.documentNumber}</Text>
+                  <Text style={styles.infoValue}>{item.documentNumber || 'No disponible'}</Text>
                 </View>
                 <View style={styles.infoRow}>
                   <Text style={styles.infoLabel}>Teléfono:</Text>
-                  <Text style={styles.infoValue}>{item.phoneNumber}</Text>
+                  <Text style={styles.infoValue}>{item.phoneNumber || 'No disponible'}</Text>
                 </View>
                 <View style={styles.infoRowColumn}>
                   <Text style={styles.infoLabel}>Dirección:</Text>
-                  <Text style={styles.infoValueDescription}>{item.address}, {item.neighborhood}</Text>
+                  <Text style={styles.infoValueDescription}>
+                    {item.address || 'No disponible'}{item.neighborhood ? `, ${item.neighborhood}` : ''}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -167,15 +164,15 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
               <View style={styles.sectionContent}>
                 <View style={styles.infoRow}>
                   <Text style={styles.infoLabel}>Monto Base:</Text>
-                  <Text style={styles.infoValueAmount}>{formatCurrency(item.baseAmount)}</Text>
+                  <Text style={styles.infoValueAmount}>{formatCurrency(item.baseAmount ?? 0)}</Text>
                 </View>
                 <View style={styles.infoRow}>
                   <Text style={styles.infoLabel}>Cuota Mensual:</Text>
-                  <Text style={styles.infoValueAmount}>{formatCurrency(item.monthlyFee)}</Text>
+                  <Text style={styles.infoValueAmount}>{formatCurrency(item.monthlyFee ?? 0)}</Text>
                 </View>
                 <View style={styles.infoRow}>
                   <Text style={styles.infoLabel}>Saldo Pendiente:</Text>
-                  <Text style={styles.infoValueAmount}>{formatCurrency(item.outstandingAmount)}</Text>
+                  <Text style={styles.infoValueAmount}>{formatCurrency(item.outstandingAmount ?? 0)}</Text>
                 </View>
                 <View style={styles.infoRow}>
                   <Text style={styles.infoLabel}>Proceso Coactivo:</Text>
@@ -192,14 +189,19 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
   };
 
   return (
-    <TouchableOpacity activeOpacity={1} onPress={resetTimer}>
+    <TouchableOpacity activeOpacity={1} onPress={resetTimer} style={{ flex: 1 }}>
       <ImageBackground
         source={require('../img/curva-perfil.png')}
-        style={[styles.backgroundImage, { flex: 1, height: '100%' } as ViewStyle]}
+        style={styles.backgroundImage}
         resizeMode="cover"
       >
         <SafeAreaView style={styles.safeArea}>
-          <View style={[styles.container, { flex: 1 } as ViewStyle]}>
+          <ScrollView 
+            style={styles.scrollView}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 1 }}
+          >
+            {/* Header */}
             <View style={styles.header}>
               <BackButton style={styles.backButton} onPress={() => navigation.goBack()} />
               <Text style={styles.title}>Acuerdo de Pago</Text>
@@ -234,27 +236,21 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
               )}
             </View>
 
+            {/* Contenido principal */}
             {loading ? (
               <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#01763C" />
                 <Text style={styles.loadingText}>Cargando acuerdos de pago...</Text>
               </View>
             ) : filteredData.length > 0 ? (
-              <View style={styles.listContainer}>
+              <View style={styles.container}>
                 <View style={styles.summaryHeader}>
                   <Text style={styles.summaryTitle}>Mis Acuerdos de Pago</Text>
                   <Text style={styles.summarySubtitle}>
                     {filteredData.length} acuerdo{filteredData.length !== 1 ? 's' : ''} encontrado{filteredData.length !== 1 ? 's' : ''}
                   </Text>
                 </View>
-
-                <FlatList
-                  data={filteredData}
-                  keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
-                  renderItem={renderAgreementItem}
-                  showsVerticalScrollIndicator={false}
-                  contentContainerStyle={styles.listContent}
-                />
+                {filteredData.map((item, index) => renderAgreementItem(item, index))}
               </View>
             ) : (
               <View style={styles.emptyContainer}>
@@ -271,9 +267,12 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
                 </TouchableOpacity>
               </View>
             )}
-          </View>
 
-          {/* tabBar dentro del SafeAreaView para que el fondo lo cubra */}
+            {/* Espacio para el tabBar */}
+            <View style={{ height: 100 }} />
+          </ScrollView>
+
+          {/* Tab Bar */}
           <View style={styles.tabBar}>
             <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('MultasResultado')}>
               <Ionicons name="list-outline" size={24} color="#01763C" />

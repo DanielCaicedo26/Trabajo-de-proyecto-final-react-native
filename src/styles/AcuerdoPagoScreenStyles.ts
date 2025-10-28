@@ -5,6 +5,7 @@ const { width, height } = Dimensions.get('window');
 interface Styles {
   safeArea: ViewStyle;
   backgroundImage: ImageStyle;
+  scrollView: ViewStyle;
   container: ViewStyle;
   header: ViewStyle;
   backButton: ViewStyle;
@@ -12,8 +13,6 @@ interface Styles {
   spacer: ViewStyle;
   loadingContainer: ViewStyle;
   loadingText: TextStyle;
-  scrollView: ViewStyle;
-  listContainer: ViewStyle;
   summaryHeader: ViewStyle;
   summaryTitle: TextStyle;
   summarySubtitle: TextStyle;
@@ -21,20 +20,6 @@ interface Styles {
   searchInput: TextStyle;
   clearButton: ViewStyle;
   clearButtonText: TextStyle;
-  listContent: ViewStyle;
-  agreementCard: ViewStyle;
-  cardHeader: ViewStyle;
-  cardTitle: TextStyle;
-  infoSection: ViewStyle;
-  infoRow: ViewStyle;
-  infoRowColumn: ViewStyle;
-  infoLabel: TextStyle;
-  infoValue: TextStyle;
-  infoValueDescription: TextStyle;
-  infoValueAmount: TextStyle;
-  divider: ViewStyle;
-  refreshButton: ViewStyle;
-  refreshButtonText: TextStyle;
   emptyContainer: ViewStyle;
   emptyText: TextStyle;
   emptySubtext: TextStyle;
@@ -58,6 +43,12 @@ interface Styles {
   sectionHeader: ViewStyle;
   sectionTitle: TextStyle;
   sectionContent: ViewStyle;
+  infoRow: ViewStyle;
+  infoRowColumn: ViewStyle;
+  infoLabel: TextStyle;
+  infoValue: TextStyle;
+  infoValueDescription: TextStyle;
+  infoValueAmount: TextStyle;
 }
 
 export default StyleSheet.create<Styles>({
@@ -69,10 +60,13 @@ export default StyleSheet.create<Styles>({
     flex: 1,
     width: '100%',
   },
-  container: {
+  scrollView: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingBottom: 100,
+  },
+  container: {
+    flex: 1,
+    paddingHorizontal: 0,
   },
   header: {
     flexDirection: 'row',
@@ -108,7 +102,6 @@ export default StyleSheet.create<Styles>({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 260,
   },
   loadingText: {
     marginTop: 15,
@@ -116,17 +109,9 @@ export default StyleSheet.create<Styles>({
     color: '#01763C',
     textAlign: 'center',
   },
-  scrollView: {
-    flex: 1,
-    paddingBottom: 20,
-  },
-  listContainer: {
-    flex: 1,
-    paddingBottom: 20,
-  },
   summaryHeader: {
     paddingVertical: 15,
-    paddingHorizontal: 5,
+    paddingHorizontal: 20,
     marginBottom: 10,
   },
   summaryTitle: {
@@ -170,108 +155,10 @@ export default StyleSheet.create<Styles>({
     fontSize: 13,
     fontWeight: '600',
   },
-  listContent: {
-    paddingBottom: 260,
-  },
-  agreementCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    marginBottom: 20,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 6,
-    borderLeftWidth: 4,
-    borderLeftColor: '#01763C',
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-    paddingBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E8ECEF',
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#01763C',
-    marginLeft: 12,
-    flex: 1,
-  },
-  infoSection: {
-    gap: 15,
-  },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 8,
-  },
-  infoRowColumn: {
-    paddingVertical: 8,
-  },
-  infoLabel: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#01763C',
-    flex: 1,
-  },
-  infoValue: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#01763C',
-    flex: 2,
-    textAlign: 'right',
-  },
-  infoValueDescription: {
-    fontSize: 15,
-    fontWeight: '400',
-    color: '#01763C',
-    marginTop: 8,
-    lineHeight: 22,
-    textAlign: 'justify',
-  },
-  infoValueAmount: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#01763C',
-    flex: 2,
-    textAlign: 'right',
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#E8ECEF',
-    marginVertical: 5,
-  },
-  refreshButton: {
-    backgroundColor: '#01763C',
-    borderRadius: 12,
-    padding: 16,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-    shadowColor: '#01763C',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 6,
-  },
-  refreshButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-    marginLeft: 8,
-  },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 260,
     paddingHorizontal: 40,
   },
   emptyText: {
@@ -304,10 +191,6 @@ export default StyleSheet.create<Styles>({
     textAlign: 'center',
   },
   tabBar: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -338,11 +221,11 @@ export default StyleSheet.create<Styles>({
     color: '#01763C',
     fontWeight: '700',
   },
-  // Estilos para acordeones
   accordionContainer: {
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
     marginBottom: 15,
+    marginHorizontal: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -419,5 +302,42 @@ export default StyleSheet.create<Styles>({
   },
   sectionContent: {
     gap: 10,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  infoRowColumn: {
+    paddingVertical: 8,
+  },
+  infoLabel: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#01763C',
+    flex: 1,
+  },
+  infoValue: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#01763C',
+    flex: 2,
+    textAlign: 'right',
+  },
+  infoValueDescription: {
+    fontSize: 15,
+    fontWeight: '400',
+    color: '#01763C',
+    marginTop: 8,
+    lineHeight: 22,
+    textAlign: 'justify',
+  },
+  infoValueAmount: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#01763C',
+    flex: 2,
+    textAlign: 'right',
   },
 });
