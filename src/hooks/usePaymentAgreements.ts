@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, MutableRefObject } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Alert } from 'react-native';
 import { getUser, getDocumentInfo } from '../api/userCache';
 import { fetchPaymentAgreementsByDocument } from '../api/paymentAgreementApi';

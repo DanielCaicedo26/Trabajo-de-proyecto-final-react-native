@@ -5,16 +5,9 @@ import BackButton from '../components/BackButton';
 import { LinearGradient } from 'expo-linear-gradient';
 import styles from '../styles/DetalleInfraccionScreenStyles';
 import useDetalleInfraccion from '../hooks/useDetalleInfraccion';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/native';
+import { DetalleInfraccionScreenProps, InfoMultaItem } from '../types/navigation';
 
-interface InfoMultaItem {
-  icon: string;
-  texto: string;
-  valor: string;
-}
-
-interface Infraccion {
+interface InfraccionDisplay {
   tipo: string;
   descripcion: string;
   fechaTexto: string;
@@ -24,21 +17,12 @@ interface Infraccion {
   fechaMax: string;
 }
 
-interface RouteParams {
-  infraccion?: Infraccion;
-}
-
-interface DetalleInfraccionScreenProps {
-  navigation: NativeStackNavigationProp<any>;
-  route: RouteProp<{ params: RouteParams }, 'params'>;
-}
-
 const DetalleInfraccionScreen: React.FC<DetalleInfraccionScreenProps> = ({ navigation, route }) => {
   const infraccionFromRoute = route?.params?.infraccion;
   const { infraccion, resetTimer } = useDetalleInfraccion(navigation, infraccionFromRoute);
 
   // `infraccion` can be null when no data provided - provide a fallback shape
-  const fallback: Infraccion = {
+  const fallback: InfraccionDisplay = {
     tipo: 'No especificado',
     descripcion: 'Sin observaciones',
     fechaTexto: 'No especificada',

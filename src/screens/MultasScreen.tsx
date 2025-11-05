@@ -4,10 +4,10 @@ import { Picker } from '@react-native-picker/picker';
 import styles from '../styles/MultasScreenStyles';
 import { useNavigation } from '@react-navigation/native';
 import useMultas from '../hooks/useMultas';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { MultasNavigationProp } from '../types/navigation';
 
 const MultasScreen: React.FC = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const navigation = useNavigation<MultasNavigationProp>();
   const {
     tipoDocumento,
     setTipoDocumento,
@@ -19,11 +19,9 @@ const MultasScreen: React.FC = () => {
     setShowTermsModal,
     loading,
     error,
-    setError,
     handleConsultarMultas,
     resetTimer,
     timerRef,
-    tipoDocumentoIdMap,
   } = useMultas(navigation);
   const [isButtonPressed, setIsButtonPressed] = React.useState(false);
   const [focusedInput, setFocusedInput] = React.useState<string | null>(null);

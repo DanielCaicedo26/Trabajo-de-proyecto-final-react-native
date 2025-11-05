@@ -254,6 +254,11 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
                   renderItem={renderAgreementItem}
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={styles.listContent}
+                  maxToRenderPerBatch={8}
+                  windowSize={3}
+                  initialNumToRender={8}
+                  removeClippedSubviews={true}
+                  updateCellsBatchingPeriod={50}
                 />
               </View>
             ) : (

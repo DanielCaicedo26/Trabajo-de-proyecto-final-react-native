@@ -2,17 +2,12 @@ import { useState, useRef, useCallback, MutableRefObject } from 'react';
 import { Alert } from 'react-native';
 import { consultarInfracciones } from '../api/infraccionesApi';
 import { buscarUsuarioPorDocumento } from '../api/userApi';
+import { getDocumentTypeId } from '../api/documentTypeApi';
 import { setDocumentInfo, setUser } from '../api/userCache';
 import { setInfracciones } from '../api/infraccionesCache';
+import { RootNavigationProp, Infraccion } from '../types/navigation';
 
-type TipoDocumento = 'cc' | 'ce' | 'ti' | '';
-
-interface TipoDocumentoIdMap {
-  [key: string]: number;
-  cc: 1;
-  ce: 2;
-  ti: 3;
-}
+type TipoDocumento = 'CC' | 'CE' | 'TI' | 'PAS' | '';
 
 interface UseMultasReturn {
   tipoDocumento: TipoDocumento;
@@ -29,10 +24,9 @@ interface UseMultasReturn {
   handleConsultarMultas: () => Promise<void>;
   resetTimer: () => void;
   timerRef: MutableRefObject<NodeJS.Timeout | null>;
-  tipoDocumentoIdMap: TipoDocumentoIdMap;
 }
 
-export default function useMultas(navigation: any): UseMultasReturn {
+export default function useMultas(navigation: RootNavigationProp): UseMultasReturn {
   const [tipoDocumento, setTipoDocumento] = useState<TipoDocumento>('');
   const [numeroDocumento, setNumeroDocumento] = useState<string>('');
   const [acceptedTerms, setAcceptedTerms] = useState<boolean>(false);
@@ -42,41 +36,38 @@ export default function useMultas(navigation: any): UseMultasReturn {
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const tipoDocumentoIdMap: TipoDocumentoIdMap = {
-    cc: 1,
-    ce: 2,
-    ti: 3
-  };
-
-  const showInactivityAlert = useCallback(() => {
-    Alert.alert(
-      'Inactividad',
-      '¿Deseas continuar en la sesión o cerrar sesión por inactividad?',
-      [
-        {
-          text: 'Cerrar sesión',
-          style: 'destructive',
-          onPress: () => navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] }),
-        },
-        {
-          text: 'Seguir en la sesión',
-          style: 'cancel',
-          onPress: () => resetTimer(),
-        },
-      ]
-    );
-  }, [navigation]);
-
   const resetTimer = useCallback(() => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(showInactivityAlert, 300000); // 5 minutos
-  }, [showInactivityAlert]);
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    timerRef.current = setTimeout(() => {
+      Alert.alert(
+        'Inactividad',
+        '¿Deseas continuar en la sesión o cerrar sesión por inactividad?',
+        [
+          {
+            text: 'Cerrar sesión',
+            style: 'destructive',
+            onPress: () => navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] }),
+          },
+          {
+            text: 'Seguir en la sesión',
+            style: 'cancel',
+            onPress: () => resetTimer(),
+          },
+        ]
+      );
+    }, 300000);
+  }, [navigation]);
 
   const handleConsultarMultas = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
-      const documentTypeId = tipoDocumentoIdMap[tipoDocumento];
+      // Obtener ID del tipo de documento desde la base de datos
+      const documentTypeId = await getDocumentTypeId(tipoDocumento);
+
       if (!documentTypeId || !numeroDocumento) {
         setError('Selecciona tipo y número de documento.');
         setLoading(false);
@@ -90,7 +81,7 @@ export default function useMultas(navigation: any): UseMultasReturn {
         return;
       }
       const multas = await consultarInfracciones({ documentTypeId, documentNumber: numeroDocumento });
-      const multasUsuario = (Array.isArray(multas) ? multas : []).filter((m: any) => {
+      const multasUsuario = (Array.isArray(multas) ? multas : []).filter((m: Infraccion) => {
         if (usuario?.id != null && m?.userId != null) {
           return String(m.userId) === String(usuario.id);
         }
@@ -127,7 +118,7 @@ export default function useMultas(navigation: any): UseMultasReturn {
     } finally {
       setLoading(false);
     }
-  }, [tipoDocumento, numeroDocumento, navigation, tipoDocumentoIdMap]);
+  }, [tipoDocumento, numeroDocumento, navigation]);
 
   return {
     tipoDocumento,
@@ -144,6 +135,5 @@ export default function useMultas(navigation: any): UseMultasReturn {
     handleConsultarMultas,
     resetTimer,
     timerRef,
-    tipoDocumentoIdMap,
   };
 }

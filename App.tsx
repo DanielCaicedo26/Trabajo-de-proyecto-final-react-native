@@ -3,6 +3,7 @@ import 'react-native-gesture-handler';
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { RootStackParamList } from './src/types/navigation';
 import BienvenidaScreen from './src/screens/BienvenidaScreen';
 import MultasScreen from './src/screens/MultasScreen';
 import MultasResultadoScreen from './src/screens/MultasResultadoScreen';
@@ -13,7 +14,7 @@ import CodigoConvivenciaScreen from './src/screens/CodigoConvivenciaScreen';
 import DetalleLeyScreen from './src/screens/DetalleLeyScreen';
 import ConsultaSmlvScreen from './src/screens/ConsultaSmlvScreen';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (

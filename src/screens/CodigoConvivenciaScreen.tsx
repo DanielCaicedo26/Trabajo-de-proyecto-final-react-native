@@ -114,6 +114,11 @@ const CodigoConvivenciaScreen: React.FC<CodigoConvivenciaScreenProps> = ({ navig
             <FlatList
               data={filteredLeyes}
               keyExtractor={item => item.id}
+              maxToRenderPerBatch={10}
+              windowSize={5}
+              initialNumToRender={10}
+              removeClippedSubviews={true}
+              updateCellsBatchingPeriod={50}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={styles.card}

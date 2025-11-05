@@ -3,35 +3,17 @@ import { View, Text, TextInput, FlatList, ImageBackground, TouchableOpacity, Tou
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../styles/MultasResultadoScreenStyles';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import useMultasResultado from '../hooks/useMultasResultado';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
-interface Multa {
-  id: number;
-  typeInfractionName?: string;
-  observations?: string;
-  firstName?: string;
-  lastName?: string;
-  dateInfraction?: string;
-  date?: string;
-  value?: number;
-  amount?: number;
-  total?: number;
-}
-
-interface RouteParams {
-  [key: string]: any;
-}
+import { MultasResultadoNavigationProp, MultasResultadoRouteProp } from '../types/navigation';
 
 const MultasResultadoScreen: React.FC = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
-  const route = useRoute<RouteProp<{ params: RouteParams }, 'params'>>();
+  const navigation = useNavigation<MultasResultadoNavigationProp>();
+  const route = useRoute<MultasResultadoRouteProp>();
   const {
     displayName,
     docNumber,
     query,
-    setQuery,
     onQueryChange,
     filteredMultas,
     selectedIds,
@@ -85,6 +67,11 @@ const MultasResultadoScreen: React.FC = () => {
               data={filteredMultas}
               keyExtractor={(item, idx) => item.id?.toString() || idx.toString()}
               contentContainerStyle={{ paddingBottom: 260 }}
+              maxToRenderPerBatch={10}
+              windowSize={5}
+              initialNumToRender={10}
+              removeClippedSubviews={true}
+              updateCellsBatchingPeriod={50}
               renderItem={({ item }) => {
                 const selected = selectedIds.includes(item.id);
                 return (
