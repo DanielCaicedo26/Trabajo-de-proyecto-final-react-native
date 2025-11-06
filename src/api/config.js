@@ -11,7 +11,7 @@ try {
 }
 
 // Valor por defecto (mantener el comportamiento anterior si no hay env configurada)
-const DEFAULT_API_HOST = 'http://192.168.1.5:7286';
+const DEFAULT_API_HOST = 'http://172.30.5.32:7286';
 
 export const API_HOST = envHost || DEFAULT_API_HOST;
 
