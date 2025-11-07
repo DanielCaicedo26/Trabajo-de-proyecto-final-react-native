@@ -1,6 +1,66 @@
 import { StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 
-export default StyleSheet.create({
+const { width, height } = Dimensions.get('window');
+
+interface Styles {
+  safeArea: ViewStyle;
+  backgroundImage: ImageStyle;
+  container: ViewStyle;
+  header: ViewStyle;
+  backButton: ViewStyle;
+  title: TextStyle;
+  spacer: ViewStyle;
+  loadingContainer: ViewStyle;
+  loadingText: TextStyle;
+  scrollView: ViewStyle;
+  listContainer: ViewStyle;
+  summaryHeader: ViewStyle;
+  summaryTitle: TextStyle;
+  summarySubtitle: TextStyle;
+  searchContainer: ViewStyle;
+  searchInput: TextStyle;
+  clearButton: ViewStyle;
+  clearButtonText: TextStyle;
+  listContent: ViewStyle;
+  agreementCard: ViewStyle;
+  cardHeader: ViewStyle;
+  cardTitle: TextStyle;
+  infoSection: ViewStyle;
+  infoRow: ViewStyle;
+  infoRowColumn: ViewStyle;
+  infoLabel: TextStyle;
+  infoValue: TextStyle;
+  infoValueDescription: TextStyle;
+  infoValueAmount: TextStyle;
+  divider: ViewStyle;
+  refreshButton: ViewStyle;
+  refreshButtonText: TextStyle;
+  emptyContainer: ViewStyle;
+  emptyText: TextStyle;
+  emptySubtext: TextStyle;
+  retryButton: ViewStyle;
+  retryButtonText: TextStyle;
+  tabBar: ViewStyle;
+  tabItem: ViewStyle;
+  tabLabel: TextStyle;
+  activeTab: TextStyle;
+  accordionContainer: ViewStyle;
+  accordionHeader: ViewStyle;
+  accordionHeaderExpanded: ViewStyle;
+  accordionHeaderLeft: ViewStyle;
+  accordionIcon: ViewStyle;
+  accordionHeaderText: ViewStyle;
+  accordionTitle: TextStyle;
+  accordionSubtitle: TextStyle;
+  accordionStatus: TextStyle;
+  accordionContent: ViewStyle;
+  agreementSection: ViewStyle;
+  sectionHeader: ViewStyle;
+  sectionTitle: TextStyle;
+  sectionContent: ViewStyle;
+}
+
+export default StyleSheet.create<Styles>({
   safeArea: {
     flex: 1,
     backgroundColor: 'transparent',
@@ -8,12 +68,12 @@ export default StyleSheet.create({
   backgroundImage: {
     flex: 1,
     width: '100%',
-  } as ImageStyle,
+  },
   container: {
     flex: 1,
     paddingHorizontal: 20,
     paddingBottom: 100,
-  } as ViewStyle,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -49,26 +109,26 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingBottom: 260,
-  } as ViewStyle,
+  },
   loadingText: {
     marginTop: 15,
     fontSize: 16,
     color: '#01763C',
     textAlign: 'center',
-  } as TextStyle,
+  },
   scrollView: {
     flex: 1,
     paddingBottom: 20,
-  } as ViewStyle,
+  },
   listContainer: {
     flex: 1,
     paddingBottom: 20,
-  } as ViewStyle,
+  },
   summaryHeader: {
-    paddingVertical: 12,
+    paddingVertical: 15,
     paddingHorizontal: 5,
-    marginBottom: 16,
-  } as ViewStyle,
+    marginBottom: 10,
+  },
   summaryTitle: {
     fontSize: 22,
     fontWeight: '700',
@@ -114,10 +174,10 @@ export default StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 13,
     fontWeight: '600',
-  } as TextStyle,
+  },
   listContent: {
-    paddingBottom: 280,
-  } as ViewStyle,
+    paddingBottom: 260,
+  },
   agreementCard: {
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
@@ -130,7 +190,7 @@ export default StyleSheet.create({
     elevation: 6,
     borderLeftWidth: 4,
     borderLeftColor: '#01763C',
-  } as ViewStyle,
+  },
   cardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -138,58 +198,59 @@ export default StyleSheet.create({
     paddingBottom: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#E8ECEF',
-  } as ViewStyle,
+  },
   cardTitle: {
     fontSize: 18,
     fontWeight: '600',
     color: '#01763C',
     marginLeft: 12,
     flex: 1,
-  } as TextStyle,
+  },
   infoSection: {
     gap: 15,
-  } as ViewStyle,
+  },
   infoRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     paddingVertical: 8,
-  } as ViewStyle,
+  },
   infoRowColumn: {
     paddingVertical: 8,
-  } as ViewStyle,
+  },
   infoLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#666',
-    flex: 1,
-  } as TextStyle,
-  infoValue: {
     fontSize: 14,
     fontWeight: '500',
     color: '#01763C',
+    flex: 1,
+  },
+  infoValue: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#01763C',
     flex: 2,
     textAlign: 'right',
-  } as TextStyle,
+  },
   infoValueDescription: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '400',
     color: '#01763C',
-    marginTop: 6,
-    lineHeight: 20,
-  } as TextStyle,
+    marginTop: 8,
+    lineHeight: 22,
+    textAlign: 'justify',
+  },
   infoValueAmount: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '700',
     color: '#01763C',
     flex: 2,
     textAlign: 'right',
-  } as TextStyle,
+  },
   divider: {
     height: 1,
     backgroundColor: '#E8ECEF',
     marginVertical: 5,
-  } as ViewStyle,
+  },
   refreshButton: {
     backgroundColor: '#01763C',
     borderRadius: 12,
@@ -204,18 +265,17 @@ export default StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 6,
-  } as ViewStyle,
+  },
   refreshButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
     marginLeft: 8,
-  } as TextStyle,
+  },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 260,
     paddingHorizontal: 40,
   } as ViewStyle,
   emptyText: {
@@ -248,10 +308,6 @@ export default StyleSheet.create({
     textAlign: 'center',
   } as TextStyle,
   tabBar: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -282,11 +338,12 @@ export default StyleSheet.create({
   activeTab: {
     color: '#01763C',
     fontWeight: '700',
-  } as TextStyle,
+  },
+  // Estilos para acordeones
   accordionContainer: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    marginBottom: 16,
+    borderRadius: 12,
+    marginBottom: 15,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
@@ -379,6 +436,6 @@ export default StyleSheet.create({
     marginLeft: 8,
   } as TextStyle,
   sectionContent: {
-    gap: 8,
-  } as ViewStyle,
+    gap: 10,
+  },
 });

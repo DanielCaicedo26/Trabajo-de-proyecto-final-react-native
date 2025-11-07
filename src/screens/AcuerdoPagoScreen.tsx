@@ -18,32 +18,27 @@ import styles from '../styles/AcuerdoPagoScreenStyles';
 import usePaymentAgreements from '../hooks/usePaymentAgreements';
 
 interface PaymentAgreement {
-  id: number;
-  personName: string;
-  documentNumber: string;
-  phoneNumber: string;
-  address: string;
-  neighborhood: string;
-  typeFine: string;
-  infringement: string;
-  agreementStart: string;
-  agreementEnd: string;
-  paymentMethod: string;
-  installments: number;
-  baseAmount: number;
-  monthlyFee: number;
-  outstandingAmount: number;
-  isCoactive: boolean;
-  isPaid: boolean;
+  id: number | string;
+  personName?: string;
+  documentNumber?: string;
+  phoneNumber?: string;
+  address?: string;
+  neighborhood?: string;
+  typeFine?: string;
+  infringement?: string;
+  agreementStart?: string;
+  agreementEnd?: string;
+  paymentMethod?: string;
+  installments?: number;
+  baseAmount?: number;
+  monthlyFee?: number;
+  outstandingAmount?: number;
+  isCoactive?: boolean;
+  isPaid?: boolean;
 }
 
 interface AcuerdoPagoScreenProps {
   navigation: NativeStackNavigationProp<any>;
-}
-
-interface RenderAgreementItemProps {
-  item: PaymentAgreement;
-  index: number;
 }
 
 const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => {
@@ -60,12 +55,12 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
     formatDate,
   } = usePaymentAgreements(navigation);
 
-  const renderAgreementItem = ({ item, index }: RenderAgreementItemProps) => {
+  const renderAgreementItem = (item: PaymentAgreement, index: number) => {
     const isExpanded = expandedItems[item.id] || false;
     const agreementNumber = index + 1;
 
     return (
-      <View style={styles.accordionContainer}>
+      <View key={`agreement-${item.id}-${index}`} style={styles.accordionContainer}>
         {/* Header del acordeón */}
         <TouchableOpacity
           style={[styles.accordionHeader, isExpanded && styles.accordionHeaderExpanded]}
@@ -89,7 +84,7 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
             <View style={styles.accordionHeaderText}>
               <Text style={styles.accordionTitle}>Acuerdo #{agreementNumber}</Text>
               <Text style={styles.accordionSubtitle}>
-                {item.typeFine} • {formatCurrency(item.outstandingAmount)}
+                {item.typeFine || 'Sin tipo'} • {formatCurrency(item.outstandingAmount ?? 0)}
               </Text>
               <Text style={[
                 styles.accordionStatus,
@@ -118,15 +113,15 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
               <View style={styles.sectionContent}>
                 <View style={styles.infoRow}>
                   <Text style={styles.infoLabel}>Nombre:</Text>
-                  <Text style={styles.infoValue}>{item.personName}</Text>
+                  <Text style={styles.infoValue}>{item.personName || 'No disponible'}</Text>
                 </View>
                 <View style={styles.infoRow}>
                   <Text style={styles.infoLabel}>Documento:</Text>
-                  <Text style={styles.infoValue}>{item.documentNumber}</Text>
+                  <Text style={styles.infoValue}>{item.documentNumber || 'No disponible'}</Text>
                 </View>
                 <View style={styles.infoRow}>
                   <Text style={styles.infoLabel}>Teléfono:</Text>
-                  <Text style={styles.infoValue}>{item.phoneNumber}</Text>
+                  <Text style={styles.infoValue}>{item.phoneNumber || 'No disponible'}</Text>
                 </View>
                 <View style={styles.infoRowColumn}>
                   <Text style={styles.infoLabel}>Dirección:</Text>
@@ -188,11 +183,11 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
               <View style={styles.sectionContent}>
                 <View style={styles.infoRow}>
                   <Text style={styles.infoLabel}>Monto Base:</Text>
-                  <Text style={styles.infoValueAmount}>{formatCurrency(item.baseAmount)}</Text>
+                  <Text style={styles.infoValueAmount}>{formatCurrency(item.baseAmount ?? 0)}</Text>
                 </View>
                 <View style={styles.infoRow}>
                   <Text style={styles.infoLabel}>Cuota Mensual:</Text>
-                  <Text style={styles.infoValueAmount}>{formatCurrency(item.monthlyFee)}</Text>
+                  <Text style={styles.infoValueAmount}>{formatCurrency(item.monthlyFee ?? 0)}</Text>
                 </View>
                 <View style={styles.infoRow}>
                   <Text style={styles.infoLabel}>Saldo Pendiente:</Text>
@@ -223,8 +218,10 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
 
   return (
     <TouchableOpacity activeOpacity={1} onPress={resetTimer} style={{ flex: 1 }}>
+    <TouchableOpacity activeOpacity={1} onPress={resetTimer} style={{ flex: 1 }}>
       <ImageBackground
         source={require('../img/curva-perfil.png')}
+        style={styles.backgroundImage}
         style={styles.backgroundImage}
         resizeMode="cover"
       >
@@ -273,13 +270,14 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
             </View>
 
             {/* Contenido principal */}
+            {/* Contenido principal */}
             {loading ? (
               <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#01763C" />
                 <Text style={styles.loadingText}>Cargando acuerdos de pago...</Text>
               </View>
             ) : filteredData.length > 0 ? (
-              <View style={styles.listContainer}>
+              <View style={styles.container}>
                 <View style={styles.summaryHeader}>
                   <Text style={styles.summaryTitle}>Mis Acuerdos de Pago</Text>
                   <Text style={styles.summarySubtitle}>
@@ -319,8 +317,12 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
                 </TouchableOpacity>
               </View>
             )}
-          </View>
 
+            {/* Espacio para el tabBar */}
+            <View style={{ height: 100 }} />
+          </ScrollView>
+
+          {/* Tab Bar */}
           {/* Tab Bar */}
           <View style={styles.tabBar}>
             <TouchableOpacity 
