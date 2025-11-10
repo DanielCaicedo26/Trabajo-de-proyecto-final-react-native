@@ -37,7 +37,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
           <View style={styles.content}>
             <View style={styles.welcomeContainer}>
               <Text style={styles.welcomeTitle}>
-                Welcome to{"\n"}our application
+                Bienvenido a{"\n"}nuestra aplicación
               </Text>
             </View>
             <View style={styles.buttonContainer}>
@@ -47,7 +47,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
                 activeOpacity={0.8}
               >
                 <Text style={styles.loginButtonText}>
-                  Sign in
+                  Iniciar sesión
                 </Text>
               </TouchableOpacity>
             </View>
