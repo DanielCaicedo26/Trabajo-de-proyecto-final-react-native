@@ -23,9 +23,9 @@ const InfractionDetailScreen: React.FC<DetalleInfraccionScreenProps> = ({ naviga
 
   // `infraccion` can be null when no data provided - provide a fallback shape
   const fallback: InfraccionDisplay = {
-    tipo: 'Not specified',
-    descripcion: 'No observations',
-    fechaTexto: 'Not specified',
+    tipo: 'No especificado',
+    descripcion: 'Sin observaciones',
+    fechaTexto: 'No especificada',
     consulta: 'SMDLV',
     infoMulta: [],
     monto: '-',
@@ -52,10 +52,10 @@ const InfractionDetailScreen: React.FC<DetalleInfraccionScreenProps> = ({ naviga
         </View>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <BackButton style={styles.backBtn} onPress={() => navigation.goBack()} />
-          <Text style={styles.titulo}>Infraction Detail</Text>
-          <Text style={styles.seccion}>Infraction</Text>
+          <Text style={styles.titulo}>Detalle de Infracción</Text>
+          <Text style={styles.seccion}>Infracción</Text>
           <TouchableOpacity onPress={() => navigation.navigate('MinimumWageQuery')} activeOpacity={0.7}>
-            <Text style={styles.consulta}>Query {data.consulta} <Ionicons name="help-circle-outline" size={16} color="#01763C" /></Text>
+            <Text style={styles.consulta}>Consulta {data.consulta} <Ionicons name="help-circle-outline" size={16} color="#01763C" /></Text>
           </TouchableOpacity>
           <View style={styles.card}>
             <View style={styles.cardIcon}><Ionicons name="document-text-outline" size={28} color="#01763C" /></View>

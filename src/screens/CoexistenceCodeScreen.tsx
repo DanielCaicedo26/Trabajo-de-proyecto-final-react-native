@@ -100,7 +100,7 @@ const CoexistenceCodeScreen: React.FC<CodigoConvivenciaScreenProps> = ({ navigat
           <View style={styles.overlay} />
           <View style={styles.container}>
                 <BackButton style={{ alignSelf: 'flex-start', marginBottom: 10 }} onPress={() => navigation.goBack()} />
-            <Text style={styles.titulo}>codigo de Convivencia {'  '}
+            <Text style={styles.titulo}>Código de Convivencia {'  '}
               <Ionicons name="people-outline" size={20} color="#01763C" />
             </Text>
             <TextInput

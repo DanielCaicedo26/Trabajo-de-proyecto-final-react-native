@@ -30,27 +30,27 @@ const MinimumWageDetailScreen: React.FC<DetalleSmlvScreenProps> = ({ navigation,
         >
           <ScrollView contentContainerStyle={styles.scrollContent}>
             <BackButton style={styles.backBtn} onPress={() => navigation.goBack()} />
-            <Text style={styles.titulo}>Detalle de Infraccion</Text>
-            <Text style={styles.seccion}>Infraccion</Text>
+            <Text style={styles.titulo}>Detalle de Infracción</Text>
+            <Text style={styles.seccion}>Infracción</Text>
             <View style={styles.divider} />
             <View style={styles.card}>
               <View style={styles.iconBox}><Ionicons name="list-outline" size={32} color="#fff" /></View>
               <View style={styles.infoBox}>
-                <Text style={styles.label}>Numero de SMDLV</Text>
+                <Text style={styles.label}>Número de SMDLV</Text>
                 <Text style={styles.valueGreen}>{smdlv}</Text>
               </View>
             </View>
             <View style={styles.card}>
               <View style={styles.iconBox}><Ionicons name="cash-outline" size={32} color="#fff" /></View>
               <View style={styles.infoBox}>
-                <Text style={styles.label}>Salario minimo vigente</Text>
+                <Text style={styles.label}>Salario mínimo vigente</Text>
                 <Text style={styles.valueBlue}>{formatos.salarioTexto}</Text>
               </View>
             </View>
             <View style={styles.card}>
               <View style={styles.iconBox}><Ionicons name="calculator-outline" size={32} color="#fff" /></View>
               <View style={styles.infoBox}>
-                <Text style={styles.label}>Calculo del SMDLV</Text>
+                <Text style={styles.label}>Cálculo del SMDLV</Text>
                 <Text style={styles.valueBlue}>{formatos.calculoSmdlvTexto}</Text>
               </View>
             </View>

@@ -34,34 +34,34 @@ const FinesResultScreen: React.FC = () => {
           <View style={styles.container}>
             <TextInput
               style={styles.searchBar}
-              placeholder="Search your infractions"
+              placeholder="Consulta tus infracciones"
               placeholderTextColor="#6B9080"
               value={query}
               onChangeText={onQueryChange}
               onFocus={resetTimer}
             />
-            <Text style={styles.title}>Infractions</Text>
+            <Text style={styles.title}>Infracciones</Text>
             <View style={styles.summaryCard}>
               {(() => {
                 const r = resumen(filteredMultas);
                 return (
                   <>
-                    <Text style={styles.summaryTitle}>Account Status Summary</Text>
+                    <Text style={styles.summaryTitle}>Resumen Estado de cuenta</Text>
                     <View style={styles.summaryRow}>
-                      <Text style={styles.summaryLabel}>Infractions: {r.count}</Text>
-                      {/* The total may not be available in the API; we show it if it exists */}
+                      <Text style={styles.summaryLabel}>Infracciones: {r.count}</Text>
+                      {/* El total puede no estar disponible en la API; mostramos si existe */}
                       {r.total > 0 ? <Text style={styles.summaryTotal}>{formatCurrency(r.total)}</Text> : null}
                     </View>
                     <View style={styles.summaryMeta}>
-                      <Text style={styles.metaText}>{displayName || 'Name not available'}</Text>
-                      <Text style={styles.metaText}>Document number: {docNumber || 'N/A'}</Text>
+                      <Text style={styles.metaText}>{displayName || 'Nombre no disponible'}</Text>
+                      <Text style={styles.metaText}>Número de documento: {docNumber || 'N/A'}</Text>
                     </View>
                   </>
                 );
               })()}
             </View>
 
-            {/* Toggle for 'Tickets and Fines' and 'Payment Agreements' removed by requirement */}
+            {/* Toggle de 'Comparendos y Multas' y 'Acuerdos de pago' eliminado por requerimiento */}
 
             <FlatList
               data={filteredMultas}
@@ -88,20 +88,20 @@ const FinesResultScreen: React.FC = () => {
                         <Ionicons name="document-text-outline" size={28} color="#01763C" />
                       </View>
                       <View style={styles.infoContainer}>
-                        <Text style={styles.tipo}>{item.typeInfractionName || 'Type'}</Text>
+                        <Text style={styles.tipo}>{item.typeInfractionName || 'Tipo'}</Text>
                         <Text style={styles.descripcion} numberOfLines={2} ellipsizeMode='tail'>{item.observations || ''}</Text>
                         <Text style={[styles.metaText, { marginTop: 6 }]} numberOfLines={1} ellipsizeMode='tail'>{(item.firstName || item.lastName) ? `${item.firstName || ''} ${item.lastName || ''}`.trim() : ''}</Text>
                       </View>
-                      {/* We don't show prices: only informational data */}
+                      {/* No mostramos precios: solo datos informativos */}
                     </TouchableOpacity>
                     {selected ? (
                       <View style={styles.detailBox}>
-                        <View style={styles.detailRow}><Text style={styles.detailLabel}>Date</Text><Text style={styles.detailValue}>{item.dateInfraction || item.date || ''}</Text></View>
-                        <View style={styles.detailRow}><Text style={styles.detailLabel}>Type</Text><Text style={styles.detailValue}>{item.typeInfractionName || ''}</Text></View>
-                        <View style={styles.detailRow}><Text style={styles.detailLabel}>Description</Text><Text style={styles.detailValue}>{item.observations || ''}</Text></View>
+                        <View style={styles.detailRow}><Text style={styles.detailLabel}>Fecha</Text><Text style={styles.detailValue}>{item.dateInfraction || item.date || ''}</Text></View>
+                        <View style={styles.detailRow}><Text style={styles.detailLabel}>Tipo</Text><Text style={styles.detailValue}>{item.typeInfractionName || ''}</Text></View>
+                        <View style={styles.detailRow}><Text style={styles.detailLabel}>Descripción</Text><Text style={styles.detailValue}>{item.observations || ''}</Text></View>
                         <View style={{ marginTop: 8, alignItems: 'flex-end' }}>
                           <TouchableOpacity style={styles.verMasButton} onPress={() => navigation.navigate('InfractionDetail', { infraccion: item })}>
-                            <Text style={styles.verMasText}>See more</Text>
+                            <Text style={styles.verMasText}>Ver más</Text>
                           </TouchableOpacity>
                         </View>
                       </View>
@@ -109,24 +109,24 @@ const FinesResultScreen: React.FC = () => {
                   </View>
                 );
               }}
-              ListEmptyComponent={<Text style={{ textAlign: 'center', marginTop: 20 }}>No fines found.</Text>}
+              ListEmptyComponent={<Text style={{ textAlign: 'center', marginTop: 20 }}>No se encontraron multas.</Text>}
             />
           </View>
         </SafeAreaView>
-        {/* SEE SUMMARY button removed by requirement */}
+        {/* Botón VER RESUMEN eliminado por requerimiento */}
 
         <View style={styles.tabBar}>
           <TouchableOpacity style={styles.tabItem}>
             <Ionicons name="list-outline" size={24} color="#01763C" />
-            <Text style={styles.tabLabel}>Infraction</Text>
+            <Text style={styles.tabLabel}>Infracción</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('CoexistenceCode')}>
             <Ionicons name="book-outline" size={24} color="#01763C" />
-            <Text style={styles.tabLabel}>Coexistence Code</Text>
+            <Text style={styles.tabLabel}>Código de Convivencia</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('PaymentAgreement')}>
             <Ionicons name="card-outline" size={24} color="#01763C" />
-            <Text style={styles.tabLabel}>Payment Agreement</Text>
+            <Text style={styles.tabLabel}>Acuerdo de Pago</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -136,7 +136,7 @@ const FinesResultScreen: React.FC = () => {
 
 export default FinesResultScreen;
 
-// Extra: calculate total of selected items
+// Extra: calcular total de seleccionadas
 export function calcularTotalSeleccionadas(multas: Multa[] = [], selectedIds: number[] = []): number {
   return (multas || []).reduce((acc, it) => {
     if (selectedIds.includes(it.id)) {

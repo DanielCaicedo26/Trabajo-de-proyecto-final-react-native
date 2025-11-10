@@ -76,16 +76,16 @@ const FinesScreen: React.FC = () => {
                       resizeMode="contain"
                     />
                   </View>
-                  <Text style={styles.title}>Fines Review</Text>
+                  <Text style={styles.title}>Revisión de Multas</Text>
                 </Animated.View>
                 <Animated.View style={[styles.card, {
                   opacity: cardAnim,
                   transform: [{ translateY: cardAnim.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }) }]
                 }]}
                 >
-                  <Text style={styles.subtitle}>View Infraction</Text>
+                  <Text style={styles.subtitle}>Mira Infracción</Text>
                   <View style={styles.inputGroup}>
-                    <Text style={styles.inputLabel}>Document Type</Text>
+                    <Text style={styles.inputLabel}>Tipo de Documento</Text>
                     <Picker
                       selectedValue={tipoDocumento}
                       style={[
@@ -96,20 +96,20 @@ const FinesScreen: React.FC = () => {
                       onFocus={() => setFocusedInput('picker')}
                       onBlur={() => setFocusedInput(null)}
                     >
-                      <Picker.Item label="Select Your Document Type" value="" />
-                      <Picker.Item label="Citizenship Card" value="cc" />
-                      <Picker.Item label="Identity Card" value="ti" />
-                      <Picker.Item label="Foreign ID Card" value="ce" />
+                      <Picker.Item label="Selecciona tu Tipo De Documento" value="" />
+                      <Picker.Item label="Cédula de Ciudadanía" value="cc" />
+                      <Picker.Item label="Tarjeta de Identidad" value="ti" />
+                      <Picker.Item label="Cédula de Extranjería" value="ce" />
                     </Picker>
                   </View>
                   <View style={styles.inputGroup}>
-                    <Text style={styles.inputLabel}>Document Number</Text>
+                    <Text style={styles.inputLabel}>Número de Documento</Text>
                     <TextInput
                       style={[
                         styles.searchBar,
                         focusedInput === 'document' && styles.inputFocused
                       ]}
-                      placeholder="Enter Your Document Number"
+                      placeholder="Digita Tu Número De Documento"
                       placeholderTextColor="#000000ff"
                       value={numeroDocumento}
                       onChangeText={setNumeroDocumento}
@@ -132,7 +132,7 @@ const FinesScreen: React.FC = () => {
                         {acceptedTerms ? <Text style={{ color: '#fff', fontWeight: '700' }}>✓</Text> : null}
                       </Animated.View>
                       <TouchableOpacity onPress={() => setShowTermsModal(true)} style={{ marginLeft: 10 }}>
-                        <Text style={{ color: '#34495e', textDecorationLine: 'underline' }}>I accept terms and conditions</Text>
+                        <Text style={{ color: '#34495e', textDecorationLine: 'underline' }}>Acepto términos y condiciones</Text>
                       </TouchableOpacity>
                     </View>
                   </TouchableWithoutFeedback>
@@ -146,26 +146,26 @@ const FinesScreen: React.FC = () => {
                     <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', padding: 20 }}>
                       <View style={{ backgroundColor: '#fff', borderRadius: 12, padding: 18, maxHeight: '80%' }}>
                         <ScrollView>
-                          <Text style={{ fontSize: 18, fontWeight: '700', marginBottom: 10 }}>Terms and Conditions</Text>
+                          <Text style={{ fontSize: 18, fontWeight: '700', marginBottom: 10 }}>Términos y Condiciones</Text>
                           <Text style={{ marginBottom: 12 }}>
-                            Here are the terms and conditions. You can paste the actual text or a long summary that the user must accept before continuing. Make sure to include relevant information such as data usage, liability, and legal references.
+                            Aquí van los términos y condiciones. Puedes pegar el texto real o un resumen largo que el usuario debe aceptar antes de continuar. Asegúrate de incluir información relevante como uso de datos, responsabilidad, y referencias legales.
                           </Text>
                           <Text style={{ marginBottom: 12 }}>
-                            1. Use of information: The user agrees that the data provided will be used to query infractions in the database.
+                            1. Uso de la información: El usuario acepta que los datos proporcionados serán usados para consultar infracciones en la base de datos.
                           </Text>
                           <Text style={{ marginBottom: 12 }}>
-                            2. Privacy: Data will not be shared with third parties without consent.
+                            2. Privacidad: Los datos no serán compartidos con terceros sin consentimiento.
                           </Text>
                           <Text style={{ marginBottom: 12 }}>
-                            3. Limitation of liability: The platform is not responsible for errors in the source data.
+                            3. Limitación de responsabilidad: La plataforma no es responsable por errores en los datos de origen.
                           </Text>
                         </ScrollView>
                         <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 12 }}>
                           <Pressable onPress={() => setShowTermsModal(false)} style={{ marginRight: 12 }}>
-                            <Text style={{ color: '#666' }}>Close</Text>
+                            <Text style={{ color: '#666' }}>Cerrar</Text>
                           </Pressable>
                           <Pressable onPress={() => { setAcceptedTerms(true); setShowTermsModal(false); }}>
-                            <Text style={{ color: '#01763C', fontWeight: '700' }}>Accept</Text>
+                            <Text style={{ color: '#01763C', fontWeight: '700' }}>Aceptar</Text>
                           </Pressable>
                         </View>
                       </View>
@@ -191,7 +191,7 @@ const FinesScreen: React.FC = () => {
                       activeOpacity={0.8}
                       disabled={loading || !acceptedTerms}
                     >
-                      <Text style={styles.buttonText}>{loading ? 'Checking...' : 'Check Fines'}</Text>
+                      <Text style={styles.buttonText}>{loading ? 'Consultando...' : 'Consultar Multas'}</Text>
                     </TouchableOpacity>
                   </Animated.View>
                 </Animated.View>
