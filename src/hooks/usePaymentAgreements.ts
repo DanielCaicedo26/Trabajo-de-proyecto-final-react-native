@@ -128,7 +128,7 @@ export default function usePaymentAgreements(navigation: any): UsePaymentAgreeme
           text: 'Cerrar sesión',
           style: 'destructive',
           onPress: () => {
-            navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
+            navigation.reset({ index: 0, routes: [{ name: 'Welcome' }] });
           },
         },
         {

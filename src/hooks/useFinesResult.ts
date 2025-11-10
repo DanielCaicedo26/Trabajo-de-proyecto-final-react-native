@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { getInfracciones } from '../api/infraccionesCache';
+import { getInfracciones } from '../api/infractionCache';
 import { getUser, getDocumentInfo } from '../api/userCache';
 import { RootNavigationProp, MultasResultadoRouteProp } from '../types/navigation';
 import { formatCurrency } from '../utils/formatters';
@@ -38,8 +38,8 @@ interface UseMultasResultadoReturn {
   resumen: (items?: Multa[]) => Resumen;
 }
 
-// Hook para encapsular lógica de MultasResultadoScreen
-export default function useMultasResultado(
+// Hook para encapsular lógica de FinesResultScreen
+export default function useFinesResult(
   navigation: RootNavigationProp,
   route: MultasResultadoRouteProp
 ): UseMultasResultadoReturn {
@@ -62,7 +62,7 @@ export default function useMultasResultado(
   }, [multasInitial]);
 
   const showInactivityAlert = useCallback(() => {
-    navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] });
+    navigation.reset({ index: 0, routes: [{ name: 'Welcome' }] });
   }, [navigation]);
 
   const resetTimer = useCallback(() => {

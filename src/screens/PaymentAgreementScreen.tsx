@@ -4,7 +4,7 @@ import { TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import BackButton from '../components/BackButton';
-import styles from '../styles/AcuerdoPagoScreenStyles';
+import styles from '../styles/PaymentAgreementScreenStyles';
 import usePaymentAgreements from '../hooks/usePaymentAgreements';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -39,7 +39,7 @@ interface RenderAgreementItemProps {
   index: number;
 }
 
-const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => {
+const PaymentAgreementScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => {
   const {
     loading,
     agreementsData,
@@ -283,11 +283,11 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
 
         {/* tabBar dentro del SafeAreaView para que el fondo lo cubra */}
         <View style={styles.tabBar}>
-          <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('MultasResultado')}>
+          <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('FinesResult')}>
             <Ionicons name="list-outline" size={24} color="#01763C" />
             <Text style={styles.tabLabel}>Infracción</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('CodigoConvivencia')}>
+          <TouchableOpacity style={styles.tabItem} onPress={() => navigation.navigate('CoexistenceCode')}>
             <Ionicons name="book-outline" size={24} color="#01763C" />
             <Text style={styles.tabLabel}>Código de Convivencia</Text>
           </TouchableOpacity>
@@ -301,4 +301,4 @@ const AcuerdoPagoScreen: React.FC<AcuerdoPagoScreenProps> = ({ navigation }) => 
   );
 };
 
-export default AcuerdoPagoScreen;
+export default PaymentAgreementScreen;

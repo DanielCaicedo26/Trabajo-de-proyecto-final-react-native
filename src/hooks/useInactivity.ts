@@ -13,20 +13,20 @@ interface UseInactivityReturn {
  * Previene memory leaks usando refs para valores que cambian
  *
  * @param {RootNavigationProp} navigation - Objeto de navegación
- * @param {string} routeName - Nombre de la ruta a la que navegar al cerrar sesión (default: 'Bienvenida')
+ * @param {string} routeName - Nombre de la ruta a la que navegar al cerrar sesión (default: 'Welcome')
  * @param {number} timeoutMs - Tiempo de inactividad en milisegundos (default: 300000 = 5 minutos)
  * @returns {UseInactivityReturn} Funciones para controlar el timer de inactividad
  *
  * @example
  * ```tsx
- * const { resetTimer, stopTimer } = useInactivity(navigation, 'Bienvenida', 300000);
+ * const { resetTimer, stopTimer } = useInactivity(navigation, 'Welcome', 300000);
  * // Resetear timer en cada interacción del usuario
  * <TouchableOpacity onPress={resetTimer}>...</TouchableOpacity>
  * ```
  */
 export default function useInactivity(
   navigation: RootNavigationProp,
-  routeName: keyof import('../types/navigation').RootStackParamList = 'Bienvenida',
+  routeName: keyof import('../types/navigation').RootStackParamList = 'Welcome',
   timeoutMs: number = 300000
 ): UseInactivityReturn {
   const timerRef = useRef<NodeJS.Timeout | null>(null);

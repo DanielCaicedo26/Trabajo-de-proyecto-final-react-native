@@ -48,13 +48,13 @@ interface UseDetalleInfraccionReturn {
   stopTimer: () => void;
 }
 
-// Hook para encapsular lógica mínima de DetalleInfraccion
-export default function useDetalleInfraccion(
+// Hook para encapsular lógica mínima de InfractionDetail
+export default function useInfractionDetail(
   navigation: RootNavigationProp,
   infraccionFromRoute: InfraccionInput | null | undefined
 ): UseDetalleInfraccionReturn {
   // Reuse the common inactivity hook (default timeout 10s like used elsewhere)
-  const { resetTimer, stopTimer } = useInactivity(navigation, 'Bienvenida', 10000);
+  const { resetTimer, stopTimer } = useInactivity(navigation, 'Welcome', 10000);
 
   const infraccion = useMemo(() => {
     if (!infraccionFromRoute) return null;

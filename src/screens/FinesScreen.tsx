@@ -1,12 +1,12 @@
 import React, { useRef, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, Animated, StatusBar, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Modal, Pressable } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import styles from '../styles/MultasScreenStyles';
+import styles from '../styles/FinesScreenStyles';
 import { useNavigation } from '@react-navigation/native';
-import useMultas from '../hooks/useMultas';
+import useFines from '../hooks/useFines';
 import { MultasNavigationProp } from '../types/navigation';
 
-const MultasScreen: React.FC = () => {
+const FinesScreen: React.FC = () => {
   const navigation = useNavigation<MultasNavigationProp>();
   const {
     tipoDocumento,
@@ -22,7 +22,7 @@ const MultasScreen: React.FC = () => {
     handleConsultarMultas,
     resetTimer,
     timerRef,
-  } = useMultas(navigation);
+  } = useFines(navigation);
   const [isButtonPressed, setIsButtonPressed] = React.useState(false);
   const [focusedInput, setFocusedInput] = React.useState<string | null>(null);
   // Animated values
@@ -33,7 +33,7 @@ const MultasScreen: React.FC = () => {
 
   useEffect(() => {
     resetTimer();
-    // Animaciones de entrada
+    // Entry animations
     Animated.sequence([
       Animated.timing(logoAnim, { toValue: 1, duration: 600, useNativeDriver: true }),
       Animated.timing(cardAnim, { toValue: 1, duration: 500, useNativeDriver: true })
@@ -45,7 +45,7 @@ const MultasScreen: React.FC = () => {
     };
   }, []);
 
-  // La lógica de consulta ahora está en el hook useMultas: use handleConsultarMultas() desde el hook
+  // The query logic is now in the useFines hook: use handleConsultarMultas() from the hook
 
   return (
     <TouchableWithoutFeedback onPress={resetTimer}>
@@ -63,7 +63,7 @@ const MultasScreen: React.FC = () => {
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
               <View style={styles.container}>
                 <StatusBar barStyle="light-content" backgroundColor="#2E8B57" translucent />
-                {/* Barra de búsqueda eliminada por solicitud */}
+                {/* Search bar removed by request */}
                 <Animated.View style={[styles.logoContainer, {
                   opacity: logoAnim,
                   transform: [{ translateY: logoAnim.interpolate({ inputRange: [0, 1], outputRange: [20, 0] }) }]
@@ -76,16 +76,16 @@ const MultasScreen: React.FC = () => {
                       resizeMode="contain"
                     />
                   </View>
-                  <Text style={styles.title}>Revisión de Multas</Text>
+                  <Text style={styles.title}>Fines Review</Text>
                 </Animated.View>
                 <Animated.View style={[styles.card, {
                   opacity: cardAnim,
                   transform: [{ translateY: cardAnim.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }) }]
                 }]}
                 >
-                  <Text style={styles.subtitle}>Mira Infraccion</Text>
+                  <Text style={styles.subtitle}>View Infraction</Text>
                   <View style={styles.inputGroup}>
-                    <Text style={styles.inputLabel}>Tipo de Documento</Text>
+                    <Text style={styles.inputLabel}>Document Type</Text>
                     <Picker
                       selectedValue={tipoDocumento}
                       style={[
@@ -96,20 +96,20 @@ const MultasScreen: React.FC = () => {
                       onFocus={() => setFocusedInput('picker')}
                       onBlur={() => setFocusedInput(null)}
                     >
-                      <Picker.Item label="Selecciona tu Tipo De Documento" value="" />
-                      <Picker.Item label="Cédula de Ciudadanía" value="cc" />
-                      <Picker.Item label="Tarjeta de Identidad" value="ti" />
-                      <Picker.Item label="Cédula de Extranjería" value="ce" />
+                      <Picker.Item label="Select Your Document Type" value="" />
+                      <Picker.Item label="Citizenship Card" value="cc" />
+                      <Picker.Item label="Identity Card" value="ti" />
+                      <Picker.Item label="Foreign ID Card" value="ce" />
                     </Picker>
                   </View>
                   <View style={styles.inputGroup}>
-                    <Text style={styles.inputLabel}>Número de Documento</Text>
+                    <Text style={styles.inputLabel}>Document Number</Text>
                     <TextInput
                       style={[
                         styles.searchBar,
                         focusedInput === 'document' && styles.inputFocused
                       ]}
-                      placeholder="Digita Tu Número De Documento"
+                      placeholder="Enter Your Document Number"
                       placeholderTextColor="#000000ff"
                       value={numeroDocumento}
                       onChangeText={setNumeroDocumento}
@@ -119,7 +119,7 @@ const MultasScreen: React.FC = () => {
                     />
                   </View>
                   <TouchableWithoutFeedback onPress={() => {
-                    // animación checkbox
+                    // checkbox animation
                     Animated.sequence([
                       Animated.timing(checkboxScale, { toValue: 0.85, duration: 100, useNativeDriver: true }),
                       Animated.timing(checkboxScale, { toValue: 1.05, duration: 120, useNativeDriver: true }),
@@ -132,7 +132,7 @@ const MultasScreen: React.FC = () => {
                         {acceptedTerms ? <Text style={{ color: '#fff', fontWeight: '700' }}>✓</Text> : null}
                       </Animated.View>
                       <TouchableOpacity onPress={() => setShowTermsModal(true)} style={{ marginLeft: 10 }}>
-                        <Text style={{ color: '#34495e', textDecorationLine: 'underline' }}>Acepto términos y condiciones</Text>
+                        <Text style={{ color: '#34495e', textDecorationLine: 'underline' }}>I accept terms and conditions</Text>
                       </TouchableOpacity>
                     </View>
                   </TouchableWithoutFeedback>
@@ -146,26 +146,26 @@ const MultasScreen: React.FC = () => {
                     <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', padding: 20 }}>
                       <View style={{ backgroundColor: '#fff', borderRadius: 12, padding: 18, maxHeight: '80%' }}>
                         <ScrollView>
-                          <Text style={{ fontSize: 18, fontWeight: '700', marginBottom: 10 }}>Términos y Condiciones</Text>
+                          <Text style={{ fontSize: 18, fontWeight: '700', marginBottom: 10 }}>Terms and Conditions</Text>
                           <Text style={{ marginBottom: 12 }}>
-                            Aquí van los términos y condiciones. Puedes pegar el texto real o un resumen largo que el usuario debe aceptar antes de continuar. Asegúrate de incluir información relevante como uso de datos, responsabilidad, y referencias legales.
+                            Here are the terms and conditions. You can paste the actual text or a long summary that the user must accept before continuing. Make sure to include relevant information such as data usage, liability, and legal references.
                           </Text>
                           <Text style={{ marginBottom: 12 }}>
-                            1. Uso de la información: El usuario acepta que los datos proporcionados serán usados para consultar infracciones en la base de datos.
+                            1. Use of information: The user agrees that the data provided will be used to query infractions in the database.
                           </Text>
                           <Text style={{ marginBottom: 12 }}>
-                            2. Privacidad: Los datos no serán compartidos con terceros sin consentimiento.
+                            2. Privacy: Data will not be shared with third parties without consent.
                           </Text>
                           <Text style={{ marginBottom: 12 }}>
-                            3. Limitación de responsabilidad: La plataforma no es responsable por errores en los datos de origen.
+                            3. Limitation of liability: The platform is not responsible for errors in the source data.
                           </Text>
                         </ScrollView>
                         <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 12 }}>
                           <Pressable onPress={() => setShowTermsModal(false)} style={{ marginRight: 12 }}>
-                            <Text style={{ color: '#666' }}>Cerrar</Text>
+                            <Text style={{ color: '#666' }}>Close</Text>
                           </Pressable>
                           <Pressable onPress={() => { setAcceptedTerms(true); setShowTermsModal(false); }}>
-                            <Text style={{ color: '#01763C', fontWeight: '700' }}>Aceptar</Text>
+                            <Text style={{ color: '#01763C', fontWeight: '700' }}>Accept</Text>
                           </Pressable>
                         </View>
                       </View>
@@ -191,7 +191,7 @@ const MultasScreen: React.FC = () => {
                       activeOpacity={0.8}
                       disabled={loading || !acceptedTerms}
                     >
-                      <Text style={styles.buttonText}>{loading ? 'Consultando...' : 'Consultar Multas'}</Text>
+                      <Text style={styles.buttonText}>{loading ? 'Checking...' : 'Check Fines'}</Text>
                     </TouchableOpacity>
                   </Animated.View>
                 </Animated.View>
@@ -204,4 +204,4 @@ const MultasScreen: React.FC = () => {
   );
 };
 
-export default MultasScreen;
+export default FinesScreen;

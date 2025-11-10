@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, TextInput, FlatList, ImageBackground, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import styles from '../styles/CodigoConvivenciaScreenStyles';
+import styles from '../styles/CoexistenceCodeScreenStyles';
 import { Ionicons } from '@expo/vector-icons';
 import BackButton from '../components/BackButton';
-import useCodigoConvivencia from '../hooks/useCodigoConvivencia';
+import useCoexistenceCode from '../hooks/useCoexistenceCode';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 interface Ley {
@@ -86,8 +86,8 @@ const leyes: Ley[] = [
   },
 ];
 
-const CodigoConvivenciaScreen: React.FC<CodigoConvivenciaScreenProps> = ({ navigation }) => {
-  const { query, setQuery, filteredLeyes, resetTimer } = useCodigoConvivencia(navigation);
+const CoexistenceCodeScreen: React.FC<CodigoConvivenciaScreenProps> = ({ navigation }) => {
+  const { query, setQuery, filteredLeyes, resetTimer } = useCoexistenceCode(navigation);
 
   return (
     <TouchableWithoutFeedback onPress={resetTimer}>
@@ -122,7 +122,7 @@ const CodigoConvivenciaScreen: React.FC<CodigoConvivenciaScreenProps> = ({ navig
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={styles.card}
-                  onPress={() => navigation.navigate('DetalleLey', { ley: item })}
+                  onPress={() => navigation.navigate('LawDetail', { ley: item })}
                 >
                   <View style={styles.iconContainer}>
                     <Ionicons name="document-text-outline" size={28} color="#01763C" />
@@ -142,4 +142,4 @@ const CodigoConvivenciaScreen: React.FC<CodigoConvivenciaScreenProps> = ({ navig
   );
 };
 
-export default CodigoConvivenciaScreen;
+export default CoexistenceCodeScreen;

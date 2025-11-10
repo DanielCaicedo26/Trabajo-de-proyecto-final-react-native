@@ -3,8 +3,8 @@ import { View, Text, TouchableOpacity, ImageBackground, ScrollView, TouchableWit
 import { Ionicons } from '@expo/vector-icons';
 import BackButton from '../components/BackButton';
 import { LinearGradient } from 'expo-linear-gradient';
-import styles from '../styles/DetalleInfraccionScreenStyles';
-import useDetalleInfraccion from '../hooks/useDetalleInfraccion';
+import styles from '../styles/InfractionDetailScreenStyles';
+import useInfractionDetail from '../hooks/useInfractionDetail';
 import { DetalleInfraccionScreenProps, InfoMultaItem } from '../types/navigation';
 
 interface InfraccionDisplay {
@@ -17,15 +17,15 @@ interface InfraccionDisplay {
   fechaMax: string;
 }
 
-const DetalleInfraccionScreen: React.FC<DetalleInfraccionScreenProps> = ({ navigation, route }) => {
+const InfractionDetailScreen: React.FC<DetalleInfraccionScreenProps> = ({ navigation, route }) => {
   const infraccionFromRoute = route?.params?.infraccion;
-  const { infraccion, resetTimer } = useDetalleInfraccion(navigation, infraccionFromRoute);
+  const { infraccion, resetTimer } = useInfractionDetail(navigation, infraccionFromRoute);
 
   // `infraccion` can be null when no data provided - provide a fallback shape
   const fallback: InfraccionDisplay = {
-    tipo: 'No especificado',
-    descripcion: 'Sin observaciones',
-    fechaTexto: 'No especificada',
+    tipo: 'Not specified',
+    descripcion: 'No observations',
+    fechaTexto: 'Not specified',
     consulta: 'SMDLV',
     infoMulta: [],
     monto: '-',
@@ -52,10 +52,10 @@ const DetalleInfraccionScreen: React.FC<DetalleInfraccionScreenProps> = ({ navig
         </View>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <BackButton style={styles.backBtn} onPress={() => navigation.goBack()} />
-          <Text style={styles.titulo}>Detalle de Infracción</Text>
-          <Text style={styles.seccion}>Infracción</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('ConsultaSmlv')} activeOpacity={0.7}>
-            <Text style={styles.consulta}>Consulta {data.consulta} <Ionicons name="help-circle-outline" size={16} color="#01763C" /></Text>
+          <Text style={styles.titulo}>Infraction Detail</Text>
+          <Text style={styles.seccion}>Infraction</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('MinimumWageQuery')} activeOpacity={0.7}>
+            <Text style={styles.consulta}>Query {data.consulta} <Ionicons name="help-circle-outline" size={16} color="#01763C" /></Text>
           </TouchableOpacity>
           <View style={styles.card}>
             <View style={styles.cardIcon}><Ionicons name="document-text-outline" size={28} color="#01763C" /></View>
@@ -112,4 +112,4 @@ const DetalleInfraccionScreen: React.FC<DetalleInfraccionScreenProps> = ({ navig
   );
 };
 
-export default DetalleInfraccionScreen;
+export default InfractionDetailScreen;

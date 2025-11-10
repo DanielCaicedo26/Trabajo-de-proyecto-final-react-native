@@ -84,10 +84,10 @@ interface UseCodigoConvivenciaReturn {
   resetTimer: () => void;
 }
 
-export default function useCodigoConvivencia(navigation: any): UseCodigoConvivenciaReturn {
+export default function useCoexistenceCode(navigation: any): UseCodigoConvivenciaReturn {
   const [query, setQuery] = useState<string>('');
 
-  const { resetTimer } = useInactivity(navigation, 'Bienvenida');
+  const { resetTimer } = useInactivity(navigation, 'Welcome');
 
   const filteredLeyes = useMemo(() => {
     const q = String(query || '').trim().toLowerCase();

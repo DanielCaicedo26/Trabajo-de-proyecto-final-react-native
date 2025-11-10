@@ -1,10 +1,10 @@
 import { useState, useRef, useCallback, MutableRefObject } from 'react';
 import { Alert } from 'react-native';
-import { consultarInfracciones } from '../api/infraccionesApi';
+import { consultarInfracciones } from '../api/infractionApi';
 import { buscarUsuarioPorDocumento } from '../api/userApi';
 import { getDocumentTypeId } from '../api/documentTypeApi';
 import { setDocumentInfo, setUser } from '../api/userCache';
-import { setInfracciones } from '../api/infraccionesCache';
+import { setInfracciones } from '../api/infractionCache';
 import { RootNavigationProp, Infraccion } from '../types/navigation';
 
 type TipoDocumento = 'CC' | 'CE' | 'TI' | 'PAS' | '';
@@ -26,7 +26,7 @@ interface UseMultasReturn {
   timerRef: MutableRefObject<NodeJS.Timeout | null>;
 }
 
-export default function useMultas(navigation: RootNavigationProp): UseMultasReturn {
+export default function useFines(navigation: RootNavigationProp): UseMultasReturn {
   const [tipoDocumento, setTipoDocumento] = useState<TipoDocumento>('');
   const [numeroDocumento, setNumeroDocumento] = useState<string>('');
   const [acceptedTerms, setAcceptedTerms] = useState<boolean>(false);
@@ -49,7 +49,7 @@ export default function useMultas(navigation: RootNavigationProp): UseMultasRetu
           {
             text: 'Cerrar sesión',
             style: 'destructive',
-            onPress: () => navigation.reset({ index: 0, routes: [{ name: 'Bienvenida' }] }),
+            onPress: () => navigation.reset({ index: 0, routes: [{ name: 'Welcome' }] }),
           },
           {
             text: 'Seguir en la sesión',
@@ -112,7 +112,7 @@ export default function useMultas(navigation: RootNavigationProp): UseMultasRetu
       };
       setUser(enrichedUser);
       setInfracciones(multasUsuario);
-      navigation.navigate('MultasResultado', { multas: multasUsuario });
+      navigation.navigate('FinesResult', { multas: multasUsuario });
     } catch (err: any) {
       setError('Error: ' + (err?.message || JSON.stringify(err)));
     } finally {
